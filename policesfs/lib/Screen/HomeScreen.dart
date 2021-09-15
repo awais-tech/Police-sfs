@@ -74,6 +74,9 @@ class HomeScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
+                  child: Text("Overview"),
+                ),
+                Container(
                   alignment: Alignment.center,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
