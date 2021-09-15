@@ -34,35 +34,48 @@ class HomeScreen extends StatelessWidget {
           child: Drawer(
             elevation: 24,
             child: LayoutBuilder(builder: (ctx, constraints) {
-              return Column(
-                children: [
-                  Container(
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 20),
                       color: Colors.red[900],
-                      height: constraints.maxHeight * 0.2,
-                      child: DrawerHeader(child: createDrawerHeader())),
-                  Container(
-                    color: Colors.blue[900],
-                    height: constraints.maxHeight * 0.8,
-                    child: ListView.builder(
-                        itemCount: navigators.length,
-                        itemBuilder: (context, index) {
-                          return Container(
-                            child: ListTile(
-                              onTap: () {},
-                              leading: Icon(
-                                navigatorsIcon[index],
-                                color: Colors.white,
+                      child: Image.asset(
+                        'assets/images/police.png',
+                        fit: BoxFit.contain,
+                        height: 90.0,
+                        width: 310.0,
+                      ),
+                    ),
+                    Container(
+                        color: Colors.red[900],
+                        height: constraints.maxHeight * 0.14,
+                        child: DrawerHeader(child: createDrawerHeader())),
+                    Container(
+                      color: Colors.blue[900],
+                      height: constraints.maxHeight * 0.8,
+                      child: ListView.builder(
+                          itemCount: navigators.length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: EdgeInsets.only(top: 3),
+                              child: ListTile(
+                                onTap: () {},
+                                leading: Icon(
+                                  navigatorsIcon[index],
+                                  color: Colors.white,
+                                ),
+                                title: Text(
+                                  "${navigators[index]}",
+                                  style: TextStyle(
+                                      fontSize: 15, color: Colors.white),
+                                ),
                               ),
-                              title: Text(
-                                "${navigators[index]}",
-                                style: TextStyle(
-                                    fontSize: 15, color: Colors.white),
-                              ),
-                            ),
-                          );
-                        }),
-                  ),
-                ],
+                            );
+                          }),
+                    ),
+                  ],
+                ),
               );
             }),
           ),
@@ -73,9 +86,6 @@ class HomeScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  child: Text("Overview"),
-                ),
                 Container(
                   alignment: Alignment.center,
                   child: Column(
@@ -251,13 +261,8 @@ class HomeScreen extends StatelessWidget {
 Widget createDrawerHeader() {
   return DrawerHeader(
       child: Stack(children: <Widget>[
-    Image.asset(
-      'assets/images/police.png',
-      height: 20,
-      width: 20,
-    ),
     Positioned(
-        bottom: 12.0,
+        //bottom: 5.0,
         left: 16.0,
         child: Text("Welcome to Police SFS",
             style: TextStyle(
