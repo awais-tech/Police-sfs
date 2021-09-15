@@ -9,7 +9,8 @@ class HomeScreen extends StatelessWidget {
     "Feedbacks",
     "Notifications",
     "Reports",
-    "Chats"
+    "Chats",
+    "Logout"
   ];
   static List<IconData> navigatorsIcon = [
     Icons.home,
@@ -19,7 +20,8 @@ class HomeScreen extends StatelessWidget {
     Icons.feedback_outlined,
     Icons.notifications_active,
     Icons.report_outlined,
-    Icons.chat_outlined
+    Icons.chat_outlined,
+    Icons.logout_outlined
   ];
 
   @override
@@ -35,21 +37,26 @@ class HomeScreen extends StatelessWidget {
               return Column(
                 children: [
                   Container(
+                      color: Colors.red[900],
                       height: constraints.maxHeight * 0.2,
                       child: DrawerHeader(child: createDrawerHeader())),
                   Container(
+                    color: Colors.blue[900],
                     height: constraints.maxHeight * 0.8,
-                    color: Colors.white,
                     child: ListView.builder(
                         itemCount: navigators.length,
                         itemBuilder: (context, index) {
                           return Container(
                             child: ListTile(
                               onTap: () {},
-                              leading: Icon(navigatorsIcon[index]),
+                              leading: Icon(
+                                navigatorsIcon[index],
+                                color: Colors.white,
+                              ),
                               title: Text(
                                 "${navigators[index]}",
-                                style: TextStyle(fontSize: 15),
+                                style: TextStyle(
+                                    fontSize: 15, color: Colors.white),
                               ),
                             ),
                           );
@@ -76,18 +83,34 @@ class HomeScreen extends StatelessWidget {
                         width: constraints.maxWidth * 0.3,
                         height: constraints.maxHeight * 0.3,
                         child: Card(
-                          elevation: 8,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          color: Colors.blue[700],
+                          elevation: 10,
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                "Daniyal",
-                                textAlign: TextAlign.center,
+                              Icon(
+                                Icons.people,
+                                size: 70,
                               ),
                               Text(
-                                "Daniyal",
+                                "Total Registered Staff",
                                 textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                              Text(
+                                "1300",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 34,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                               ),
                             ],
                           ),
@@ -97,18 +120,34 @@ class HomeScreen extends StatelessWidget {
                         width: constraints.maxWidth * 0.3,
                         height: constraints.maxHeight * 0.3,
                         child: Card(
-                          elevation: 8,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                          color: Colors.blue[700],
+                          elevation: 10,
                           child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Text(
-                                "Daniyal",
-                                textAlign: TextAlign.center,
+                              Icon(
+                                Icons.wifi_protected_setup_sharp,
+                                size: 70,
                               ),
                               Text(
-                                "Daniyal",
+                                "Active Complaints",
                                 textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                              Text(
+                                "2700",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 34,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
                               ),
                             ],
                           ),
@@ -125,18 +164,34 @@ class HomeScreen extends StatelessWidget {
                       width: constraints.maxWidth * 0.3,
                       height: constraints.maxHeight * 0.3,
                       child: Card(
-                        elevation: 8,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        color: Colors.blue[700],
+                        elevation: 10,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              "Daniyal",
-                              textAlign: TextAlign.center,
+                            Icon(
+                              Icons.verified_user_sharp,
+                              size: 70,
                             ),
                             Text(
-                              "Daniyal",
+                              "Total Registered Users",
                               textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                            Text(
+                              "4300",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                           ],
                         ),
@@ -146,18 +201,34 @@ class HomeScreen extends StatelessWidget {
                       width: constraints.maxWidth * 0.3,
                       height: constraints.maxHeight * 0.3,
                       child: Card(
-                        elevation: 8,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                        color: Colors.blue[700],
+                        elevation: 10,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Text(
-                              "Daniyal",
-                              textAlign: TextAlign.center,
+                            Icon(
+                              Icons.check_circle_outlined,
+                              size: 70,
                             ),
                             Text(
-                              "Daniyal",
+                              "Completed Complaints",
                               textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                            Text(
+                              "1100",
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                  fontSize: 34,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
                             ),
                           ],
                         ),
@@ -177,12 +248,17 @@ class HomeScreen extends StatelessWidget {
 Widget createDrawerHeader() {
   return DrawerHeader(
       child: Stack(children: <Widget>[
+    Image.asset(
+      'assets/images/police.png',
+      height: 10,
+      width: 10,
+    ),
     Positioned(
         bottom: 12.0,
         left: 16.0,
         child: Text("Welcome to Police SFS",
             style: TextStyle(
-                color: Colors.black,
+                color: Colors.white,
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold))),
   ]));
