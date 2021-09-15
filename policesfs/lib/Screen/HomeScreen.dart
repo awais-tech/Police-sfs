@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:slimy_card/slimy_card.dart';
 
 class HomeScreen extends StatelessWidget {
   final List<String> navigators = [
@@ -25,165 +24,153 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
-      Drawer(
-        elevation: 5,
-        child: ListView.builder(
-            itemCount: navigators.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                onTap: () {},
-                tileColor: Colors.pink[900],
-                leading: Icon(
-                  navigatorsIcon[index],
-                  color: Colors.white,
-                ),
-                title: Text(
-                  "${navigators[index]}",
-                  style: TextStyle(fontSize: 15, color: Colors.white),
-                ),
-              );
-            }),
-      ),
-      Expanded(
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: 25, right: 25, bottom: 25),
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                        shape:
-                            MaterialStateProperty.all<RoundedRectangleBorder>(
-                                RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25.0),
-                        )),
-                        padding: MaterialStateProperty.all(EdgeInsets.symmetric(
-                          vertical: 15,
-                          horizontal: 20,
-                        )),
-                        backgroundColor: MaterialStateProperty.all(
-                            Colors.pink[900]), // <-- Button color
-                        overlayColor:
-                            MaterialStateProperty.resolveWith<Color?>((states) {
-                          if (states.contains(MaterialState.pressed))
-                            return Colors.red; // <-- Splash color
-                        }),
-                      ),
-                      child: FittedBox(
-                        fit: BoxFit.fitWidth,
-                        child: new Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.only(right: 10.0),
-                              child: Text(
-                                "Logout",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
+    var height = MediaQuery.of(context).size.height;
+    var width = MediaQuery.of(context).size.width;
+    return Scaffold(
+      body: Row(children: [
+        Container(
+          child: Drawer(
+            elevation: 24,
+            child: LayoutBuilder(builder: (ctx, constraints) {
+              return Column(
+                children: [
+                  Container(
+                      height: constraints.maxHeight * 0.2,
+                      child: DrawerHeader(child: createDrawerHeader())),
+                  Container(
+                    height: constraints.maxHeight * 0.8,
+                    color: Colors.white,
+                    child: ListView.builder(
+                        itemCount: navigators.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            child: ListTile(
+                              onTap: () {},
+                              leading: Icon(navigatorsIcon[index]),
+                              title: Text(
+                                "${navigators[index]}",
+                                style: TextStyle(fontSize: 15),
                               ),
                             ),
-                            Padding(
-                                padding: EdgeInsets.only(right: 5),
-                                child: Icon(
-                                  Icons.logout,
-                                  color: Colors.white,
-                                  size: 16,
-                                )),
+                          );
+                        }),
+                  ),
+                ],
+              );
+            }),
+          ),
+        ),
+        Expanded(
+          child: LayoutBuilder(builder: (ctx, constraints) {
+            return Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  alignment: Alignment.center,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: constraints.maxWidth * 0.3,
+                        height: constraints.maxHeight * 0.3,
+                        child: Card(
+                          elevation: 8,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Daniyal",
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                "Daniyal",
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        width: constraints.maxWidth * 0.3,
+                        height: constraints.maxHeight * 0.3,
+                        child: Card(
+                          elevation: 8,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                "Daniyal",
+                                textAlign: TextAlign.center,
+                              ),
+                              Text(
+                                "Daniyal",
+                                textAlign: TextAlign.center,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: constraints.maxWidth * 0.3,
+                      height: constraints.maxHeight * 0.3,
+                      child: Card(
+                        elevation: 8,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Daniyal",
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              "Daniyal",
+                              textAlign: TextAlign.center,
+                            ),
                           ],
                         ),
                       ),
-                      onPressed: () => {}),
-                ),
-              ],
-            ),
-            Divider(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  margin: EdgeInsets.only(top: 30, bottom: 30),
-                  child: Text("Overview",
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.pink[900])),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ListView(
-                  children: <Widget>[
-                    SlimyCard(
-                      color: Colors.red,
-                      width: 200,
-                      topCardHeight: 400,
-                      bottomCardHeight: 200,
-                      borderRadius: 15,
-                      topCardWidget: Text("Total Users Registered"),
-                      bottomCardWidget: Text("1000"),
-                      slimeEnabled: true,
                     ),
-                  ],
-                ),
-                ListView(
-                  children: <Widget>[
-                    SlimyCard(
-                      color: Colors.red,
-                      width: 200,
-                      topCardHeight: 400,
-                      bottomCardHeight: 200,
-                      borderRadius: 15,
-                      topCardWidget: Text("Total Police Staff Registered"),
-                      bottomCardWidget: Text("2000"),
-                      slimeEnabled: true,
+                    Container(
+                      width: constraints.maxWidth * 0.3,
+                      height: constraints.maxHeight * 0.3,
+                      child: Card(
+                        elevation: 8,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Text(
+                              "Daniyal",
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              "Daniyal",
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                   ],
                 ),
               ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ListView(
-                  children: <Widget>[
-                    SlimyCard(
-                      color: Colors.red,
-                      width: 200,
-                      topCardHeight: 400,
-                      bottomCardHeight: 200,
-                      borderRadius: 15,
-                      topCardWidget: Text("Total Reports Registered"),
-                      bottomCardWidget: Text("1000"),
-                      slimeEnabled: true,
-                    ),
-                  ],
-                ),
-                ListView(
-                  children: <Widget>[
-                    SlimyCard(
-                      color: Colors.red,
-                      width: 200,
-                      topCardHeight: 400,
-                      bottomCardHeight: 200,
-                      borderRadius: 15,
-                      topCardWidget: Text("Total Complaints Registered"),
-                      bottomCardWidget: Text("1000"),
-                      slimeEnabled: true,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ],
+            );
+          }),
         ),
-      ),
-    ]);
+      ]),
+    );
   }
 }
 
@@ -195,8 +182,8 @@ Widget createDrawerHeader() {
         left: 16.0,
         child: Text("Welcome to Police SFS",
             style: TextStyle(
-                color: Colors.white,
+                color: Colors.black,
                 fontSize: 20.0,
-                fontWeight: FontWeight.w500))),
+                fontWeight: FontWeight.bold))),
   ]));
 }
