@@ -253,8 +253,8 @@ Widget createDrawerHeader() {
       child: Stack(children: <Widget>[
     Image.asset(
       'assets/images/police.png',
-      height: 10,
-      width: 10,
+      height: 20,
+      width: 20,
     ),
     Positioned(
         bottom: 12.0,
