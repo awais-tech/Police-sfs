@@ -1,273 +1,228 @@
 import 'package:flutter/material.dart';
+import 'package:policesfs/Screen/drawner.dart';
 
 class HomeScreen extends StatelessWidget {
-  final List<String> navigators = [
-    "Home",
-    "Police Stations",
-    "Police Staff",
-    "Complaints",
-    "Feedbacks",
-    "Notifications",
-    "Reports",
-    "Chats",
-    "Logout"
-  ];
-  static List<IconData> navigatorsIcon = [
-    Icons.home,
-    Icons.local_police_outlined,
-    Icons.person_outlined,
-    Icons.comment_bank,
-    Icons.feedback_outlined,
-    Icons.notifications_active,
-    Icons.report_outlined,
-    Icons.chat_outlined,
-    Icons.logout_outlined
-  ];
-
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: Row(children: [
-        Container(
-          child: Drawer(
-            elevation: 24,
-            child: LayoutBuilder(builder: (ctx, constraints) {
-              return SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 20),
-                      color: Colors.red[900],
-                      child: Image.asset(
-                        'assets/images/police.png',
-                        fit: BoxFit.contain,
-                        height: 90.0,
-                        width: 310.0,
+      appBar: width < 700
+          ? AppBar(
+              backgroundColor: Colors.pink[900],
+              title: FittedBox(
+                  fit: BoxFit.fitWidth,
+                  child: TextButton(onPressed: () {}, child: Text('Logout'))))
+          : null,
+      drawer: width < 700 ? drawerwidget() : null,
+      body: Row(
+        children: [
+          if (width > 700)
+            Flexible(
+              flex: 2,
+              child: Container(
+                child: drawerwidget(),
+              ),
+            ),
+          Expanded(
+            flex: 4,
+            child: SingleChildScrollView(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 2,
+                    child: Container(
+                      alignment: Alignment.center,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 300,
+                            height: 200,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              color: Colors.blue[700],
+                              elevation: 10,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.people,
+                                    size: 70,
+                                  ),
+                                  FittedBox(
+                                    child: Text(
+                                      "Total Registered Staff",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  Text(
+                                    "1300",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 34,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 300,
+                            height: 200,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              color: Colors.blue[700],
+                              elevation: 10,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.wifi_protected_setup_sharp,
+                                    size: 70,
+                                  ),
+                                  FittedBox(
+                                    child: Text(
+                                      "Active Complaints",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  Text(
+                                    "2700",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 34,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    Container(
-                        color: Colors.red[900],
-                        height: constraints.maxHeight * 0.14,
-                        child: DrawerHeader(child: createDrawerHeader())),
-                    Container(
-                      color: Colors.blue[900],
-                      height: constraints.maxHeight * 0.8,
-                      child: ListView.builder(
-                          itemCount: navigators.length,
-                          itemBuilder: (context, index) {
-                            return Container(
-                              margin: EdgeInsets.only(top: 3),
-                              child: ListTile(
-                                onTap: () {},
-                                leading: Icon(
-                                  navigatorsIcon[index],
-                                  color: Colors.white,
-                                ),
-                                title: Text(
-                                  "${navigators[index]}",
-                                  style: TextStyle(
-                                      fontSize: 15, color: Colors.white),
-                                ),
-                              ),
-                            );
-                          }),
-                    ),
-                  ],
-                ),
-              );
-            }),
-          ),
-        ),
-        Expanded(
-          child: LayoutBuilder(builder: (ctx, constraints) {
-            return Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  alignment: Alignment.center,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: constraints.maxWidth * 0.3,
-                        height: constraints.maxHeight * 0.3,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          color: Colors.blue[700],
-                          elevation: 10,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.people,
-                                size: 70,
-                              ),
-                              Text(
-                                "Total Registered Staff",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                              Text(
-                                "1300",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 34,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: constraints.maxWidth * 0.3,
-                        height: constraints.maxHeight * 0.3,
-                        child: Card(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                          color: Colors.blue[700],
-                          elevation: 10,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.wifi_protected_setup_sharp,
-                                size: 70,
-                              ),
-                              Text(
-                                "Active Complaints",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                              Text(
-                                "2700",
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 34,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
                   ),
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: constraints.maxWidth * 0.3,
-                      height: constraints.maxHeight * 0.3,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        color: Colors.blue[700],
-                        elevation: 10,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.verified_user_sharp,
-                              size: 70,
+                  Flexible(
+                    flex: 2,
+                    child: Container(
+                      margin: width < 700
+                          ? EdgeInsets.symmetric(horizontal: 10, vertical: 20)
+                          : null,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Container(
+                            width: 300,
+                            height: 200,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              color: Colors.blue[700],
+                              elevation: 10,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.verified_user_sharp,
+                                    size: 70,
+                                  ),
+                                  FittedBox(
+                                    child: Text(
+                                      "Total Registered Users",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  Text(
+                                    "4300",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 34,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text(
-                              "Total Registered Users",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
+                          ),
+                          Container(
+                            width: 300,
+                            height: 200,
+                            child: Card(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              color: Colors.blue[700],
+                              elevation: 10,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.check_circle_outlined,
+                                    size: 70,
+                                  ),
+                                  FittedBox(
+                                    child: Text(
+                                      "Completed Complaints",
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                          fontSize: 20,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  Text(
+                                    "1100",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 34,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ],
+                              ),
                             ),
-                            Text(
-                              "4300",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 34,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
-                    Container(
-                      width: constraints.maxWidth * 0.3,
-                      height: constraints.maxHeight * 0.3,
-                      child: Card(
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                        color: Colors.blue[700],
-                        elevation: 10,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Icon(
-                              Icons.check_circle_outlined,
-                              size: 70,
-                            ),
-                            Text(
-                              "Completed Complaints",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                            Text(
-                              "1100",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  fontSize: 34,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            );
-          }),
-        ),
-      ]),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
-}
-
-Widget createDrawerHeader() {
-  return DrawerHeader(
-      child: Stack(children: <Widget>[
-    Positioned(
-        //bottom: 5.0,
-        left: 16.0,
-        child: Text("Welcome to Police SFS",
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 20.0,
-                fontWeight: FontWeight.bold))),
-  ]));
 }
