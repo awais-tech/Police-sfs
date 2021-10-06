@@ -1,12 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/PoliceModel.dart';
-import 'package:policesfs/Screen/PoliceStaff_database.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _mainCollection =
-    _firestore.collection("PoliceStation");
+    _firestore.collection("PoliceStaff");
 
-class PoliceStationDatabase {
+class PoliceStaffDatabase {
   static String? userID;
 
   static Future<void> UpdatePoliceStation(select, policeStation, id) async {
@@ -27,18 +26,14 @@ class PoliceStationDatabase {
         .catchError((error) => print("Failed to update transaction: $error"));
   }
 
-  static Future<void> DeletePoliceStation({
+  static Future<void> DeletePoliceStaff({
     required String mainid,
   }) async {
     DocumentReference collectionRef = _mainCollection.doc(mainid);
-
-    await collectionRef.delete();
-    // var del = await FirebaseFirestore.instance
-    //     .collection('PoliceStaff')
-    //     .where('PoliceStationID', isEqualTo: mainid)
-    //     .get();
-
-    print("User Account Deleted");
+    await collectionRef
+        .delete()
+        .then((value) => print("User Account Deleted"))
+        .catchError((error) => print("Failed to Delete User Account: $error"));
   }
 
   static Future<void> addPoliceStation(select, policeStation) async {

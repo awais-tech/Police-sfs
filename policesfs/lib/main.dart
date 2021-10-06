@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:policesfs/Screen/AddProduct.dart';
 import 'package:policesfs/Screen/Addedit.dart';
 import 'package:policesfs/Screen/Login.dart';
+import 'package:policesfs/Screen/PoliceStaff.dart';
 import 'package:policesfs/Screen/PoliceStation.dart';
+import 'package:policesfs/Screen/Policestaffview.dart';
 import 'package:policesfs/Screen/View.dart';
 import 'package:policesfs/Screen/edit.dart';
 import 'package:policesfs/widgets/Constants.dart';
@@ -92,6 +94,8 @@ class _AppState extends State<MyApp> {
           Edit.routeName: (ctx) => Edit(),
           View.routeName: (ctx) => View(),
           Addedit.routeName: (ctx) => Addedit(),
+          PoliceSaff.routeName: (ctx) => PoliceSaff(),
+          PoliceStaffView.routeName: (ctx) => PoliceStaffView(),
         });
   }
 }

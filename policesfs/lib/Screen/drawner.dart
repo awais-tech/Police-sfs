@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:policesfs/Screen/PoliceStaff.dart';
 import 'package:policesfs/widgets/Constants.dart';
 
 class drawerwidget extends StatelessWidget {
@@ -27,8 +28,8 @@ class drawerwidget extends StatelessWidget {
   ];
   static List click = [
     '/',
-    'PoliceStations'
-        '',
+    'PoliceStations',
+    PoliceSaff.routeName,
     '',
     '',
     '',

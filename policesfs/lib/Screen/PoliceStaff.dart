@@ -1,23 +1,32 @@
 import 'dart:math';
-import 'package:policesfs/Screen/client_database.dart';
+
 import 'package:flutter/material.dart';
 import 'package:policesfs/Screen/AddProduct.dart';
 import 'package:policesfs/Screen/Addedit.dart';
+import 'package:policesfs/Screen/PoliceStaff_database.dart';
+import 'package:policesfs/Screen/Policestaffview.dart';
 import 'package:policesfs/Screen/View.dart';
 import 'package:policesfs/Screen/drawner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/edit.dart';
 
-class PoliceStations extends StatelessWidget {
-  static final routeName = 'PoliceStations';
-  var streams = FirebaseFirestore.instance
-      .collection('PoliceStation')
+class PoliceSaff extends StatelessWidget {
+  static final routeName = 'PoliceSaff';
+  final streams = FirebaseFirestore.instance
+      .collection('PoliceStaff')
       .snapshots(includeMetadataChanges: true);
   @override
   Widget build(BuildContext context) {
+    var id = ModalRoute.of(context)?.settings.arguments;
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-
+    var stream;
+    if (id != null) {
+      stream = FirebaseFirestore.instance
+          .collection('PoliceStaff')
+          .where('PoliceStationID', isEqualTo: id)
+          .snapshots();
+    }
     return Scaffold(
       appBar: width < 700
           ? AppBar(
@@ -86,7 +95,7 @@ class PoliceStations extends StatelessWidget {
                       ],
                     ),
                     StreamBuilder<QuerySnapshot>(
-                        stream: streams,
+                        stream: id != null ? stream : streams,
                         builder: (context, snp) {
                           if (snp.hasError) {
                             print(snp);
@@ -118,6 +127,16 @@ class PoliceStations extends StatelessWidget {
                                   DataColumn(
                                     label: Expanded(
                                       child: Text(
+                                        'Role',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Expanded(
+                                      child: Text(
                                         'Action',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
@@ -131,7 +150,7 @@ class PoliceStations extends StatelessWidget {
                                 header: Container(
                                   width: double.infinity,
                                   child: Text(
-                                    'Police Station',
+                                    'Police Staff',
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
@@ -213,7 +232,8 @@ class MyData extends DataTableSource {
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
           DataCell(Text(_data[index].data()['Name'].toString())),
-          DataCell(Text(_data[index].data()['Address'].toString())),
+          DataCell(Text(_data[index].data()['PoliceStationName'].toString())),
+          DataCell(Text(_data[index].data()['Role'].toString())),
           DataCell(Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -245,19 +265,8 @@ class MyData extends DataTableSource {
                               TextButton(
                                   child: Text('Yes'),
                                   onPressed: () async {
-                                    PoliceStationDatabase.DeletePoliceStation(
+                                    PoliceStaffDatabase.DeletePoliceStaff(
                                         mainid: _data[index].id);
-                                    var del = await FirebaseFirestore.instance
-                                        .collection('PoliceStaff')
-                                        .where('PoliceStationID',
-                                            isEqualTo: _data[index].id)
-                                        .get()
-                                        .then((del) => del.docs.forEach((val) =>
-                                            FirebaseFirestore.instance
-                                                .collection('PoliceStaff')
-                                                .doc(val.id)
-                                                .delete()));
-
                                     Navigator.of(ctx).pop(false);
                                   }),
                             ],
@@ -270,7 +279,8 @@ class MyData extends DataTableSource {
                   label: Text("Delete")),
               ElevatedButton.icon(
                   onPressed: () => {
-                        Navigator.of(context).pushNamed(View.routeName,
+                        Navigator.of(context).pushNamed(
+                            PoliceStaffView.routeName,
                             arguments: _data[index].id)
                       },
                   style: ButtonStyle(
