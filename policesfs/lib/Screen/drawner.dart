@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:policesfs/Screen/Complaints.dart';
 import 'package:policesfs/Screen/PoliceStaff.dart';
+import 'package:policesfs/Screen/chat.dart';
 import 'package:policesfs/widgets/Constants.dart';
 
 class drawerwidget extends StatelessWidget {
@@ -30,13 +32,13 @@ class drawerwidget extends StatelessWidget {
     '/',
     'PoliceStations',
     PoliceSaff.routeName,
+    Complaints.routeName,
     '',
     '',
     '',
-    '',
-    '',
-    '',
-    'Signout'
+    Chat.routeName,
+    'Signout',
+    'Signout',
   ];
 
   @override
@@ -75,7 +77,9 @@ class drawerwidget extends StatelessWidget {
                             if (click[index] == 'Signout') {
                               await _auth.signOut();
                               await Constants.prefs.remove('userData');
-                              await Constants.prefs.remove('login');
+                              await Constants.prefs.setBool('login', false);
+                              await _auth.signOut();
+                              Navigator.of(context).pushNamed('/');
                               // Constants.prefs.setString('userData', '');
                             } else {
                               Navigator.of(context).pushNamed(click[index]);

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:policesfs/Screen/AddProduct.dart';
+
 import 'package:policesfs/Screen/Addedit.dart';
+import 'package:policesfs/Screen/Complaints.dart';
+import 'package:policesfs/Screen/ComplaintsView.dart';
 import 'package:policesfs/Screen/Login.dart';
 import 'package:policesfs/Screen/PoliceStaff.dart';
 import 'package:policesfs/Screen/PoliceStation.dart';
 import 'package:policesfs/Screen/Policestaffview.dart';
 import 'package:policesfs/Screen/View.dart';
+import 'package:policesfs/Screen/chat.dart';
 import 'package:policesfs/Screen/edit.dart';
 import 'package:policesfs/widgets/Constants.dart';
 import './Screen/HomeScreen.dart';
@@ -96,6 +99,9 @@ class _AppState extends State<MyApp> {
           Addedit.routeName: (ctx) => Addedit(),
           PoliceSaff.routeName: (ctx) => PoliceSaff(),
           PoliceStaffView.routeName: (ctx) => PoliceStaffView(),
+          Complaints.routeName: (ctx) => Complaints(),
+          ComplaintsView.routeName: (ctx) => ComplaintsView(),
+          Chat.routeName: (ctx) => Chat(),
         });
   }
 }
