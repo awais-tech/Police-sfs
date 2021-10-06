@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import './Screen/HomeScreen.dart';
+import 'package:policesfs/Screen/RegisteredUsersDetails.dart';
 
 void main() {
   runApp(MyApp());
@@ -13,6 +13,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
             //primarySwatch: Colors.red,
             ),
-        home: HomeScreen());
+        home: Userdetails());
   }
 }
