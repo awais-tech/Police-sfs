@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:policesfs/Screen/PoliceStaff.dart';
+import 'package:policesfs/Screen/Policestaffview.dart';
 import 'package:policesfs/Screen/View.dart';
 import 'package:policesfs/Screen/drawner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class PoliceStaffView extends StatelessWidget {
-  static final routeName = 'PoliceStaffView';
+class ComplaintsView extends StatelessWidget {
+  static final routeName = 'ComplaintsView';
+
   @override
   Widget build(BuildContext context) {
     var id = ModalRoute.of(context)?.settings.arguments as String;
-    final stream = FirebaseFirestore.instance
-        .collection('PoliceStaff')
-        .doc(id)
-        .snapshots();
+    print(id);
+    final stream =
+        FirebaseFirestore.instance.collection('Complaints').doc(id).snapshots();
+    print(stream);
     // .then((e) => {print(e.data()!['Address'])});
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
@@ -41,7 +44,7 @@ class PoliceStaffView extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Detail of Police Staff',
+                      'Detail of Complaints',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -90,7 +93,8 @@ class PoliceStaffView extends StatelessWidget {
                                               height: 10,
                                             ),
                                             Text(
-                                              (snp.data!.data() as Map)["Name"],
+                                              (snp.data!.data()
+                                                  as Map)["Title"],
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: 26,
@@ -101,7 +105,19 @@ class PoliceStaffView extends StatelessWidget {
                                               height: 10,
                                             ),
                                             Text(
-                                              'Member since:  ${DateTime.parse((snp.data!.data() as Map)["dateofEstablish"].toDate().toString()).toString()}',
+                                              (snp.data!.data()
+                                                  as Map)["Catageory"],
+                                              textAlign: TextAlign.center,
+                                              style: TextStyle(
+                                                fontSize: 26,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            Text(
+                                              'Member since:  ${DateTime.parse((snp.data!.data() as Map)["date"].toDate().toString()).toString()}',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
@@ -112,27 +128,29 @@ class PoliceStaffView extends StatelessWidget {
                                               height: 15,
                                             ),
                                             Text(
-                                              "Total Complaints Register: 27",
+                                              (snp.data!.data()
+                                                  as Map)["ComplaintNo"],
                                               style: TextStyle(
-                                                fontSize: 16,
+                                                fontSize: 12,
                                                 fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 15,
-                                            ),
-                                            Text(
-                                              "Total Solved Complaints: 27",
-                                              style: TextStyle(
-                                                fontSize: 16,
-                                                fontWeight: FontWeight.bold,
+                                                color: Colors.blueGrey[700],
                                               ),
                                             ),
                                             SizedBox(
                                               height: 15,
                                             ),
                                             ElevatedButton(
-                                                onPressed: () {},
+                                                onPressed: () {
+                                                  var id =
+                                                      (snp.data!.data() as Map)[
+                                                          "PoliceOfficerid"];
+
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                    PoliceStaffView.routeName,
+                                                    arguments: id,
+                                                  );
+                                                },
                                                 style: ButtonStyle(
                                                   backgroundColor:
                                                       MaterialStateProperty.all(
@@ -146,7 +164,34 @@ class PoliceStaffView extends StatelessWidget {
                                                   )),
                                                 ),
                                                 child: Text(
-                                                    "View Complaints Detail"))
+                                                    "Working Police staff Detail")),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            ElevatedButton(
+                                                onPressed: () {
+                                                  var id = (snp.data!.data()
+                                                      as Map)["Userid"];
+                                                  // Navigator.of(context)
+                                                  //     .pushNamed(
+                                                  //   PoliceStaffView.routeName,
+                                                  //   arguments: id,
+                                                  // );
+                                                },
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                          Colors.blue[700]),
+                                                  shape: MaterialStateProperty
+                                                      .all<RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                  )),
+                                                ),
+                                                child: Text(
+                                                    "Complainer information"))
                                           ],
                                         ),
                                       ),
@@ -160,7 +205,7 @@ class PoliceStaffView extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              "Official information",
+                                              "Complaint detail",
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 color: Colors.blueGrey[700],
@@ -171,7 +216,7 @@ class PoliceStaffView extends StatelessWidget {
                                               height: 5,
                                             ),
                                             Text(
-                                              "Address",
+                                              "Description",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
@@ -182,7 +227,7 @@ class PoliceStaffView extends StatelessWidget {
                                             ),
                                             Text(
                                               (snp.data!.data()
-                                                  as Map)["Address"],
+                                                  as Map)["Description"],
                                               style: TextStyle(
                                                 fontSize: 12,
                                               ),
@@ -191,7 +236,7 @@ class PoliceStaffView extends StatelessWidget {
                                               height: 5,
                                             ),
                                             Text(
-                                              "Email",
+                                              "Type",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
@@ -201,8 +246,7 @@ class PoliceStaffView extends StatelessWidget {
                                               height: 5,
                                             ),
                                             Text(
-                                              (snp.data!.data()
-                                                  as Map)["Email"],
+                                              (snp.data!.data() as Map)["Type"],
                                               style: TextStyle(
                                                 fontSize: 12,
                                               ),
@@ -211,7 +255,7 @@ class PoliceStaffView extends StatelessWidget {
                                               height: 5,
                                             ),
                                             Text(
-                                              "Phone no",
+                                              "sent by",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
@@ -222,8 +266,7 @@ class PoliceStaffView extends StatelessWidget {
                                             ),
                                             Text(
                                               (snp.data!.data()
-                                                      as Map)["PhoneNo"]
-                                                  .toString(),
+                                                  as Map)["sent by"],
                                               style: TextStyle(
                                                 fontSize: 12,
                                               ),
@@ -232,7 +275,7 @@ class PoliceStaffView extends StatelessWidget {
                                               height: 15,
                                             ),
                                             Text(
-                                              "Personal Information",
+                                              "Useful Information",
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 color: Colors.blueGrey[700],
@@ -243,7 +286,7 @@ class PoliceStaffView extends StatelessWidget {
                                               height: 5,
                                             ),
                                             Text(
-                                              "Gender:",
+                                              "status:",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
@@ -254,7 +297,7 @@ class PoliceStaffView extends StatelessWidget {
                                             ),
                                             Text(
                                               (snp.data!.data()
-                                                  as Map)["Gender"],
+                                                  as Map)["status"],
                                               style: TextStyle(
                                                 fontSize: 12,
                                               ),
@@ -263,7 +306,7 @@ class PoliceStaffView extends StatelessWidget {
                                               height: 5,
                                             ),
                                             Text(
-                                              "Username",
+                                              "sub category",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
@@ -274,7 +317,7 @@ class PoliceStaffView extends StatelessWidget {
                                             ),
                                             Text(
                                               (snp.data!.data()
-                                                  as Map)["Username"],
+                                                  as Map)["sub category"],
                                               style: TextStyle(
                                                 fontSize: 12,
                                               ),
@@ -283,26 +326,7 @@ class PoliceStaffView extends StatelessWidget {
                                               height: 5,
                                             ),
                                             Text(
-                                              "CNIC",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              (snp.data!.data() as Map)["CNIC"],
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              "Nationality",
+                                              "Complaint Location",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
@@ -313,7 +337,7 @@ class PoliceStaffView extends StatelessWidget {
                                             ),
                                             Text(
                                               (snp.data!.data()
-                                                  as Map)["Nationality"],
+                                                  as Map)["Complaint Location"],
                                               style: TextStyle(
                                                 fontSize: 12,
                                               ),
@@ -321,8 +345,11 @@ class PoliceStaffView extends StatelessWidget {
                                             SizedBox(
                                               height: 5,
                                             ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
                                             Text(
-                                              "Police Station Division",
+                                              "OfficerName",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
@@ -332,17 +359,44 @@ class PoliceStaffView extends StatelessWidget {
                                               height: 5,
                                             ),
                                             Text(
-                                              (snp.data!.data() as Map)[
-                                                  "PoliceStationDivision"],
+                                              (snp.data!.data()
+                                                  as Map)["OfficerName"],
                                               style: TextStyle(
                                                 fontSize: 12,
                                               ),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              "PoliceStationName",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              (snp.data!.data()
+                                                  as Map)["PoliceStationName"],
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
                                             ),
                                             ElevatedButton(
-                                                onPressed: () async {
+                                                onPressed: () {
                                                   var id =
                                                       (snp.data!.data() as Map)[
                                                           "PoliceStationID"];
+
                                                   Navigator.of(context)
                                                       .pushNamed(
                                                     View.routeName,
@@ -361,8 +415,8 @@ class PoliceStaffView extends StatelessWidget {
                                                             10.0),
                                                   )),
                                                 ),
-                                                child:
-                                                    Text("View Police Station"))
+                                                child: Text(
+                                                    "Police station Detail")),
                                           ],
                                         ),
                                       ),
