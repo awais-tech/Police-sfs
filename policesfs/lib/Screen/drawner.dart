@@ -35,7 +35,7 @@ class drawerwidget extends StatelessWidget {
     Complaints.routeName,
     '',
     '',
-    '',
+    Chat.routeName,
     Chat.routeName,
     'Signout',
     'Signout',

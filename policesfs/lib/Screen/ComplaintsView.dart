@@ -106,7 +106,7 @@ class ComplaintsView extends StatelessWidget {
                                             ),
                                             Text(
                                               (snp.data!.data()
-                                                  as Map)["Catageory"],
+                                                  as Map)["Catagory"],
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: 26,
@@ -391,32 +391,32 @@ class ComplaintsView extends StatelessWidget {
                                             SizedBox(
                                               height: 5,
                                             ),
-                                            ElevatedButton(
-                                                onPressed: () {
-                                                  var id =
-                                                      (snp.data!.data() as Map)[
-                                                          "PoliceStationID"];
+                                            // ElevatedButton(
+                                            //     onPressed: () {
+                                            //       var id =
+                                            //           (snp.data!.data() as Map)[
+                                            //               "PoliceStationID"];
 
-                                                  Navigator.of(context)
-                                                      .pushNamed(
-                                                    View.routeName,
-                                                    arguments: id,
-                                                  );
-                                                },
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          Colors.blue[700]),
-                                                  shape: MaterialStateProperty
-                                                      .all<RoundedRectangleBorder>(
-                                                          RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.0),
-                                                  )),
-                                                ),
-                                                child: Text(
-                                                    "Police station Detail")),
+                                            //       Navigator.of(context)
+                                            //           .pushNamed(
+                                            //         View.routeName,
+                                            //         arguments: id,
+                                            //       );
+                                            //     },
+                                            //     style: ButtonStyle(
+                                            //       backgroundColor:
+                                            //           MaterialStateProperty.all(
+                                            //               Colors.blue[700]),
+                                            //       shape: MaterialStateProperty
+                                            //           .all<RoundedRectangleBorder>(
+                                            //               RoundedRectangleBorder(
+                                            //         borderRadius:
+                                            //             BorderRadius.circular(
+                                            //                 10.0),
+                                            //       )),
+                                            //     ),
+                                            //     child: Text(
+                                            //         "Police station Detail")),
                                           ],
                                         ),
                                       ),

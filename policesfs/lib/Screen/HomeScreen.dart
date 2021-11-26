@@ -1,11 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:policesfs/Screen/drawner.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final staffsize = TextEditingController();
+  final complaintc = TextEditingController();
+  final complainta = TextEditingController();
+  final user = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    FirebaseFirestore.instance.collection('PoliceStaff').get().then((snap) {
+      staffsize.text = (snap.size).toString();
+      FirebaseFirestore.instance
+          .collection('Complaints')
+          .where('status', isEqualTo: 'Complete')
+          .get()
+          .then((snap) {
+        complaintc.text =
+            (snap.size).toString(); // will return the collection size
+        FirebaseFirestore.instance
+            .collection('Complaints')
+            .where('status', isEqualTo: 'active')
+            .get()
+            .then((snap) {
+          complainta.text =
+              (snap.size).toString(); // will return the collection size
+          FirebaseFirestore.instance.collection('user').get().then((snap) {
+            user.text =
+                (snap.size).toString(); // will return the collection size
+            setState(() {});
+          });
+        });
+      });
+    });
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: width < 700
           ? AppBar(
@@ -68,7 +103,7 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    "1300",
+                                    '${staffsize.text}',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 34,
@@ -108,7 +143,7 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    "2700",
+                                    '${complainta.text}',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 34,
@@ -162,7 +197,7 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    "4300",
+                                    '${user.text}',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 34,
@@ -202,7 +237,7 @@ class HomeScreen extends StatelessWidget {
                                     ),
                                   ),
                                   Text(
-                                    "1100",
+                                    '${complaintc.text}',
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
                                         fontSize: 34,
