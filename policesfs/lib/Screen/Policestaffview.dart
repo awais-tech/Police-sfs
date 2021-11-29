@@ -262,23 +262,6 @@ class PoliceStaffView extends StatelessWidget {
                                             SizedBox(
                                               height: 5,
                                             ),
-                                            Text(
-                                              "Username",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              (snp.data!.data()
-                                                  as Map)["Username"],
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                              ),
-                                            ),
                                             SizedBox(
                                               height: 5,
                                             ),

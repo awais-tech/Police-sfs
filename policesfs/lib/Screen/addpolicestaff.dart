@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:policesfs/Screen/PoliceModel.dart';
-import 'package:policesfs/Screen/PoliceStation.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:policesfs/Screen/PolicestaffModel.dart';
 import 'package:policesfs/Screen/client_database.dart';
 
-class AddProductScreen extends StatefulWidget {
+class Addpolicestaff extends StatefulWidget {
   static const routeName = '/edit-product';
 
   @override
-  _AddProductScreenState createState() => _AddProductScreenState();
+  _AddpolicestaffState createState() => _AddpolicestaffState();
 }
 
-class _AddProductScreenState extends State<AddProductScreen> {
+class _AddpolicestaffState extends State<Addpolicestaff> {
   var select;
 
   selectdate() {
@@ -35,27 +35,32 @@ class _AddProductScreenState extends State<AddProductScreen> {
   final _form = GlobalKey<FormState>();
   bool loading = false;
   bool init = true;
-  var _editedProduct = PoliceStation(
-    Address: '',
-    Name: '',
-    Division: '',
-    NearstLocation: '',
-    NoofCells: '',
-    DateofEstablish: DateTime.now(),
-    PostelCode: '',
-    imageUrl: '',
-    StationPhoneno: '',
-    id: '',
-  );
+  var _editedProduct = PoliceStaffmodel(
+      Email: '',
+      Gender: '',
+      Address: '',
+      Name: '',
+      Nationality: '',
+      Phoneno: '',
+      PoliceStationDivision: '',
+      Role: '',
+      imageUrl: '',
+      DateofJoinng: DateTime.now(),
+      id: '',
+      CNIC: '');
   var initial = {
     "Address": "",
-    "Division": "",
+    "Email": "",
+    "Gender": "",
+    "Role": "",
     "Name": "",
-    "NearstLocation": "",
-    "Noofcells": "",
-    "PostelCode": "",
+    "Nationality": "",
+    "Phoneno": "",
+    "PoliceStationDivision": "",
     "StationPhoneno": "",
     "imageUrl": "",
+    "CNIC": "",
+    "id": '',
     "dateofEstablish": "",
   };
   @override
@@ -85,26 +90,17 @@ class _AddProductScreenState extends State<AddProductScreen> {
             .get()
             .then((e) => {
                   _editedProduct.Address = e.data()!['Address'],
-                  _editedProduct.DateofEstablish = DateTime.parse(
+                  _editedProduct.DateofJoinng = DateTime.parse(
                       (e.data()!['dateofEstablish'].toDate().toString())
                           .toString()),
-                  _editedProduct.Division = e.data()!['Division'],
+                  _editedProduct.PoliceStationDivision = e.data()!['Division'],
                   _editedProduct.Name = e.data()!['Name'],
-                  _editedProduct.NearstLocation = e.data()!['Nearst Location'],
-                  _editedProduct.NoofCells = e.data()!['No of cells'],
                   _editedProduct.imageUrl = e.data()!['imageUrl'],
-                  _editedProduct.PostelCode = e.data()!['Postel Code'],
-                  _editedProduct.StationPhoneno = e.data()!['Station Phone No'],
+                  _editedProduct.Phoneno = e.data()!['PhoneNo'],
                   _editedProduct.id = e.id,
-                  print(_editedProduct.StationPhoneno),
                   initial = {
                     "Address": _editedProduct.Address,
-                    "Division": _editedProduct.Division,
                     "Name": _editedProduct.Name,
-                    "NearstLocation": _editedProduct.NearstLocation,
-                    "Noofcells": _editedProduct.NoofCells,
-                    "PostelCode": _editedProduct.PostelCode,
-                    "StationPhoneno": _editedProduct.StationPhoneno,
                     "imageUrl": _editedProduct.imageUrl,
                   },
                   _imageUrlController.text = _editedProduct.imageUrl,
@@ -228,19 +224,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               return null;
                             },
                             onSaved: (value) {
-                              _editedProduct = PoliceStation(
-                                  id: _editedProduct.id,
-                                  Address: _editedProduct.Address,
-                                  Name: value!,
-                                  Division: _editedProduct.Division,
-                                  NearstLocation: _editedProduct.NearstLocation,
-                                  NoofCells: _editedProduct.NoofCells,
-                                  DateofEstablish:
-                                      _editedProduct.DateofEstablish,
-                                  PostelCode: _editedProduct.PostelCode,
-                                  imageUrl: _editedProduct.imageUrl,
-                                  StationPhoneno:
-                                      _editedProduct.StationPhoneno);
+                              _editedProduct.Name = value!;
                             },
                           ),
                           TextFormField(
@@ -256,19 +240,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               return null;
                             },
                             onSaved: (value) {
-                              _editedProduct = PoliceStation(
-                                  id: _editedProduct.id,
-                                  Address: value!,
-                                  Name: _editedProduct.Name,
-                                  Division: _editedProduct.Division,
-                                  NearstLocation: _editedProduct.NearstLocation,
-                                  NoofCells: _editedProduct.NoofCells,
-                                  DateofEstablish:
-                                      _editedProduct.DateofEstablish,
-                                  PostelCode: _editedProduct.PostelCode,
-                                  imageUrl: _editedProduct.imageUrl,
-                                  StationPhoneno:
-                                      _editedProduct.StationPhoneno);
+                              _editedProduct.PoliceStationDivision = value!;
                             },
                           ),
                           TextFormField(
@@ -284,19 +256,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               return null;
                             },
                             onSaved: (value) {
-                              _editedProduct = PoliceStation(
-                                  id: _editedProduct.id,
-                                  Address: _editedProduct.Address,
-                                  Name: _editedProduct.Name,
-                                  Division: value!,
-                                  NearstLocation: _editedProduct.NearstLocation,
-                                  NoofCells: _editedProduct.NoofCells,
-                                  DateofEstablish:
-                                      _editedProduct.DateofEstablish,
-                                  PostelCode: _editedProduct.PostelCode,
-                                  imageUrl: _editedProduct.imageUrl,
-                                  StationPhoneno:
-                                      _editedProduct.StationPhoneno);
+                              _editedProduct.CNIC = value!;
                               ;
                             },
                           ),
@@ -314,19 +274,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               return null;
                             },
                             onSaved: (value) {
-                              _editedProduct = PoliceStation(
-                                  id: _editedProduct.id,
-                                  Address: _editedProduct.Address,
-                                  Name: _editedProduct.Name,
-                                  Division: _editedProduct.Division,
-                                  NearstLocation: value!,
-                                  NoofCells: _editedProduct.NoofCells,
-                                  DateofEstablish:
-                                      _editedProduct.DateofEstablish,
-                                  PostelCode: _editedProduct.PostelCode,
-                                  imageUrl: _editedProduct.imageUrl,
-                                  StationPhoneno:
-                                      _editedProduct.StationPhoneno);
+                              _editedProduct.Email = value!;
                             },
                           ),
                           TextFormField(
@@ -346,19 +294,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               return null;
                             },
                             onSaved: (value) {
-                              _editedProduct = PoliceStation(
-                                  id: _editedProduct.id,
-                                  Address: _editedProduct.Address,
-                                  Name: _editedProduct.Name,
-                                  Division: _editedProduct.Division,
-                                  NearstLocation: _editedProduct.NearstLocation,
-                                  NoofCells: value!,
-                                  DateofEstablish:
-                                      _editedProduct.DateofEstablish,
-                                  PostelCode: _editedProduct.PostelCode,
-                                  imageUrl: _editedProduct.imageUrl,
-                                  StationPhoneno:
-                                      _editedProduct.StationPhoneno);
+                              _editedProduct.Gender = value!;
                             },
                           ),
                           TextFormField(
@@ -378,18 +314,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               return null;
                             },
                             onSaved: (value) {
-                              _editedProduct = PoliceStation(
-                                  id: _editedProduct.id,
-                                  Address: _editedProduct.Address,
-                                  Name: _editedProduct.Name,
-                                  Division: _editedProduct.Division,
-                                  NearstLocation: _editedProduct.NearstLocation,
-                                  NoofCells: value!,
-                                  DateofEstablish:
-                                      _editedProduct.DateofEstablish,
-                                  PostelCode: _editedProduct.PostelCode,
-                                  imageUrl: _editedProduct.imageUrl,
-                                  StationPhoneno: value!);
+                              _editedProduct.Nationality = value!;
                             },
                           ),
                           Container(
@@ -412,19 +337,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             maxLines: 3,
                             keyboardType: TextInputType.multiline,
                             onSaved: (value) {
-                              _editedProduct = PoliceStation(
-                                  id: _editedProduct.id,
-                                  Address: _editedProduct.Address,
-                                  Name: _editedProduct.Name,
-                                  Division: _editedProduct.Division,
-                                  NearstLocation: _editedProduct.NearstLocation,
-                                  NoofCells: _editedProduct.NoofCells,
-                                  DateofEstablish:
-                                      _editedProduct.DateofEstablish,
-                                  PostelCode: value!,
-                                  imageUrl: _editedProduct.imageUrl,
-                                  StationPhoneno:
-                                      _editedProduct.StationPhoneno);
+                              _editedProduct.imageUrl = value!;
                             },
                           ),
                           Row(
@@ -462,20 +375,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                   focusNode: _image,
                                   onFieldSubmitted: (_) => {saveform},
                                   onSaved: (value) {
-                                    _editedProduct = PoliceStation(
-                                        id: _editedProduct.id,
-                                        Address: _editedProduct.Address,
-                                        Name: _editedProduct.Name,
-                                        Division: _editedProduct.Division,
-                                        NearstLocation:
-                                            _editedProduct.NearstLocation,
-                                        NoofCells: _editedProduct.NoofCells,
-                                        DateofEstablish:
-                                            _editedProduct.DateofEstablish,
-                                        PostelCode: _editedProduct.PostelCode,
-                                        imageUrl: value!,
-                                        StationPhoneno:
-                                            _editedProduct.StationPhoneno);
+                                    _editedProduct.Role = value!;
                                   },
                                   validator: (value) {
                                     if (value!.isEmpty) {
