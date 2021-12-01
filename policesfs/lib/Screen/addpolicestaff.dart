@@ -74,46 +74,46 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
   }
 
   @override
-  void didChangeDependencies() {
-    if (init) {
-      final id = ModalRoute.of(context)!.settings.arguments == null
-          ? "NULL"
-          : ModalRoute.of(context)!.settings.arguments as String;
+  // void didChangeDependencies() {
+  //   if (init) {
+  //     final id = ModalRoute.of(context)!.settings.arguments == null
+  //         ? "NULL"
+  //         : ModalRoute.of(context)!.settings.arguments as String;
 
-      if (id != "NULL") {
-        setState(() {
-          loading = true;
-        });
-        FirebaseFirestore.instance
-            .collection('PoliceStation')
-            .doc(id as String)
-            .get()
-            .then((e) => {
-                  _editedProduct.Address = e.data()!['Address'],
-                  _editedProduct.DateofJoinng = DateTime.parse(
-                      (e.data()!['dateofEstablish'].toDate().toString())
-                          .toString()),
-                  _editedProduct.PoliceStationDivision = e.data()!['Division'],
-                  _editedProduct.Name = e.data()!['Name'],
-                  _editedProduct.imageUrl = e.data()!['imageUrl'],
-                  _editedProduct.Phoneno = e.data()!['PhoneNo'],
-                  _editedProduct.id = e.id,
-                  initial = {
-                    "Address": _editedProduct.Address,
-                    "Name": _editedProduct.Name,
-                    "imageUrl": _editedProduct.imageUrl,
-                  },
-                  _imageUrlController.text = _editedProduct.imageUrl,
-                  print(initial),
-                  setState(() {
-                    loading = false;
-                  }),
-                });
-      }
-    }
-    init = false;
-    super.didChangeDependencies();
-  }
+  //     if (id != "NULL") {
+  //       setState(() {
+  //         loading = true;
+  //       });
+  //       FirebaseFirestore.instance
+  //           .collection('PoliceStation')
+  //           .doc(id as String)
+  //           .get()
+  //           .then((e) => {
+  //                 _editedProduct.Address = e.data()!['Address'],
+  //                 _editedProduct.DateofJoinng = DateTime.parse(
+  //                     (e.data()!['dateofEstablish'].toDate().toString())
+  //                         .toString()),
+  //                 _editedProduct.PoliceStationDivision = e.data()!['Division'],
+  //                 _editedProduct.Name = e.data()!['Name'],
+  //                 _editedProduct.imageUrl = e.data()!['imageUrl'],
+  //                 _editedProduct.Phoneno = e.data()!['PhoneNo'],
+  //                 _editedProduct.id = e.id,
+  //                 initial = {
+  //                   "Address": _editedProduct.Address,
+  //                   "Name": _editedProduct.Name,
+  //                   "imageUrl": _editedProduct.imageUrl,
+  //                 },
+  //                 _imageUrlController.text = _editedProduct.imageUrl,
+  //                 print(initial),
+  //                 setState(() {
+  //                   loading = false;
+  //                 }),
+  //               });
+  //     }
+  //   }
+  //   init = false;
+  //   super.didChangeDependencies();
+  // }
 
   void _updateImageUrl() {
     setState(() {});
@@ -384,15 +384,6 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                                   textStyle: MaterialStateProperty.all(
                                       TextStyle(fontWeight: FontWeight.bold))),
                             ),
-                          ),
-                          TextFormField(
-                            decoration: InputDecoration(labelText: 'Image URL'),
-                            initialValue: initial['Image URL'] as String,
-                            maxLines: 3,
-                            keyboardType: TextInputType.multiline,
-                            onSaved: (value) {
-                              _editedProduct.imageUrl = value!;
-                            },
                           ),
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.end,
