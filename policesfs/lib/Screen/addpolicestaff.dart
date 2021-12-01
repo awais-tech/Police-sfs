@@ -49,19 +49,17 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
       id: '',
       CNIC: '');
   var initial = {
-    "Address": "",
-    "Email": "",
-    "Gender": "",
-    "Role": "",
-    "Name": "",
-    "Nationality": "",
-    "Phoneno": "",
-    "PoliceStationDivision": "",
-    "StationPhoneno": "",
-    "imageUrl": "",
-    "CNIC": "",
-    "id": '',
-    "dateofEstablish": "",
+    'Address': "",
+    'Email': "",
+    'Gender': "",
+    'Role': "",
+    'Name': "",
+    'Nationality': "",
+    'Phoneno': "",
+    'PoliceStationDivision': "",
+    'imageUrl': "",
+    'CNIC': "",
+    'id': '',
   };
   @override
   void dispose() {
@@ -78,9 +76,11 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
   @override
   void didChangeDependencies() {
     if (init) {
-      final id = ModalRoute.of(context)?.settings.arguments;
+      final id = ModalRoute.of(context)!.settings.arguments == null
+          ? "NULL"
+          : ModalRoute.of(context)!.settings.arguments as String;
 
-      if (id != null) {
+      if (id != "NULL") {
         setState(() {
           loading = true;
         });
@@ -240,12 +240,12 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                               return null;
                             },
                             onSaved: (value) {
-                              _editedProduct.PoliceStationDivision = value!;
+                              _editedProduct.Address = value!;
                             },
                           ),
                           TextFormField(
-                            initialValue: initial['Division'] as String,
-                            decoration: InputDecoration(labelText: 'Division'),
+                            initialValue: initial['CNIC'] as String,
+                            decoration: InputDecoration(labelText: 'CNIC'),
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.text,
                             validator: (value) {
@@ -261,9 +261,8 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                             },
                           ),
                           TextFormField(
-                            initialValue: initial['NearstLocation'] as String,
-                            decoration:
-                                InputDecoration(labelText: 'Nearst Location'),
+                            initialValue: initial['Email'] as String,
+                            decoration: InputDecoration(labelText: 'Email'),
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.text,
                             validator: (value) {
@@ -278,9 +277,8 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                             },
                           ),
                           TextFormField(
-                            initialValue: initial['Noofcells'] as String,
-                            decoration:
-                                InputDecoration(labelText: 'No of Cells'),
+                            initialValue: initial['Gender'] as String,
+                            decoration: InputDecoration(labelText: 'Gender'),
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.number,
                             validator: (value) {
@@ -298,9 +296,66 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                             },
                           ),
                           TextFormField(
-                            initialValue: initial['Noofcells'] as String,
+                            initialValue: initial['Role'] as String,
+                            decoration: InputDecoration(labelText: 'Role'),
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.text,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter a description.';
+                              }
+                              if (value.length < 3) {
+                                return 'Should be at least 3 characters long.';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              _editedProduct.Role = value!;
+                            },
+                          ),
+                          TextFormField(
+                            initialValue: initial['Phoneno'] as String,
                             decoration:
-                                InputDecoration(labelText: 'No of Cells'),
+                                InputDecoration(labelText: 'Phone Number'),
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.text,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter a description.';
+                              }
+                              if (value.length < 3) {
+                                return 'Should be at least 3 characters long.';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              _editedProduct.Phoneno = value!;
+                            },
+                          ),
+                          TextFormField(
+                            initialValue:
+                                initial['PoliceStationDivision'] as String,
+                            decoration: InputDecoration(
+                                labelText: 'Police Station Division'),
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.text,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter a description.';
+                              }
+                              if (value.length < 3) {
+                                return 'Should be at least 3 characters long.';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              _editedProduct.PoliceStationDivision = value!;
+                            },
+                          ),
+                          TextFormField(
+                            initialValue: initial['Nationality'] as String,
+                            decoration:
+                                InputDecoration(labelText: 'Nationality'),
                             textInputAction: TextInputAction.next,
                             keyboardType: TextInputType.number,
                             validator: (value) {
@@ -331,9 +386,8 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                             ),
                           ),
                           TextFormField(
-                            decoration:
-                                InputDecoration(labelText: 'Postel Code'),
-                            initialValue: initial['PostelCode'] as String,
+                            decoration: InputDecoration(labelText: 'Image URL'),
+                            initialValue: initial['Image URL'] as String,
                             maxLines: 3,
                             keyboardType: TextInputType.multiline,
                             onSaved: (value) {
@@ -375,7 +429,7 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                                   focusNode: _image,
                                   onFieldSubmitted: (_) => {saveform},
                                   onSaved: (value) {
-                                    _editedProduct.Role = value!;
+                                    _editedProduct.imageUrl = value!;
                                   },
                                   validator: (value) {
                                     if (value!.isEmpty) {
