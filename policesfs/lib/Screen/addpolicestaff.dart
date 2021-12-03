@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:select_form_field/select_form_field.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/PolicestaffModel.dart';
+import 'PoliceStaff_database.dart';
 import 'package:policesfs/Screen/client_database.dart';
 
 class Addpolicestaff extends StatefulWidget {
@@ -14,6 +15,56 @@ class Addpolicestaff extends StatefulWidget {
 
 class _AddpolicestaffState extends State<Addpolicestaff> {
   var select;
+  final List<Map<String, dynamic>> _policeRoles = [
+    {
+      'value': 'inspectorValue',
+      'label': 'Police Inspector',
+    },
+    {
+      'value': 'SIValue',
+      'label': 'Sub-Inspector',
+    },
+    {
+      'value': 'ASIValue',
+      'label': 'Assistant Sub-Inspector',
+    },
+    {
+      'value': 'HcValue',
+      'label': 'Head Constable',
+    },
+    {
+      'value': 'cValue',
+      'label': 'Constable',
+    },
+  ];
+  final List<Map<String, dynamic>> _gender = [
+    {
+      'value': 'maleValue',
+      'label': 'Male',
+    },
+    {
+      'value': 'femaleValue',
+      'label': 'Female',
+    },
+    {
+      'value': 'otherValue',
+      'label': 'Other',
+    },
+  ];
+  final List<Map<String, dynamic>> _stationDivisions = [
+    {
+      'value': 'JtValue',
+      'label': 'Johar town',
+    },
+    {
+      'value': 'NtValue',
+      'label': 'Nawab Town',
+    },
+    {
+      'value': 'MtValue',
+      'label': 'Muslim Town',
+    },
+  ];
 
   selectdate() {
     showDatePicker(
@@ -74,46 +125,46 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
   }
 
   @override
-  // void didChangeDependencies() {
-  //   if (init) {
-  //     final id = ModalRoute.of(context)!.settings.arguments == null
-  //         ? "NULL"
-  //         : ModalRoute.of(context)!.settings.arguments as String;
+  void didChangeDependencies() {
+    if (init) {
+      final id = ModalRoute.of(context)!.settings.arguments == null
+          ? "NULL"
+          : ModalRoute.of(context)!.settings.arguments as String;
 
-  //     if (id != "NULL") {
-  //       setState(() {
-  //         loading = true;
-  //       });
-  //       FirebaseFirestore.instance
-  //           .collection('PoliceStation')
-  //           .doc(id as String)
-  //           .get()
-  //           .then((e) => {
-  //                 _editedProduct.Address = e.data()!['Address'],
-  //                 _editedProduct.DateofJoinng = DateTime.parse(
-  //                     (e.data()!['dateofEstablish'].toDate().toString())
-  //                         .toString()),
-  //                 _editedProduct.PoliceStationDivision = e.data()!['Division'],
-  //                 _editedProduct.Name = e.data()!['Name'],
-  //                 _editedProduct.imageUrl = e.data()!['imageUrl'],
-  //                 _editedProduct.Phoneno = e.data()!['PhoneNo'],
-  //                 _editedProduct.id = e.id,
-  //                 initial = {
-  //                   "Address": _editedProduct.Address,
-  //                   "Name": _editedProduct.Name,
-  //                   "imageUrl": _editedProduct.imageUrl,
-  //                 },
-  //                 _imageUrlController.text = _editedProduct.imageUrl,
-  //                 print(initial),
-  //                 setState(() {
-  //                   loading = false;
-  //                 }),
-  //               });
-  //     }
-  //   }
-  //   init = false;
-  //   super.didChangeDependencies();
-  // }
+      if (id != "NULL") {
+        setState(() {
+          loading = true;
+        });
+        FirebaseFirestore.instance
+            .collection('PoliceStaff')
+            .doc(id as String)
+            .get()
+            .then((e) => {
+                  _editedProduct.Address = e.data()!['Address'],
+                  _editedProduct.DateofJoinng = DateTime.parse(
+                      (e.data()!['dateofEstablish'].toDate().toString())
+                          .toString()),
+                  _editedProduct.PoliceStationDivision = e.data()!['Division'],
+                  _editedProduct.Name = e.data()!['Name'],
+                  _editedProduct.imageUrl = e.data()!['imageUrl'],
+                  _editedProduct.Phoneno = e.data()!['PhoneNo'],
+                  _editedProduct.id = e.id,
+                  initial = {
+                    "Address": _editedProduct.Address,
+                    "Name": _editedProduct.Name,
+                    "imageUrl": _editedProduct.imageUrl,
+                  },
+                  _imageUrlController.text = _editedProduct.imageUrl,
+                  print(initial),
+                  setState(() {
+                    loading = false;
+                  }),
+                });
+      }
+    }
+    init = false;
+    super.didChangeDependencies();
+  }
 
   void _updateImageUrl() {
     setState(() {});
@@ -134,7 +185,7 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
     if (_editedProduct.id != '') {
       try {
         print(3);
-        await PoliceStationDatabase.UpdatePoliceStation(
+        await PoliceStaffDatabase.UpdatePoliceStaff(
             select, _editedProduct, _editedProduct.id);
       } catch (e) {
         await showDialog(
@@ -159,7 +210,7 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
       }
     } else {
       try {
-        await PoliceStationDatabase.addPoliceStation(select, _editedProduct);
+        await PoliceStaffDatabase.addPoliceStaff(select, _editedProduct);
       } catch (e) {
         await showDialog(
             context: context,
@@ -250,7 +301,7 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                             keyboardType: TextInputType.text,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'Please enter a Division.';
+                                return 'Please enter valid CNIC.';
                               }
 
                               return null;
@@ -267,7 +318,7 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                             keyboardType: TextInputType.text,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'Please enter a Nearst Location';
+                                return 'Please enter a Email';
                               }
 
                               return null;
@@ -276,43 +327,26 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                               _editedProduct.Email = value!;
                             },
                           ),
-                          TextFormField(
-                            initialValue: initial['Gender'] as String,
-                            decoration: InputDecoration(labelText: 'Gender'),
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.number,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter a Noofcells.';
-                              }
-                              if (double.tryParse(value) == null) {
-                                return 'Please enter a valid number.';
-                              }
-
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _editedProduct.Gender = value!;
-                            },
-                          ),
-                          TextFormField(
-                            initialValue: initial['Role'] as String,
-                            decoration: InputDecoration(labelText: 'Role'),
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter a description.';
-                              }
-                              if (value.length < 3) {
-                                return 'Should be at least 3 characters long.';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _editedProduct.Role = value!;
-                            },
-                          ),
+                          SelectFormField(
+                              type: SelectFormFieldType
+                                  .dropdown, // or can be dialog
+                              initialValue: 'male',
+                              labelText: 'Gender',
+                              items: _gender,
+                              onChanged: (val) => print(val),
+                              onSaved: (value) {
+                                _editedProduct.Gender = value!;
+                              }),
+                          SelectFormField(
+                              type: SelectFormFieldType
+                                  .dropdown, // or can be dialog
+                              initialValue: 'hc',
+                              labelText: 'Role',
+                              items: _policeRoles,
+                              onChanged: (val) => print(val),
+                              onSaved: (value) {
+                                _editedProduct.Role = value!;
+                              }),
                           TextFormField(
                             initialValue: initial['Phoneno'] as String,
                             decoration:
@@ -321,7 +355,7 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                             keyboardType: TextInputType.text,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'Please enter a description.';
+                                return 'Please enter Phone number.';
                               }
                               if (value.length < 3) {
                                 return 'Should be at least 3 characters long.';
@@ -332,26 +366,16 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                               _editedProduct.Phoneno = value!;
                             },
                           ),
-                          TextFormField(
-                            initialValue:
-                                initial['PoliceStationDivision'] as String,
-                            decoration: InputDecoration(
-                                labelText: 'Police Station Division'),
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter a description.';
-                              }
-                              if (value.length < 3) {
-                                return 'Should be at least 3 characters long.';
-                              }
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _editedProduct.PoliceStationDivision = value!;
-                            },
-                          ),
+                          SelectFormField(
+                              type: SelectFormFieldType
+                                  .dropdown, // or can be dialog
+                              initialValue: 'Jt',
+                              labelText: 'Police Station Division',
+                              items: _stationDivisions,
+                              onChanged: (val) => print(val),
+                              onSaved: (value) {
+                                _editedProduct.PoliceStationDivision = value!;
+                              }),
                           TextFormField(
                             initialValue: initial['Nationality'] as String,
                             decoration:
@@ -360,10 +384,7 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                             keyboardType: TextInputType.number,
                             validator: (value) {
                               if (value!.isEmpty) {
-                                return 'Please enter a Noofcells.';
-                              }
-                              if (double.tryParse(value) == null) {
-                                return 'Please enter a valid number.';
+                                return 'Please enter Nationality.';
                               }
 
                               return null;
@@ -426,16 +447,16 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                                     if (value!.isEmpty) {
                                       return 'Please enter an image URL.';
                                     }
-                                    if (!value.startsWith('http') &&
-                                            !value.startsWith('https') ||
+                                    if (!value.startsWith('http') ||
+                                        !value.startsWith('https') ||
                                         value.contains('www')) {
                                       return 'Please enter a valid URL.';
                                     }
-                                    if (!value.endsWith('.png') &&
-                                        !value.endsWith('.jpg') &&
-                                        !value.endsWith('.jpeg')) {
-                                      return 'Please enter a valid image URL.';
-                                    }
+                                    // if (!value.endsWith('.png') &&
+                                    //     !value.endsWith('.jpg') &&
+                                    //     !value.endsWith('.jpeg')) {
+                                    //   return 'Please enter a valid image URL.';
+                                    // }
                                     return null;
                                   },
                                 ),

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/PoliceModel.dart';
+import 'package:policesfs/Screen/PolicestaffModel.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _mainCollection =
@@ -8,19 +9,21 @@ final CollectionReference _mainCollection =
 class PoliceStaffDatabase {
   static String? userID;
 
-  static Future<void> UpdatePoliceStation(select, policeStation, id) async {
+  static Future<void> UpdatePoliceStaff(select, policeStaff, id) async {
     DocumentReference collectionRef = _mainCollection.doc(id);
     await collectionRef
         .update({
-          "Address": policeStation.Address,
-          "Division": policeStation.Division,
-          "Name": policeStation.Name,
-          "Nearst Location": policeStation.NearstLocation,
-          "No of cells": policeStation.NoofCells,
-          "Postel Code": policeStation.PostelCode,
-          "Station Phone No": policeStation.StationPhoneno,
-          "dateofEstablish": select,
-          "imageUrl": policeStation.imageUrl
+          "Address": policeStaff.Address,
+          "PoliceStationDivision": policeStaff.PoliceStationDivision,
+          "Name": policeStaff.Name,
+          "Gender": policeStaff.Gender,
+          "Nationality": policeStaff.Nationality,
+          "CNIC": policeStaff.CNIC,
+          "Email": policeStaff.Email,
+          "Role": policeStaff.Role,
+          "Phoneno": policeStaff.Phoneno,
+          "dateofJoining": select,
+          "imageUrl": policeStaff.imageUrl
         })
         .then((value) => print("User Account Status Updated"))
         .catchError((error) => print("Failed to update transaction: $error"));
@@ -36,18 +39,20 @@ class PoliceStaffDatabase {
         .catchError((error) => print("Failed to Delete User Account: $error"));
   }
 
-  static Future<void> addPoliceStation(select, policeStation) async {
+  static Future<void> addPoliceStaff(select, policeStaff) async {
     try {
       await _mainCollection.add({
-        "Address": policeStation.Address,
-        "Division": policeStation.Division,
-        "Name": policeStation.Name,
-        "Nearst Location": policeStation.NearstLocation,
-        "No of cells": policeStation.NoofCells,
-        "Postel Code": policeStation.PostelCode,
-        "Station Phone No": policeStation.StationPhoneno,
-        "dateofEstablish": select,
-        "imageUrl": policeStation.imageUrl
+        "Address": policeStaff.Address,
+        "PoliceStationDivision": policeStaff.PoliceStationDivision,
+        "Name": policeStaff.Name,
+        "Gender": policeStaff.Gender,
+        "Nationality": policeStaff.Nationality,
+        "CNIC": policeStaff.CNIC,
+        "Email": policeStaff.Email,
+        "Role": policeStaff.Role,
+        "Phoneno": policeStaff.Phoneno,
+        "dateofJoining": select,
+        "imageUrl": policeStaff.imageUrl
       });
     } catch (e) {
       print(e);
@@ -55,7 +60,7 @@ class PoliceStaffDatabase {
     }
   }
 
-  static Stream<QuerySnapshot> PoliceStation() {
+  static Stream<QuerySnapshot> PoliceStaffmodel() {
     return _mainCollection.snapshots();
   }
 
