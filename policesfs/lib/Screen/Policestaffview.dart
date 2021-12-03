@@ -101,7 +101,7 @@ class PoliceStaffView extends StatelessWidget {
                                               height: 10,
                                             ),
                                             Text(
-                                              'Member since:  ${DateTime.parse((snp.data!.data() as Map)["dateofEstablish"].toDate().toString()).toString()}',
+                                              'Member since:  ${DateTime.parse((snp.data!.data() as Map)["dateofJoining"].toDate().toString()).toString()}',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,

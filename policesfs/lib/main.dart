@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:policesfs/Screen/AddProduct.dart';
 
 import 'package:policesfs/Screen/Addedit.dart';
+import 'package:policesfs/Screen/Addstaff.dart';
 import 'package:policesfs/Screen/Complaints.dart';
 import 'package:policesfs/Screen/ComplaintsView.dart';
 import 'package:policesfs/Screen/Login.dart';
@@ -102,6 +104,7 @@ class _AppState extends State<MyApp> {
           Complaints.routeName: (ctx) => Complaints(),
           ComplaintsView.routeName: (ctx) => ComplaintsView(),
           Chat.routeName: (ctx) => Chat(),
+          Adddstaff.routeName: (ctx) => Adddstaff(),
         });
   }
 }

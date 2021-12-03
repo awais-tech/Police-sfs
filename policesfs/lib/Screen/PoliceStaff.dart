@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:policesfs/Screen/AddProduct.dart';
 import 'package:policesfs/Screen/Addedit.dart';
+import 'package:policesfs/Screen/Addstaff.dart';
 import 'package:policesfs/Screen/PoliceStaff_database.dart';
 import 'package:policesfs/Screen/Policestaffview.dart';
 import 'package:policesfs/Screen/View.dart';
@@ -117,7 +118,7 @@ class PoliceSaff extends StatelessWidget {
                                   DataColumn(
                                     label: Expanded(
                                       child: Text(
-                                        'Address',
+                                        'Police Station Division',
                                         style: TextStyle(
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.bold),
@@ -208,7 +209,7 @@ class PoliceSaff extends StatelessWidget {
           Icons.add_circle_outline_sharp,
         ),
         onPressed: () {
-          Navigator.of(context).pushNamed(Addedit.routeName);
+          Navigator.of(context).pushNamed(Adddstaff.routeName);
         },
         backgroundColor: Colors.red,
       ),
@@ -232,20 +233,12 @@ class MyData extends DataTableSource {
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
           DataCell(Text(_data[index].data()['Name'].toString())),
-          DataCell(Text(_data[index].data()['PoliceStationName'].toString())),
+          DataCell(
+              Text(_data[index].data()['PoliceStationDivision'].toString())),
           DataCell(Text(_data[index].data()['Role'].toString())),
           DataCell(Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              ElevatedButton.icon(
-                  onPressed: () => {
-                        Navigator.of(context).pushNamed(Addedit.routeName,
-                            arguments: _data[index].id)
-                      },
-                  icon: Icon(Icons.edit),
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.red)),
-                  label: Text("Edit")),
               ElevatedButton.icon(
                   onPressed: () async => {
                         showDialog(

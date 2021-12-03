@@ -3,8 +3,8 @@ import 'package:policesfs/Screen/AddProduct.dart';
 import 'addpolicestaff.dart';
 import 'package:policesfs/Screen/drawner.dart';
 
-class Addedit extends StatelessWidget {
-  static const routeName = '/edit-product';
+class Adddstaff extends StatelessWidget {
+  static const routeName = '/AddStaff';
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -29,7 +29,7 @@ class Addedit extends StatelessWidget {
             ),
           Expanded(
             flex: 6,
-            child: Container(width: double.infinity, child: AddProductScreen()),
+            child: Container(width: double.infinity, child: Addpolicestaff()),
           ),
         ],
       ),

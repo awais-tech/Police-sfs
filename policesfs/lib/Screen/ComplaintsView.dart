@@ -128,8 +128,7 @@ class ComplaintsView extends StatelessWidget {
                                               height: 15,
                                             ),
                                             Text(
-                                              (snp.data!.data()
-                                                  as Map)["ComplaintNo"],
+                                              'Complain no: ${(snp.data!.data() as Map)["ComplaintNo"]}',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,

@@ -43,7 +43,8 @@ class PoliceStationDatabase {
 
   static Future<void> addPoliceStation(select, policeStation) async {
     try {
-      await _mainCollection.add({
+      var ids;
+      ids = await _mainCollection.add({
         "Address": policeStation.Address,
         "Division": policeStation.Division,
         "Name": policeStation.Name,
@@ -52,8 +53,10 @@ class PoliceStationDatabase {
         "Postel Code": policeStation.PostelCode,
         "Station Phone No": policeStation.StationPhoneno,
         "dateofEstablish": select,
-        "imageUrl": policeStation.imageUrl
+        "imageUrl": policeStation.imageUrl,
+        "PSID": "",
       });
+      await _mainCollection.doc(ids.id).update({"PSID": ids.id});
     } catch (e) {
       print(e);
       throw (e);

@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:select_form_field/select_form_field.dart';
@@ -7,7 +9,7 @@ import 'PoliceStaff_database.dart';
 import 'package:policesfs/Screen/client_database.dart';
 
 class Addpolicestaff extends StatefulWidget {
-  static const routeName = '/edit-product';
+  static const routeName = '/edit-staff';
 
   @override
   _AddpolicestaffState createState() => _AddpolicestaffState();
@@ -15,54 +17,67 @@ class Addpolicestaff extends StatefulWidget {
 
 class _AddpolicestaffState extends State<Addpolicestaff> {
   var select;
+  var _stationDivisions;
+  bool loading = false;
+  bool _isInit = true;
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        loading = true;
+      });
+      final result = FirebaseFirestore.instance
+          .collection('PoliceStation')
+          .get()
+          .then((result) {
+        _stationDivisions = result.docs
+            .map((val) =>
+                {'label': val.data()["Division"], "value": val.data()["PSID"]})
+            .toList();
+        setState(() {
+          loading = false;
+        });
+      });
+
+      _isInit = false;
+
+      super.didChangeDependencies();
+    }
+  }
+
   final List<Map<String, dynamic>> _policeRoles = [
     {
-      'value': 'inspectorValue',
+      'value': 'Police Inspector',
       'label': 'Police Inspector',
     },
     {
-      'value': 'SIValue',
+      'value': 'Sub-Inspector',
       'label': 'Sub-Inspector',
     },
     {
-      'value': 'ASIValue',
+      'value': 'Assistant Sub-Inspector',
       'label': 'Assistant Sub-Inspector',
     },
     {
-      'value': 'HcValue',
+      'value': 'Head Constable',
       'label': 'Head Constable',
     },
     {
-      'value': 'cValue',
+      'value': 'Constable',
       'label': 'Constable',
     },
   ];
   final List<Map<String, dynamic>> _gender = [
     {
-      'value': 'maleValue',
+      'value': 'Male',
       'label': 'Male',
     },
     {
-      'value': 'femaleValue',
+      'value': 'Female',
       'label': 'Female',
     },
     {
-      'value': 'otherValue',
+      'value': 'Other',
       'label': 'Other',
-    },
-  ];
-  final List<Map<String, dynamic>> _stationDivisions = [
-    {
-      'value': 'JtValue',
-      'label': 'Johar town',
-    },
-    {
-      'value': 'NtValue',
-      'label': 'Nawab Town',
-    },
-    {
-      'value': 'MtValue',
-      'label': 'Muslim Town',
     },
   ];
 
@@ -84,8 +99,7 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
   final _image = FocusNode();
   final _imageUrlController = TextEditingController();
   final _form = GlobalKey<FormState>();
-  bool loading = false;
-  bool init = true;
+
   var _editedProduct = PoliceStaffmodel(
       Email: '',
       Gender: '',
@@ -124,48 +138,6 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
     super.initState();
   }
 
-  @override
-  void didChangeDependencies() {
-    if (init) {
-      final id = ModalRoute.of(context)!.settings.arguments == null
-          ? "NULL"
-          : ModalRoute.of(context)!.settings.arguments as String;
-
-      if (id != "NULL") {
-        setState(() {
-          loading = true;
-        });
-        FirebaseFirestore.instance
-            .collection('PoliceStaff')
-            .doc(id as String)
-            .get()
-            .then((e) => {
-                  _editedProduct.Address = e.data()!['Address'],
-                  _editedProduct.DateofJoinng = DateTime.parse(
-                      (e.data()!['dateofEstablish'].toDate().toString())
-                          .toString()),
-                  _editedProduct.PoliceStationDivision = e.data()!['Division'],
-                  _editedProduct.Name = e.data()!['Name'],
-                  _editedProduct.imageUrl = e.data()!['imageUrl'],
-                  _editedProduct.Phoneno = e.data()!['PhoneNo'],
-                  _editedProduct.id = e.id,
-                  initial = {
-                    "Address": _editedProduct.Address,
-                    "Name": _editedProduct.Name,
-                    "imageUrl": _editedProduct.imageUrl,
-                  },
-                  _imageUrlController.text = _editedProduct.imageUrl,
-                  print(initial),
-                  setState(() {
-                    loading = false;
-                  }),
-                });
-      }
-    }
-    init = false;
-    super.didChangeDependencies();
-  }
-
   void _updateImageUrl() {
     setState(() {});
   }
@@ -182,61 +154,34 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
       loading = true;
     });
 
-    if (_editedProduct.id != '') {
-      try {
-        print(3);
-        await PoliceStaffDatabase.UpdatePoliceStaff(
-            select, _editedProduct, _editedProduct.id);
-      } catch (e) {
-        await showDialog(
-            context: context,
-            builder: (ctx) => AlertDialog(
-                  content: Text(
-                    'Something Goes wrong ?',
+    try {
+      await PoliceStaffDatabase.addPoliceStaff(select, _editedProduct);
+      Navigator.of(context).pop();
+    } catch (e) {
+      await showDialog(
+          context: context,
+          builder: (ctx) => AlertDialog(
+                content: Text(
+                  'Something Goes wrong ?',
+                ),
+                title: Text(
+                  'Warning',
+                  style: TextStyle(color: Colors.red),
+                ),
+                actions: [
+                  TextButton(
+                    child: Text('Ok'),
+                    onPressed: () {
+                      Navigator.of(ctx).pop();
+                    },
                   ),
-                  title: Text(
-                    'Warning',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  actions: [
-                    TextButton(
-                      child: Text('Ok'),
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                      },
-                    ),
-                  ],
-                ));
-      }
-    } else {
-      try {
-        await PoliceStaffDatabase.addPoliceStaff(select, _editedProduct);
-      } catch (e) {
-        await showDialog(
-            context: context,
-            builder: (ctx) => AlertDialog(
-                  content: Text(
-                    'Something Goes wrong ?',
-                  ),
-                  title: Text(
-                    'Warning',
-                    style: TextStyle(color: Colors.red),
-                  ),
-                  actions: [
-                    TextButton(
-                      child: Text('Ok'),
-                      onPressed: () {
-                        Navigator.of(ctx).pop();
-                      },
-                    ),
-                  ],
-                ));
-      }
+                ],
+              ));
     }
+
     setState(() {
       loading = false;
     });
-    Navigator.of(context).pop();
   }
 
   @override
