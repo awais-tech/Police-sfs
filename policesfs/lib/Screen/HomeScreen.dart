@@ -24,8 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
         FirebaseFirestore.instance
             .collection('Complaints')
             .where('status', isEqualTo: 'Complete')
-            .get()
-            .then((snap) {
+            .snapshots()
+            .listen((snap) {
           complaintc.text =
               (snap.size).toString(); // will return the collection size
           FirebaseFirestore.instance

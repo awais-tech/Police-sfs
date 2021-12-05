@@ -65,6 +65,10 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
       'value': 'Constable',
       'label': 'Constable',
     },
+    {
+      'value': 'Operator',
+      'label': 'Operator',
+    },
   ];
   final List<Map<String, dynamic>> _gender = [
     {

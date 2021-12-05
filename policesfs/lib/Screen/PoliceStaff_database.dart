@@ -52,11 +52,16 @@ class PoliceStaffDatabase {
       int randomNumber = random.nextInt(10000) + 100;
       int randoms = random.nextInt(1000) + 10;
       FirebaseAuth auth = FirebaseAuth.instance;
-      var ids;
+
       _main.doc(policeStaff.PoliceStationDivision).get().then((val) async {
-        print(455);
-        print((val.data() as Map)["Division"]);
-        ids = await _mainCollection.add({
+        var password =
+            policeStaff.Name + randomNumber.toString() + randoms.toString();
+        UserCredential userCredential =
+            await auth.createUserWithEmailAndPassword(
+          email: policeStaff.Email,
+          password: password,
+        );
+        await _mainCollection.doc(userCredential.user!.uid).set({
           "Address": policeStaff.Address,
           "PoliceStationID": policeStaff.PoliceStationDivision,
           "Name": policeStaff.Name,
@@ -69,17 +74,9 @@ class PoliceStaffDatabase {
           "dateofJoining": select,
           "imageUrl": policeStaff.imageUrl,
           "PoliceStationDivision": (val.data() as Map)["Division"],
-          "PoliceStaffId": "No",
+          "PoliceStaffId": userCredential.user!.uid,
         });
 
-        var password =
-            policeStaff.Name + randomNumber.toString() + randoms.toString();
-        await _mainCollection.doc(ids.id).update({"PoliceStaffId": ids.id});
-        UserCredential userCredential =
-            await auth.createUserWithEmailAndPassword(
-          email: policeStaff.Email,
-          password: password,
-        );
         final url = Uri.parse(
             'https://fitnessappauth.herokuapp.com/api/users/TokenRefreshs');
         Map<String, String> headers = {"Content-type": "application/json"};
