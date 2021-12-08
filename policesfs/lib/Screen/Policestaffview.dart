@@ -165,25 +165,40 @@ class _PoliceStaffViewState extends State<PoliceStaffView> {
                                                   SizedBox(
                                                     height: 15,
                                                   ),
-                                                  Text(
-                                                    "Total Complaints Register: ${staffsize.text}",
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
+                                                  (snp.data!.data()
+                                                              as Map)["Role"] !=
+                                                          "Police Inspector"
+                                                      ? Text(
+                                                          "Total Complaints Assigned: ${staffsize.text}",
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        )
+                                                      : Text(
+                                                          "Role:Police Inspector",
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
                                                   SizedBox(
                                                     height: 15,
                                                   ),
-                                                  Text(
-                                                    "Total Solved Complaints: ${complaintc.text}",
-                                                    style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                                  ),
+                                                  (snp.data!.data()
+                                                              as Map)["Role"] !=
+                                                          "Police Inspector"
+                                                      ? Text(
+                                                          "Total Solved Complaints: ${complaintc.text}",
+                                                          style: TextStyle(
+                                                            fontSize: 16,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        )
+                                                      : Container(),
                                                   SizedBox(
                                                     height: 15,
                                                   ),
