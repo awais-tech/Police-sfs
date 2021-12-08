@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:policesfs/Screen/ComplaintsDatabase.dart';
 import 'package:policesfs/Screen/ComplaintsView.dart';
+import 'package:policesfs/Screen/CriminalRecordDatabase.dart';
+import 'package:policesfs/Screen/CriminalView.dart';
 import 'package:policesfs/Screen/client_database.dart';
 import 'package:flutter/material.dart';
 import 'package:policesfs/Screen/AddProduct.dart';
@@ -10,31 +12,15 @@ import 'package:policesfs/Screen/drawner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/edit.dart';
 
-class Complaints extends StatelessWidget {
-  static final routeName = 'Complaints';
+class CriminalRecord extends StatelessWidget {
+  static final routeName = 'CriminalRecord';
   var streams = FirebaseFirestore.instance
-      .collection('Complaints')
+      .collection('CriminalRecord')
       .snapshots(includeMetadataChanges: true);
   @override
   Widget build(BuildContext context) {
-    var id = ModalRoute.of(context)?.settings.arguments as Map;
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    var stream;
-    if (id["em"] != 2) {
-      if (id["User"] != null) {
-        stream = FirebaseFirestore.instance
-            .collection('Complaints')
-            .where("Userid", isEqualTo: id["User"])
-            .snapshots();
-      }
-      if (id["staffview"] != null) {
-        stream = FirebaseFirestore.instance
-            .collection('Complaints')
-            .where("PoliceOfficerid", isEqualTo: id["staffview"])
-            .snapshots();
-      }
-    }
 
     return Scaffold(
       appBar: width < 700
@@ -67,7 +53,7 @@ class Complaints extends StatelessWidget {
                         top: 30,
                       ),
                       child: Text(
-                        'Manage Comaplaint Data',
+                        'Manage Criminal Record Data',
                         style: TextStyle(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
@@ -104,7 +90,7 @@ class Complaints extends StatelessWidget {
                       ],
                     ),
                     StreamBuilder<QuerySnapshot>(
-                        stream: id["em"] != 2 ? stream : streams,
+                        stream: streams,
                         builder: (context, snp) {
                           if (snp.hasError) {
                             print(snp);
@@ -126,7 +112,7 @@ class Complaints extends StatelessWidget {
                                   DataColumn(
                                     label: Expanded(
                                       child: Text(
-                                        'Title',
+                                        'CrimeType',
                                         style: TextStyle(
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.bold),
@@ -220,7 +206,7 @@ class MyData extends DataTableSource {
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
           DataCell(Text(_data[index].data()['status'].toString())),
-          DataCell(Text(_data[index].data()['Title'].toString())),
+          DataCell(Text(_data[index].data()['CrimeType'].toString())),
           DataCell(Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -231,7 +217,7 @@ class MyData extends DataTableSource {
                           builder: (ctx) => AlertDialog(
                             title: Text('Are you sure?'),
                             content: Text(
-                              'Do you want to delete Police Station ?',
+                              'Do you want to delete that Criminal Record ?',
                             ),
                             actions: <Widget>[
                               TextButton(
@@ -243,7 +229,7 @@ class MyData extends DataTableSource {
                               TextButton(
                                   child: Text('Yes'),
                                   onPressed: () async {
-                                    ComplaintsDatabase.ComplaintsDelete(
+                                    CriminalRecords.DelCriminalRecord(
                                         mainid: _data[index].id);
 
                                     Navigator.of(ctx).pop(false);
@@ -259,7 +245,7 @@ class MyData extends DataTableSource {
               ElevatedButton.icon(
                   onPressed: () => {
                         Navigator.of(context).pushNamed(
-                            ComplaintsView.routeName,
+                            CriminalView.routeName,
                             arguments: _data[index].id)
                       },
                   style: ButtonStyle(

@@ -5,10 +5,14 @@ import 'package:policesfs/Screen/Addedit.dart';
 import 'package:policesfs/Screen/Addstaff.dart';
 import 'package:policesfs/Screen/Complaints.dart';
 import 'package:policesfs/Screen/ComplaintsView.dart';
+import 'package:policesfs/Screen/CriminalRecord.dart';
+import 'package:policesfs/Screen/CriminalView.dart';
 import 'package:policesfs/Screen/Login.dart';
 import 'package:policesfs/Screen/PoliceStaff.dart';
 import 'package:policesfs/Screen/PoliceStation.dart';
 import 'package:policesfs/Screen/Policestaffview.dart';
+import 'package:policesfs/Screen/RegisteredUsersDetails.dart';
+import 'package:policesfs/Screen/UserRegistered.dart';
 import 'package:policesfs/Screen/View.dart';
 import 'package:policesfs/Screen/chat.dart';
 import 'package:policesfs/Screen/edit.dart';
@@ -105,6 +109,10 @@ class _AppState extends State<MyApp> {
           ComplaintsView.routeName: (ctx) => ComplaintsView(),
           Chat.routeName: (ctx) => Chat(),
           Adddstaff.routeName: (ctx) => Adddstaff(),
+          CriminalRecord.routeName: (ctx) => CriminalRecord(),
+          CriminalView.routeName: (ctx) => CriminalView(),
+          Userdetails.routename: (ctx) => Userdetails(),
+          UserRegistered.routeName: (ctx) => UserRegistered()
         });
   }
 }

@@ -245,20 +245,76 @@ class MyData extends DataTableSource {
                               TextButton(
                                   child: Text('Yes'),
                                   onPressed: () async {
-                                    PoliceStationDatabase.DeletePoliceStation(
-                                        mainid: _data[index].id);
-                                    var del = await FirebaseFirestore.instance
-                                        .collection('PoliceStaff')
-                                        .where('PoliceStationID',
-                                            isEqualTo: _data[index].id)
+                                    Navigator.of(ctx).pop();
+                                    FirebaseFirestore.instance
+                                        .collection('Complaints')
+                                        .where("PoliceStationName",
+                                            isEqualTo:
+                                                _data[index].data()["Division"])
                                         .get()
-                                        .then((del) => del.docs.forEach((val) =>
-                                            FirebaseFirestore.instance
-                                                .collection('PoliceStaff')
-                                                .doc(val.id)
-                                                .delete()));
+                                        .then((val) async {
+                                      if (val.docs.length <= 0) {
+                                        var del = await FirebaseFirestore
+                                            .instance
+                                            .collection('PoliceStaff')
+                                            .where('PoliceStationID',
+                                                isEqualTo: _data[index].id)
+                                            .get()
+                                            .then((del) {
+                                          if (del.docs.length <= 0) {
+                                            PoliceStationDatabase
+                                                .DeletePoliceStation(
+                                                    mainid: _data[index].id);
 
-                                    Navigator.of(ctx).pop(false);
+                                            Navigator.of(ctx).pop(false);
+                                          } else {
+                                            return showDialog(
+                                                context: context,
+                                                builder: (ctx) => AlertDialog(
+                                                      content: Text(
+                                                        'This Police station Have Police staff Please delete it first Make sure they dont have any duties assign',
+                                                      ),
+                                                      title: Text(
+                                                        'Warning',
+                                                        style: TextStyle(
+                                                            color: Colors.red),
+                                                      ),
+                                                      actions: [
+                                                        TextButton(
+                                                          child: Text('Ok'),
+                                                          onPressed: () {
+                                                            Navigator.of(ctx)
+                                                                .pop();
+                                                          },
+                                                        ),
+                                                      ],
+                                                    ));
+                                          }
+                                        });
+                                      } else {
+                                        return showDialog(
+                                            context: context,
+                                            builder: (ctx) => AlertDialog(
+                                                  content: Text(
+                                                    'This Police station Have Complaint Register Resolve it First?',
+                                                  ),
+                                                  title: Text(
+                                                    'Warning',
+                                                    style: TextStyle(
+                                                        color: Colors.red),
+                                                  ),
+                                                  actions: [
+                                                    TextButton(
+                                                      child: Text('Ok'),
+                                                      onPressed: () {
+                                                        Navigator.of(ctx)
+                                                            .pop(false);
+                                                      },
+                                                    ),
+                                                  ],
+                                                ));
+                                      }
+                                    });
                                   }),
                             ],
                           ),

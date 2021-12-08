@@ -6,15 +6,16 @@ import 'package:policesfs/Screen/Addedit.dart';
 import 'package:policesfs/Screen/Addstaff.dart';
 import 'package:policesfs/Screen/PoliceStaff_database.dart';
 import 'package:policesfs/Screen/Policestaffview.dart';
+import 'package:policesfs/Screen/RegisteredUsersDetails.dart';
 import 'package:policesfs/Screen/View.dart';
 import 'package:policesfs/Screen/drawner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/edit.dart';
 
-class PoliceSaff extends StatelessWidget {
-  static final routeName = 'PoliceSaff';
+class UserRegistered extends StatelessWidget {
+  static final routeName = 'UserRegistered';
   final streams = FirebaseFirestore.instance
-      .collection('PoliceStaff')
+      .collection('user')
       .snapshots(includeMetadataChanges: true);
   @override
   Widget build(BuildContext context) {
@@ -24,8 +25,8 @@ class PoliceSaff extends StatelessWidget {
     var stream;
     if (id != null) {
       stream = FirebaseFirestore.instance
-          .collection('PoliceStaff')
-          .where('PoliceStationID', isEqualTo: id)
+          .collection('user')
+          .doc(id as String)
           .snapshots();
     }
     return Scaffold(
@@ -59,7 +60,7 @@ class PoliceSaff extends StatelessWidget {
                         top: 30,
                       ),
                       child: Text(
-                        'Manage Police Data',
+                        'Manage Registered Users',
                         style: TextStyle(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
@@ -107,9 +108,11 @@ class PoliceSaff extends StatelessWidget {
                             return Card(
                               elevation: 10,
                               child: PaginatedDataTable(
+                                sortColumnIndex: 0,
+                                sortAscending: true,
                                 columns: const <DataColumn>[
                                   DataColumn(
-                                    label: Text('Name',
+                                    label: Text('name',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontStyle: FontStyle.italic,
@@ -118,7 +121,7 @@ class PoliceSaff extends StatelessWidget {
                                   DataColumn(
                                     label: Expanded(
                                       child: Text(
-                                        'Police Station Division',
+                                        'Phone no',
                                         style: TextStyle(
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.bold),
@@ -128,7 +131,7 @@ class PoliceSaff extends StatelessWidget {
                                   DataColumn(
                                     label: Expanded(
                                       child: Text(
-                                        'Role',
+                                        'Email',
                                         style: TextStyle(
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.bold),
@@ -155,6 +158,7 @@ class PoliceSaff extends StatelessWidget {
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
+
                                 columnSpacing: 50,
                                 horizontalMargin: 10,
                                 rowsPerPage: 6,
@@ -232,116 +236,16 @@ class MyData extends DataTableSource {
             ? MaterialStateProperty.all(Colors.lightGreen.withOpacity(0.12))
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
-          DataCell(Text(_data[index].data()['Name'].toString())),
-          DataCell(
-              Text(_data[index].data()['PoliceStationDivision'].toString())),
-          DataCell(Text(_data[index].data()['Role'].toString())),
+          DataCell(Text(_data[index].data()['name'].toString())),
+          DataCell(Text(_data[index].data()['phoneno'].toString())),
+          DataCell(Text(_data[index].data()['email'].toString())),
           DataCell(
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
-                    onPressed: () async => {
-                          showDialog(
-                            context: context,
-                            builder: (ctx) => AlertDialog(
-                              title: Text('Are you sure?'),
-                              content: Text(
-                                'Do you want to delete Police Station ?',
-                              ),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: Text('No'),
-                                  onPressed: () {
-                                    Navigator.of(ctx).pop(false);
-                                  },
-                                ),
-                                TextButton(
-                                    child: Text('Yes'),
-                                    onPressed: () async {
-                                      FirebaseFirestore.instance
-                                          .collection('Complaints')
-                                          .where("PoliceOfficerid",
-                                              isEqualTo: _data[index]
-                                                  .data()["PoliceStaffId"])
-                                          .get()
-                                          .then((val) async {
-                                        if (val.docs.length <= 0) {
-                                          var del = await FirebaseFirestore
-                                              .instance
-                                              .collection('Duties')
-                                              .where('PoliceStaffid',
-                                                  isEqualTo: _data[index].id)
-                                              .get()
-                                              .then((del) {
-                                            if (del.docs.length <= 0) {
-                                              PoliceStaffDatabase
-                                                  .DeletePoliceStaff(
-                                                      mainid: _data[index].id);
-
-                                              Navigator.of(ctx).pop(false);
-                                            } else {
-                                              return showDialog(
-                                                  context: context,
-                                                  builder: (ctx) => AlertDialog(
-                                                        content: Text(
-                                                          'This Police Staff have some duties Please Complete it first Make sure they dont have any duties assign',
-                                                        ),
-                                                        title: Text(
-                                                          'Warning',
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.red),
-                                                        ),
-                                                        actions: [
-                                                          TextButton(
-                                                            child: Text('Ok'),
-                                                            onPressed: () {
-                                                              Navigator.of(ctx)
-                                                                  .pop();
-                                                            },
-                                                          ),
-                                                        ],
-                                                      ));
-                                            }
-                                          });
-                                        } else {
-                                          return showDialog(
-                                              context: context,
-                                              builder: (ctx) => AlertDialog(
-                                                    content: Text(
-                                                      'This Police Staff Have Complaint Assign Resolve it First?',
-                                                    ),
-                                                    title: Text(
-                                                      'Warning',
-                                                      style: TextStyle(
-                                                          color: Colors.red),
-                                                    ),
-                                                    actions: [
-                                                      TextButton(
-                                                        child: Text('Ok'),
-                                                        onPressed: () {
-                                                          Navigator.of(ctx)
-                                                              .pop();
-                                                        },
-                                                      ),
-                                                    ],
-                                                  ));
-                                        }
-                                      });
-                                    }),
-                              ],
-                            ),
-                          ),
-                        },
-                    style: ButtonStyle(
-                        backgroundColor: MaterialStateProperty.all(Colors.red)),
-                    icon: Icon(Icons.edit),
-                    label: Text("Delete")),
-                ElevatedButton.icon(
                     onPressed: () => {
-                          Navigator.of(context).pushNamed(
-                              PoliceStaffView.routeName,
+                          Navigator.of(context).pushNamed(Userdetails.routename,
                               arguments: _data[index].id)
                         },
                     style: ButtonStyle(

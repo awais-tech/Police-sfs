@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:policesfs/Screen/PoliceStaff.dart';
 import 'package:policesfs/Screen/Policestaffview.dart';
-import 'package:policesfs/Screen/RegisteredUsersDetails.dart';
-import 'package:policesfs/Screen/UserRegistered.dart';
 import 'package:policesfs/Screen/View.dart';
 import 'package:policesfs/Screen/drawner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ComplaintsView extends StatelessWidget {
-  static final routeName = 'ComplaintsView';
+class CriminalView extends StatelessWidget {
+  static final routeName = 'CriminalView';
 
   @override
   Widget build(BuildContext context) {
     var id = ModalRoute.of(context)?.settings.arguments as String;
     print(id);
-    final stream =
-        FirebaseFirestore.instance.collection('Complaints').doc(id).snapshots();
+    final stream = FirebaseFirestore.instance
+        .collection('CriminalRecord')
+        .doc(id)
+        .snapshots();
     print(stream);
     // .then((e) => {print(e.data()!['Address'])});
     var height = MediaQuery.of(context).size.height;
@@ -46,7 +46,7 @@ class ComplaintsView extends StatelessWidget {
                 child: Column(
                   children: [
                     Text(
-                      'Detail of Complaints',
+                      'Detail of Criminal Record',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
@@ -86,7 +86,7 @@ class ComplaintsView extends StatelessWidget {
                                               child: ClipRRect(
                                                 child: Image.network(
                                                     (snp.data!.data()
-                                                        as Map)["imageUrl"]),
+                                                        as Map)["ImageUrl"]),
                                                 borderRadius:
                                                     BorderRadius.circular(50.0),
                                               ),
@@ -95,8 +95,7 @@ class ComplaintsView extends StatelessWidget {
                                               height: 10,
                                             ),
                                             Text(
-                                              (snp.data!.data()
-                                                  as Map)["Title"],
+                                              'Title ${(snp.data!.data() as Map)["Title"]}',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: 26,
@@ -107,8 +106,7 @@ class ComplaintsView extends StatelessWidget {
                                               height: 10,
                                             ),
                                             Text(
-                                              (snp.data!.data()
-                                                  as Map)["Catagory"],
+                                              'IdentificationMark ${(snp.data!.data() as Map)["IdentificationMark"]}',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: 26,
@@ -119,7 +117,7 @@ class ComplaintsView extends StatelessWidget {
                                               height: 10,
                                             ),
                                             Text(
-                                              'Member since:  ${DateTime.parse((snp.data!.data() as Map)["date"].toDate().toString()).toString()}',
+                                              'Record Added:  ${DateTime.parse((snp.data!.data() as Map)["Date added"].toDate().toString()).toString()}',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
@@ -130,7 +128,7 @@ class ComplaintsView extends StatelessWidget {
                                               height: 15,
                                             ),
                                             Text(
-                                              'Complain no: ${(snp.data!.data() as Map)["ComplaintNo"]}',
+                                              'Record Id: ${(snp.data!.data() as Map)["Record Id"]}',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
@@ -139,55 +137,16 @@ class ComplaintsView extends StatelessWidget {
                                             ),
                                             SizedBox(
                                               height: 15,
-                                            ),
-                                            (snp.data!.data()
-                                                            as Map)["status"] !=
-                                                        "pending" &&
-                                                    (snp.data!.data()
-                                                            as Map)["status"] !=
-                                                        "disapprove" &&
-                                                    (snp.data!.data()
-                                                            as Map)["status"] !=
-                                                        "approve"
-                                                ? ElevatedButton(
-                                                    onPressed: () {
-                                                      var id = (snp.data!.data()
-                                                              as Map)[
-                                                          "PoliceOfficerid"];
-
-                                                      Navigator.of(context)
-                                                          .pushNamed(
-                                                        PoliceStaffView
-                                                            .routeName,
-                                                        arguments: id,
-                                                      );
-                                                    },
-                                                    style: ButtonStyle(
-                                                      backgroundColor:
-                                                          MaterialStateProperty
-                                                              .all(Colors
-                                                                  .blue[700]),
-                                                      shape: MaterialStateProperty.all<
-                                                              RoundedRectangleBorder>(
-                                                          RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10.0),
-                                                      )),
-                                                    ),
-                                                    child: Text(
-                                                        "Working Police staff Detail"))
-                                                : Container(),
-                                            SizedBox(
-                                              height: 10,
                                             ),
                                             ElevatedButton(
                                                 onPressed: () {
-                                                  var id = (snp.data!.data()
-                                                      as Map)["Userid"];
+                                                  var id =
+                                                      (snp.data!.data() as Map)[
+                                                          "Policestationid"];
+
                                                   Navigator.of(context)
                                                       .pushNamed(
-                                                    Userdetails.routename,
+                                                    PoliceStaffView.routeName,
                                                     arguments: id,
                                                   );
                                                 },
@@ -204,7 +163,34 @@ class ComplaintsView extends StatelessWidget {
                                                   )),
                                                 ),
                                                 child: Text(
-                                                    "Complainer information"))
+                                                    "Registered Police station")),
+                                            SizedBox(
+                                              height: 10,
+                                            ),
+                                            ElevatedButton(
+                                                onPressed: () {
+                                                  var id =
+                                                      (snp.data!.data() as Map)[
+                                                          "PoliceOfficerid"];
+                                                  // Navigator.of(context)
+                                                  //     .pushNamed(
+                                                  //   PoliceStaffView.routeName,
+                                                  //   arguments: id,
+                                                  // );
+                                                },
+                                                style: ButtonStyle(
+                                                  backgroundColor:
+                                                      MaterialStateProperty.all(
+                                                          Colors.blue[700]),
+                                                  shape: MaterialStateProperty
+                                                      .all<RoundedRectangleBorder>(
+                                                          RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10.0),
+                                                  )),
+                                                ),
+                                                child: Text("Operator detail"))
                                           ],
                                         ),
                                       ),
@@ -218,7 +204,7 @@ class ComplaintsView extends StatelessWidget {
                                               CrossAxisAlignment.start,
                                           children: <Widget>[
                                             Text(
-                                              "Complaint detail",
+                                              "More detail",
                                               style: TextStyle(
                                                 fontSize: 16,
                                                 color: Colors.blueGrey[700],
@@ -249,26 +235,7 @@ class ComplaintsView extends StatelessWidget {
                                               height: 5,
                                             ),
                                             Text(
-                                              "Type",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              (snp.data!.data() as Map)["Type"],
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              "sent by",
+                                              "CrimeType",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
@@ -279,7 +246,27 @@ class ComplaintsView extends StatelessWidget {
                                             ),
                                             Text(
                                               (snp.data!.data()
-                                                  as Map)["sent by"],
+                                                  as Map)["CrimeType"],
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              "Person Name",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              (snp.data!.data()
+                                                  as Map)["Person Name"],
                                               style: TextStyle(
                                                 fontSize: 12,
                                               ),
@@ -318,129 +305,33 @@ class ComplaintsView extends StatelessWidget {
                                             SizedBox(
                                               height: 5,
                                             ),
-                                            Text(
-                                              "sub category",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              (snp.data!.data()
-                                                  as Map)["sub category"],
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              "Complaint Location",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              (snp.data!.data()
-                                                  as Map)["Complaint Location"],
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              "OfficerName",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              (snp.data!.data()
-                                                  as Map)["OfficerName"],
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              "PoliceStationName",
-                                              style: TextStyle(
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              (snp.data!.data()
-                                                  as Map)["PoliceStationName"],
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                            ElevatedButton(
-                                                onPressed: () async {
-                                                  var record =
-                                                      (snp.data!.data() as Map)[
-                                                          'PoliceStationName'];
-                                                  await FirebaseFirestore
-                                                      .instance
-                                                      .collection(
-                                                          'PoliceStation')
-                                                      .where("Division",
-                                                          isEqualTo: record)
-                                                      .get()
-                                                      .then((value) {
-                                                    print(value);
-                                                    var id = value.docs[0].id;
-                                                    print(id);
-                                                    Navigator.of(context)
-                                                        .pushNamed(
-                                                      View.routeName,
-                                                      arguments: id,
-                                                    );
-                                                  });
-                                                },
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          Colors.blue[700]),
-                                                  shape: MaterialStateProperty
-                                                      .all<RoundedRectangleBorder>(
-                                                          RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.0),
-                                                  )),
-                                                ),
-                                                child: Text(
-                                                    "Police station Detail")),
+
+                                            // ElevatedButton(
+                                            //     onPressed: () {
+                                            //       var id =
+                                            //           (snp.data!.data() as Map)[
+                                            //               "PoliceStationID"];
+
+                                            //       Navigator.of(context)
+                                            //           .pushNamed(
+                                            //         View.routeName,
+                                            //         arguments: id,
+                                            //       );
+                                            //     },
+                                            //     style: ButtonStyle(
+                                            //       backgroundColor:
+                                            //           MaterialStateProperty.all(
+                                            //               Colors.blue[700]),
+                                            //       shape: MaterialStateProperty
+                                            //           .all<RoundedRectangleBorder>(
+                                            //               RoundedRectangleBorder(
+                                            //         borderRadius:
+                                            //             BorderRadius.circular(
+                                            //                 10.0),
+                                            //       )),
+                                            //     ),
+                                            //     child: Text(
+                                            //         "Police station Detail")),
                                           ],
                                         ),
                                       ),

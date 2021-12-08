@@ -13,7 +13,6 @@ class ComplaintsDatabase {
     await collectionRef
         .update({
           "Address": policeStation.Address,
-          "Division": policeStation.Division,
           "Name": policeStation.Name,
           "Nearst Location": policeStation.NearstLocation,
           "No of cells": policeStation.NoofCells,

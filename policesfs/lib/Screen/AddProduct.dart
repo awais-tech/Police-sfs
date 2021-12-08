@@ -210,7 +210,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
                     padding: const EdgeInsets.all(16.0),
                     child: Form(
                       key: _form,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       child: ListView(
                         children: <Widget>[
                           TextFormField(
@@ -271,35 +270,39 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                       _editedProduct.StationPhoneno);
                             },
                           ),
-                          TextFormField(
-                            initialValue: initial['Division'] as String,
-                            decoration: InputDecoration(labelText: 'Division'),
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.text,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter a Division.';
-                              }
+                          _editedProduct.Division == ""
+                              ? TextFormField(
+                                  initialValue: initial['Division'] as String,
+                                  decoration:
+                                      InputDecoration(labelText: 'Division'),
+                                  textInputAction: TextInputAction.next,
+                                  keyboardType: TextInputType.text,
+                                  validator: (value) {
+                                    if (value!.isEmpty) {
+                                      return 'Please enter a Division.';
+                                    }
 
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _editedProduct = PoliceStation(
-                                  id: _editedProduct.id,
-                                  Address: _editedProduct.Address,
-                                  Name: _editedProduct.Name,
-                                  Division: value!,
-                                  NearstLocation: _editedProduct.NearstLocation,
-                                  NoofCells: _editedProduct.NoofCells,
-                                  DateofEstablish:
-                                      _editedProduct.DateofEstablish,
-                                  PostelCode: _editedProduct.PostelCode,
-                                  imageUrl: _editedProduct.imageUrl,
-                                  StationPhoneno:
-                                      _editedProduct.StationPhoneno);
-                              ;
-                            },
-                          ),
+                                    return null;
+                                  },
+                                  onSaved: (value) {
+                                    _editedProduct = PoliceStation(
+                                        id: _editedProduct.id,
+                                        Address: _editedProduct.Address,
+                                        Name: _editedProduct.Name,
+                                        Division: value!,
+                                        NearstLocation:
+                                            _editedProduct.NearstLocation,
+                                        NoofCells: _editedProduct.NoofCells,
+                                        DateofEstablish:
+                                            _editedProduct.DateofEstablish,
+                                        PostelCode: _editedProduct.PostelCode,
+                                        imageUrl: _editedProduct.imageUrl,
+                                        StationPhoneno:
+                                            _editedProduct.StationPhoneno);
+                                    ;
+                                  },
+                                )
+                              : Container(),
                           TextFormField(
                             initialValue: initial['NearstLocation'] as String,
                             decoration:
@@ -359,37 +362,6 @@ class _AddProductScreenState extends State<AddProductScreen> {
                                   imageUrl: _editedProduct.imageUrl,
                                   StationPhoneno:
                                       _editedProduct.StationPhoneno);
-                            },
-                          ),
-                          TextFormField(
-                            initialValue: initial['Noofcells'] as String,
-                            decoration:
-                                InputDecoration(labelText: 'No of Cells'),
-                            textInputAction: TextInputAction.next,
-                            keyboardType: TextInputType.number,
-                            validator: (value) {
-                              if (value!.isEmpty) {
-                                return 'Please enter a Noofcells.';
-                              }
-                              if (double.tryParse(value) == null) {
-                                return 'Please enter a valid number.';
-                              }
-
-                              return null;
-                            },
-                            onSaved: (value) {
-                              _editedProduct = PoliceStation(
-                                  id: _editedProduct.id,
-                                  Address: _editedProduct.Address,
-                                  Name: _editedProduct.Name,
-                                  Division: _editedProduct.Division,
-                                  NearstLocation: _editedProduct.NearstLocation,
-                                  NoofCells: value!,
-                                  DateofEstablish:
-                                      _editedProduct.DateofEstablish,
-                                  PostelCode: _editedProduct.PostelCode,
-                                  imageUrl: _editedProduct.imageUrl,
-                                  StationPhoneno: value!);
                             },
                           ),
                           Container(

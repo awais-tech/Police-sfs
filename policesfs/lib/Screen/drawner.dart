@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:policesfs/Screen/Complaints.dart';
+import 'package:policesfs/Screen/CriminalRecord.dart';
 import 'package:policesfs/Screen/PoliceStaff.dart';
+import 'package:policesfs/Screen/RegisteredUsersDetails.dart';
+import 'package:policesfs/Screen/UserRegistered.dart';
 import 'package:policesfs/Screen/chat.dart';
 import 'package:policesfs/widgets/Constants.dart';
 
@@ -11,8 +14,8 @@ class drawerwidget extends StatelessWidget {
     "Police Stations",
     "Police Staff",
     "Complaints",
-    "Feedbacks",
-    "Notifications",
+    "Crime Record",
+    "Registered Users",
     "Reports",
     "Chats",
     "Logout"
@@ -22,8 +25,8 @@ class drawerwidget extends StatelessWidget {
     Icons.local_police_outlined,
     Icons.person_outlined,
     Icons.comment_bank,
-    Icons.feedback_outlined,
-    Icons.notifications_active,
+    Icons.fingerprint,
+    Icons.verified_user,
     Icons.report_outlined,
     Icons.chat_outlined,
     Icons.logout_outlined
@@ -33,8 +36,8 @@ class drawerwidget extends StatelessWidget {
     'PoliceStations',
     PoliceSaff.routeName,
     Complaints.routeName,
-    '',
-    '',
+    CriminalRecord.routeName,
+    UserRegistered.routeName,
     Chat.routeName,
     Chat.routeName,
     'Signout',
@@ -82,8 +85,13 @@ class drawerwidget extends StatelessWidget {
                               await _auth.signOut();
                               Navigator.of(context).pushNamed('/');
                               // Constants.prefs.setString('userData', '');
+                            } else if (click[index] == Complaints.routeName) {
+                              Navigator.of(context).pushNamed(click[index],
+                                  arguments: {"em": 2});
                             } else {
-                              Navigator.of(context).pushNamed(click[index]);
+                              Navigator.of(context).pushNamed(
+                                click[index],
+                              );
                             }
                           },
                           leading: Icon(
