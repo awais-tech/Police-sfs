@@ -20,6 +20,24 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
   var _stationDivisions;
   bool loading = false;
   bool _isInit = true;
+  bool isEmail(String em) {
+    String p =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+
+    RegExp regExp = new RegExp(p);
+
+    return regExp.hasMatch(em);
+  }
+
+  bool isPhone(String em) {
+    String p =
+        r'^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$';
+
+    RegExp regExp = new RegExp(p);
+
+    return regExp.hasMatch(em);
+  }
+
   void didChangeDependencies() {
     if (_isInit) {
       setState(() {
@@ -268,8 +286,9 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter a Email';
+                              } else if (isEmail(value!)) {
+                                return 'Invalid Email';
                               }
-
                               return null;
                             },
                             onSaved: (value) {
@@ -306,8 +325,8 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                               if (value!.isEmpty) {
                                 return 'Please enter Phone number.';
                               }
-                              if (value.length < 3) {
-                                return 'Should be at least 3 characters long.';
+                              if (isPhone(value)) {
+                                return 'Phone no is invalid.';
                               }
                               return null;
                             },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:policesfs/Screen/Complaints.dart';
 import 'package:policesfs/Screen/CriminalRecord.dart';
+import 'package:policesfs/Screen/EmergencyComplaint.dart';
 import 'package:policesfs/Screen/PoliceStaff.dart';
 import 'package:policesfs/Screen/RegisteredUsersDetails.dart';
 import 'package:policesfs/Screen/UserRegistered.dart';
@@ -16,7 +17,7 @@ class drawerwidget extends StatelessWidget {
     "Complaints",
     "Crime Record",
     "Registered Users",
-    "Reports",
+    "Emergency Complaint",
     "Chats",
     "Logout"
   ];
@@ -27,7 +28,7 @@ class drawerwidget extends StatelessWidget {
     Icons.comment_bank,
     Icons.fingerprint,
     Icons.verified_user,
-    Icons.report_outlined,
+    Icons.warning_amber_outlined,
     Icons.chat_outlined,
     Icons.logout_outlined
   ];
@@ -38,7 +39,7 @@ class drawerwidget extends StatelessWidget {
     Complaints.routeName,
     CriminalRecord.routeName,
     UserRegistered.routeName,
-    Chat.routeName,
+    Emergency.routeName,
     Chat.routeName,
     'Signout',
     'Signout',
