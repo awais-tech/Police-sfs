@@ -14,12 +14,29 @@ class AddProductScreen extends StatefulWidget {
 
 class _AddProductScreenState extends State<AddProductScreen> {
   var select;
+  bool isEmail(String em) {
+    String p =
+        r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
+
+    RegExp regExp = new RegExp(p);
+
+    return regExp.hasMatch(em);
+  }
+
+  bool isPhone(String em) {
+    String p =
+        r'^((\+92)|(0092))-{0,1}\d{3}-{0,1}\d{7}$|^\d{11}$|^\d{4}-\d{7}$';
+
+    RegExp regExp = new RegExp(p);
+
+    return regExp.hasMatch(em);
+  }
 
   selectdate() {
     showDatePicker(
             context: context,
             // currentDate: _editedProduct.DateofEstablish,
-            initialDate: DateTime.now(),
+            initialDate: _editedProduct.DateofEstablish,
             firstDate: DateTime(2019),
             lastDate: DateTime.now())
         .then((picked) => {
@@ -96,6 +113,9 @@ class _AddProductScreenState extends State<AddProductScreen> {
                   _editedProduct.PostelCode = e.data()!['Postel Code'],
                   _editedProduct.StationPhoneno = e.data()!['Station Phone No'],
                   _editedProduct.id = e.id,
+                  select = DateTime.parse(
+                      (e.data()!['dateofEstablish'].toDate().toString())
+                          .toString()),
                   print(_editedProduct.StationPhoneno),
                   initial = {
                     "Address": _editedProduct.Address,
@@ -333,6 +353,38 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             },
                           ),
                           TextFormField(
+                            initialValue: initial['StationPhoneno'] as String,
+                            decoration: InputDecoration(labelText: 'Phone no'),
+                            textInputAction: TextInputAction.next,
+                            keyboardType: TextInputType.number,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter a Phone no';
+                              }
+                              if (!isPhone(value)) {
+                                return 'Please enter Valid Phone no';
+                              }
+                              if (double.tryParse(value) == null) {
+                                return 'Please enter a valid number.';
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              _editedProduct = PoliceStation(
+                                  id: _editedProduct.id,
+                                  Address: _editedProduct.Address,
+                                  Name: _editedProduct.Name,
+                                  Division: _editedProduct.Division,
+                                  NearstLocation: _editedProduct.NearstLocation,
+                                  NoofCells: _editedProduct.NoofCells,
+                                  DateofEstablish:
+                                      _editedProduct.DateofEstablish,
+                                  PostelCode: _editedProduct.PostelCode,
+                                  imageUrl: _editedProduct.imageUrl,
+                                  StationPhoneno: value!);
+                            },
+                          ),
+                          TextFormField(
                             initialValue: initial['Noofcells'] as String,
                             decoration:
                                 InputDecoration(labelText: 'No of Cells'),
@@ -383,6 +435,16 @@ class _AddProductScreenState extends State<AddProductScreen> {
                             initialValue: initial['PostelCode'] as String,
                             maxLines: 3,
                             keyboardType: TextInputType.multiline,
+                            validator: (value) {
+                              if (value!.isEmpty) {
+                                return 'Please enter a postelcode.';
+                              }
+                              if (double.tryParse(value) == null) {
+                                return 'Please enter a valid postelcode.';
+                              }
+
+                              return null;
+                            },
                             onSaved: (value) {
                               _editedProduct = PoliceStation(
                                   id: _editedProduct.id,

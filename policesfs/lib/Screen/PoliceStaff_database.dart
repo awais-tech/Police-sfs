@@ -97,6 +97,32 @@ class PoliceStaffDatabase {
     }
   }
 
+  static Future<void> updatePoliceStaff(select, policeStaff,id) async {
+    try {
+      FirebaseAuth auth = FirebaseAuth.instance;
+
+      _main.doc(policeStaff.PoliceStationDivision).get().then((val) async {
+        await _mainCollection.doc(id).update({
+          "Address": policeStaff.Address,
+          "PoliceStationID": policeStaff.PoliceStationDivision,
+          "Name": policeStaff.Name,
+          "Gender": policeStaff.Gender,
+          "Nationality": policeStaff.Nationality,
+          "CNIC": policeStaff.CNIC,
+          "Email": policeStaff.Email,
+          "Role": policeStaff.Role,
+          "PhoneNo": policeStaff.Phoneno,
+          "dateofJoining": select,
+          "imageUrl": policeStaff.imageUrl,
+          "PoliceStationDivision": (val.data() as Map)["Division"],
+        });
+      });
+    } catch (e) {
+      print(e);
+      throw (e);
+    }
+  }
+
   static Stream<QuerySnapshot> PoliceStaffmodel() {
     return _mainCollection.snapshots();
   }

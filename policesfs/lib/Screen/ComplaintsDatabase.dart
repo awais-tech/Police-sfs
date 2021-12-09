@@ -11,19 +11,32 @@ class ComplaintsDatabase {
 
   static Future<void> UpdatePoliceStation(select, policeStation, id) async {
     DocumentReference collectionRef = _mainCollection.doc(id);
-    await collectionRef
-        .update({
-          "Address": policeStation.Address,
-          "Name": policeStation.Name,
-          "Nearst Location": policeStation.NearstLocation,
-          "No of cells": policeStation.NoofCells,
-          "Postel Code": policeStation.PostelCode,
-          "Station Phone No": policeStation.StationPhoneno,
-          "dateofEstablish": select,
-          "imageUrl": policeStation.imageUrl
-        })
-        .then((value) => print("User Account Status Updated"))
-        .catchError((error) => print("Failed to update transaction: $error"));
+    print(select);
+    if (select == null) {
+      await collectionRef.update({
+        "Address": policeStation.Address,
+        "Name": policeStation.Name,
+        "Nearst Location": policeStation.NearstLocation,
+        "No of cells": policeStation.NoofCells,
+        "Postel Code": policeStation.PostelCode,
+        "Station Phone No": policeStation.StationPhoneno,
+        "imageUrl": policeStation.imageUrl
+      });
+    } else {
+      await collectionRef
+          .update({
+            "Address": policeStation.Address,
+            "Name": policeStation.Name,
+            "Nearst Location": policeStation.NearstLocation,
+            "No of cells": policeStation.NoofCells,
+            "Postel Code": policeStation.PostelCode,
+            "Station Phone No": policeStation.StationPhoneno,
+            "dateofEstablish": select,
+            "imageUrl": policeStation.imageUrl
+          })
+          .then((value) => print("User Account Status Updated"))
+          .catchError((error) => print("Failed to update transaction: $error"));
+    }
   }
 
   static Future<void> ComplaintsDelete({
@@ -56,6 +69,7 @@ class ComplaintsDatabase {
 
   static Future<void> addPoliceStation(select, policeStation) async {
     try {
+      select == null ? DateTime.now() : select;
       await _mainCollection.add({
         "Address": policeStation.Address,
         "Division": policeStation.Division,

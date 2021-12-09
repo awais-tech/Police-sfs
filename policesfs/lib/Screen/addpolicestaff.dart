@@ -38,11 +38,39 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
     return regExp.hasMatch(em);
   }
 
-  void didChangeDependencies() {
+  void didChangeDependencies() async {
     if (_isInit) {
       setState(() {
         loading = true;
       });
+      final id = ModalRoute.of(context)?.settings.arguments;
+
+      if (id != null) {
+        var e = await FirebaseFirestore.instance
+            .collection('PoliceStaff')
+            .doc(id as String)
+            .get();
+
+        select = DateTime.parse(
+            (e.data()!['dateofJoining'].toDate().toString()).toString());
+        setState(() {
+          initial = {
+            'Address': e.data()!['Address'],
+            'Email': e.data()!['Email'],
+            'Gender': e.data()!['Gender'],
+            'Role': e.data()!['Role'],
+            'Name': e.data()!['Name'],
+            'Nationality': e.data()!['Nationality'],
+            'Phoneno': e.data()!['PhoneNo'],
+            'PoliceStationDivision': e.data()!['PoliceStationID'],
+            'imageUrl': e.data()!['imageUrl'],
+            'CNIC': e.data()!['CNIC'],
+            'id': e.id,
+          };
+        });
+        _imageUrlController.text = e.data()!['imageUrl'];
+      }
+
       final result = FirebaseFirestore.instance
           .collection('PoliceStation')
           .get()
@@ -177,7 +205,12 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
     });
 
     try {
-      await PoliceStaffDatabase.addPoliceStaff(select, _editedProduct);
+      if (initial['id'] != '') {
+        await PoliceStaffDatabase.updatePoliceStaff(
+            select, _editedProduct, initial['id']);
+      } else {
+        await PoliceStaffDatabase.addPoliceStaff(select, _editedProduct);
+      }
       Navigator.of(context).pop();
     } catch (e) {
       await showDialog(
@@ -224,7 +257,6 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                     padding: const EdgeInsets.all(16.0),
                     child: Form(
                       key: _form,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       child: ListView(
                         children: <Widget>[
                           TextFormField(
@@ -286,7 +318,7 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter a Email';
-                              } else if (isEmail(value!)) {
+                              } else if (!isEmail(value!)) {
                                 return 'Invalid Email';
                               }
                               return null;
@@ -298,9 +330,13 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                           SelectFormField(
                               type: SelectFormFieldType
                                   .dropdown, // or can be dialog
-                              initialValue: 'male',
+
+                              initialValue: initial["Gender"] == ""
+                                  ? "Male"
+                                  : initial["Gender"],
                               labelText: 'Gender',
                               items: _gender,
+                              enableSearch: true,
                               onChanged: (val) => print(val),
                               onSaved: (value) {
                                 _editedProduct.Gender = value!;
@@ -308,7 +344,9 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                           SelectFormField(
                               type: SelectFormFieldType
                                   .dropdown, // or can be dialog
-                              initialValue: 'hc',
+                              initialValue: initial["Role"] == ""
+                                  ? "Police Inspector"
+                                  : initial["Role"],
                               labelText: 'Role',
                               items: _policeRoles,
                               onChanged: (val) => print(val),
@@ -325,7 +363,7 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                               if (value!.isEmpty) {
                                 return 'Please enter Phone number.';
                               }
-                              if (isPhone(value)) {
+                              if (!isPhone(value)) {
                                 return 'Phone no is invalid.';
                               }
                               return null;
@@ -335,9 +373,8 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                             },
                           ),
                           SelectFormField(
-                              type: SelectFormFieldType
-                                  .dropdown, // or can be dialog
-                              initialValue: 'Jt',
+                              type: SelectFormFieldType.dropdown,
+                              initialValue: initial["PoliceStationDivision"],
                               labelText: 'Police Station Division',
                               items: _stationDivisions,
                               onChanged: (val) => print(val),

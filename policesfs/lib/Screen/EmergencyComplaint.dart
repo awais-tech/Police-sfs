@@ -1,6 +1,7 @@
 import 'dart:math';
 import 'package:policesfs/Screen/ComplaintsDatabase.dart';
 import 'package:policesfs/Screen/ComplaintsView.dart';
+import 'package:policesfs/Screen/EmergencyView.dart';
 import 'package:policesfs/Screen/client_database.dart';
 import 'package:flutter/material.dart';
 import 'package:policesfs/Screen/AddProduct.dart';
@@ -228,7 +229,7 @@ class MyData extends DataTableSource {
                               TextButton(
                                   child: Text('Yes'),
                                   onPressed: () async {
-                                    ComplaintsDatabase.ComplaintsDelete(
+                                    ComplaintsDatabase.EmergencyDelete(
                                         mainid: _data[index].id);
 
                                     Navigator.of(ctx).pop(false);
@@ -243,8 +244,7 @@ class MyData extends DataTableSource {
                   label: Text("Delete")),
               ElevatedButton.icon(
                   onPressed: () => {
-                        Navigator.of(context).pushNamed(
-                            ComplaintsView.routeName,
+                        Navigator.of(context).pushNamed(EmergencyView.routeName,
                             arguments: _data[index].id)
                       },
                   style: ButtonStyle(

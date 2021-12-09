@@ -348,6 +348,15 @@ class MyData extends DataTableSource {
                         backgroundColor: MaterialStateProperty.all(Colors.red)),
                     icon: Icon(Icons.edit),
                     label: Text("View")),
+                ElevatedButton.icon(
+                    onPressed: () => {
+                          Navigator.of(context).pushNamed(Adddstaff.routeName,
+                              arguments: _data[index].id)
+                        },
+                    icon: Icon(Icons.edit),
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.red)),
+                    label: Text("Edit")),
               ],
             ),
           ),
