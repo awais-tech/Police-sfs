@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:universal_html/html.dart';
+import 'dart:convert';
 
 void main() {
   runApp(CreatePdfWidget());
@@ -27,37 +28,6 @@ class CreatePdfStatefulWidget extends StatefulWidget {
 }
 
 class _CreatePdfState extends State<CreatePdfStatefulWidget> {
-  var save;
-  var loading = false;
-  void didChangeDependencies() {
-    if (_isInit) {
-      setState(() {
-        loading = true;
-      });
-
-      final result = FirebaseFirestore.instance
-          .collection('PoliceStaff')
-          .get()
-          .then((result) {
-        save = result.docs.map((val) => val.data()).toList();
-        setState(() {
-          loading = false;
-        });
-      });
-
-      _isInit = false;
-
-      super.didChangeDependencies();
-    }
-  }
-
-  final staffsize = TextEditingController();
-  final complaintc = TextEditingController();
-  final complainta = TextEditingController();
-  final user = TextEditingController();
-
-  bool _isLoading = false;
-  bool _isInit = true;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +45,7 @@ class _CreatePdfState extends State<CreatePdfStatefulWidget> {
                 backgroundColor: Colors.lightBlue,
                 onSurface: Colors.grey,
               ),
-              onPressed: generateInvoice,
+              onPressed: generateReport,
             )
           ],
         ),
@@ -83,7 +53,7 @@ class _CreatePdfState extends State<CreatePdfStatefulWidget> {
     );
   }
 
-  Future<Uint8List> generateInvoice() async {
+  Future<void> generateReport() async {
     //Create a PDF document.
     final PdfDocument document = PdfDocument();
     //Add page to the PDF
@@ -107,7 +77,16 @@ class _CreatePdfState extends State<CreatePdfStatefulWidget> {
     //Dispose the document.
     document.dispose();
     //Save and launch the file.
-    await saveAndLaunchFile(bytes, 'Invoice.pdf');
+
+    Future<void> saveAndLaunchFile(List<int> bytes, String fileName) async {
+      AnchorElement(
+          href:
+              "data:application/octet-stream;charset-utf-161e;base64,${base64.encode(bytes)}")
+        ..setAttribute('download', fileName)
+        ..click();
+    }
+
+    await saveAndLaunchFile(bytes, 'Police Report.pdf');
   }
 
   //Draws the invoice header
@@ -117,8 +96,8 @@ class _CreatePdfState extends State<CreatePdfStatefulWidget> {
         brush: PdfSolidBrush(PdfColor(91, 126, 215, 255)),
         bounds: Rect.fromLTWH(0, 0, pageSize.width - 115, 90));
     //Draw string
-    page.graphics.drawString(
-        'INVOICE', PdfStandardFont(PdfFontFamily.helvetica, 30),
+    page.graphics.drawString('POLICE STATION FACILITATION SYSTEM',
+        PdfStandardFont(PdfFontFamily.helvetica, 30),
         brush: PdfBrushes.white,
         bounds: Rect.fromLTWH(25, 0, pageSize.width - 115, 90),
         format: PdfStringFormat(lineAlignment: PdfVerticalAlignment.middle));
@@ -145,12 +124,12 @@ class _CreatePdfState extends State<CreatePdfStatefulWidget> {
             lineAlignment: PdfVerticalAlignment.bottom));
     //Create data foramt and convert it to text.
     final DateFormat format = DateFormat.yMMMMd('en_US');
-    final String invoiceNumber = 'Invoice Number: 2058557939\r\n\r\nDate: ' +
-        format.format(DateTime.now());
+    final String invoiceNumber =
+        'Report ID: 2058557939\r\n\r\nDate: ' + format.format(DateTime.now());
     final Size contentSize = contentFont.measureString(invoiceNumber);
     // ignore: leading_newlines_in_multiline_strings
-    const String address = '''Bill To: \r\n\r\nAbraham Swearegin, 
-        \r\n\r\nUnited States, California, San Mateo, 
+    const String address = '''Bill To: \r\n\r\nAbraham Swearegin,
+        \r\n\r\nUnited States, California, San Mateo,
         \r\n\r\n9920 BridgePointe Parkway, \r\n\r\n9365550136''';
 
     PdfTextElement(text: invoiceNumber, font: contentFont).draw(
@@ -287,5 +266,3 @@ class _CreatePdfState extends State<CreatePdfStatefulWidget> {
     return total;
   }
 }
-
-saveAndLaunchFile(List<int> bytes, String s) {}
