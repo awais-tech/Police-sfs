@@ -25,6 +25,7 @@ dependencies:
     sdk: flutter
   slimy_card: ^1.0.4
   select_form_field: "^2.2.0"
+  syncfusion_flutter_pdf: ^19.3.59-beta
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
