@@ -7,17 +7,39 @@ import 'package:policesfs/Screen/View.dart';
 import 'package:policesfs/Screen/drawner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/edit.dart';
+import 'package:select_form_field/select_form_field.dart';
 
-class PoliceStations extends StatelessWidget {
+class PoliceStations extends StatefulWidget {
   static final routeName = 'PoliceStations';
+
+  @override
+  State<PoliceStations> createState() => _PoliceStationsState();
+}
+
+class _PoliceStationsState extends State<PoliceStations> {
   var streams = FirebaseFirestore.instance
       .collection('PoliceStation')
       .snapshots(includeMetadataChanges: true);
+  final List<Map<String, dynamic>> _policeRoles = [
+    {
+      'value': 'Name',
+      'label': 'Name',
+    },
+    {
+      'value': 'Address',
+      'label': 'Address',
+    },
+  ];
+
+  final name = TextEditingController();
+  final filter = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-
+    print(name.text);
+    print(filter.text);
     return Scaffold(
       appBar: width < 700
           ? AppBar(
@@ -69,7 +91,25 @@ class PoliceStations extends StatelessWidget {
                         Container(
                           width: 150,
                           margin: EdgeInsets.only(bottom: 3),
+                          child: SelectFormField(
+                              type: SelectFormFieldType
+                                  .dropdown, // or can be dialog
+                              initialValue: "Name",
+                              labelText: 'Search By',
+                              items: _policeRoles,
+                              onChanged: (val) => setState(() {
+                                    filter.text = val;
+                                  })),
+                        ),
+                        Container(
+                          width: 150,
+                          margin: EdgeInsets.only(bottom: 3),
                           child: TextField(
+                            onChanged: (val) {
+                              setState(() {
+                                name.text = val;
+                              });
+                            },
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               fillColor: Colors.blueAccent[50],
@@ -94,6 +134,26 @@ class PoliceStations extends StatelessWidget {
                               child: Text("No Data is here"),
                             );
                           } else if (snp.hasData || snp.data != null) {
+                            var stationdata = snp.data?.docs
+                                .map((val) {
+                                  return {
+                                    "Name": (val.data() as Map)["Name"],
+                                    "Address": (val.data() as Map)["Address"],
+                                    "Division": (val.data() as Map)["Division"],
+                                    "id": val.id
+                                  };
+                                })
+                                .where((element) => filter.text == ""
+                                    ? element["Name"]
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(name.text.toLowerCase())
+                                    : element[filter.text]
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(name.text.toLowerCase()))
+                                .toList();
+
                             return Card(
                               elevation: 10,
                               child: PaginatedDataTable(
@@ -127,7 +187,7 @@ class PoliceStations extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                                source: MyData(snp.data?.docs, context),
+                                source: MyData(stationdata, context, name),
                                 header: Container(
                                   width: double.infinity,
                                   child: Text(
@@ -198,9 +258,11 @@ class PoliceStations extends StatelessWidget {
 }
 
 class MyData extends DataTableSource {
-  MyData(this._data, this.context);
+  MyData(this._data, this.context, this.name);
   // Generate some made-up data
   final _data;
+  final name;
+
   BuildContext context;
 
   bool get isRowCountApproximate => false;
@@ -212,15 +274,15 @@ class MyData extends DataTableSource {
             ? MaterialStateProperty.all(Colors.lightGreen.withOpacity(0.12))
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
-          DataCell(Text(_data[index].data()['Name'].toString())),
-          DataCell(Text(_data[index].data()['Address'].toString())),
+          DataCell(Text(_data[index]['Name'].toString())),
+          DataCell(Text(_data[index]['Address'].toString())),
           DataCell(Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               ElevatedButton.icon(
                   onPressed: () => {
                         Navigator.of(context).pushNamed(Addedit.routeName,
-                            arguments: _data[index].id)
+                            arguments: _data[index]["id"])
                       },
                   icon: Icon(Icons.edit),
                   style: ButtonStyle(
@@ -249,8 +311,7 @@ class MyData extends DataTableSource {
                                     FirebaseFirestore.instance
                                         .collection('Complaints')
                                         .where("PoliceStationName",
-                                            isEqualTo:
-                                                _data[index].data()["Division"])
+                                            isEqualTo: _data[index]["Division"])
                                         .get()
                                         .then((val) async {
                                       if (val.docs.length <= 0) {
@@ -258,13 +319,13 @@ class MyData extends DataTableSource {
                                             .instance
                                             .collection('PoliceStaff')
                                             .where('PoliceStationID',
-                                                isEqualTo: _data[index].id)
+                                                isEqualTo: _data[index]["id"])
                                             .get()
                                             .then((del) {
                                           if (del.docs.length <= 0) {
                                             PoliceStationDatabase
                                                 .DeletePoliceStation(
-                                                    mainid: _data[index].id);
+                                                    mainid: _data[index]["id"]);
 
                                             Navigator.of(ctx).pop(false);
                                           } else {
@@ -327,7 +388,7 @@ class MyData extends DataTableSource {
               ElevatedButton.icon(
                   onPressed: () => {
                         Navigator.of(context).pushNamed(View.routeName,
-                            arguments: _data[index].id)
+                            arguments: _data[index]["id"])
                       },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.red)),

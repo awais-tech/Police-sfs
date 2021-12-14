@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:policesfs/Screen/Complaints.dart';
 import 'package:policesfs/Screen/CriminalRecord.dart';
 import 'package:policesfs/Screen/EmergencyComplaint.dart';
+import 'package:policesfs/Screen/GenerateReport.dart';
 import 'package:policesfs/Screen/PoliceStaff.dart';
 import 'package:policesfs/Screen/RegisteredUsersDetails.dart';
 import 'package:policesfs/Screen/UserRegistered.dart';
@@ -19,6 +20,7 @@ class drawerwidget extends StatelessWidget {
     "Registered Users",
     "Emergency Complaint",
     "Chats",
+    "Reports",
     "Logout"
   ];
   static List<IconData> navigatorsIcon = [
@@ -30,6 +32,7 @@ class drawerwidget extends StatelessWidget {
     Icons.verified_user,
     Icons.warning_amber_outlined,
     Icons.chat_outlined,
+    Icons.report,
     Icons.logout_outlined
   ];
   static List click = [
@@ -41,7 +44,7 @@ class drawerwidget extends StatelessWidget {
     UserRegistered.routeName,
     Emergency.routeName,
     Chat.routeName,
-    'Signout',
+    CreatePdfStatefulWidget.routename,
     'Signout',
   ];
 
@@ -70,7 +73,7 @@ class drawerwidget extends StatelessWidget {
                   child: DrawerHeader(child: createDrawerHeader())),
               Container(
                 color: Colors.blue[900],
-                height: constraints.minHeight * 0.8,
+                height: constraints.minHeight * 0.9,
                 child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: navigators.length,

@@ -9,12 +9,43 @@ import 'package:policesfs/Screen/View.dart';
 import 'package:policesfs/Screen/drawner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/edit.dart';
+import 'package:select_form_field/select_form_field.dart';
 
-class Complaints extends StatelessWidget {
+class Complaints extends StatefulWidget {
   static final routeName = 'Complaints';
+
+  @override
+  State<Complaints> createState() => _ComplaintsState();
+}
+
+class _ComplaintsState extends State<Complaints> {
   var streams = FirebaseFirestore.instance
       .collection('Complaints')
       .snapshots(includeMetadataChanges: true);
+
+  final name = TextEditingController();
+
+  final filter = TextEditingController();
+
+  final List<Map<String, dynamic>> _policeRoles = [
+    {
+      'value': 'status',
+      'label': 'Status',
+    },
+    {
+      'value': 'Title',
+      'label': 'Title',
+    },
+    {
+      'value': 'Catagory',
+      'label': 'Catagory',
+    },
+    {
+      'value': 'PoliceStationName',
+      'label': 'PoliceStationName',
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     var id = ModalRoute.of(context)?.settings.arguments as Map;
@@ -87,7 +118,25 @@ class Complaints extends StatelessWidget {
                         Container(
                           width: 150,
                           margin: EdgeInsets.only(bottom: 3),
+                          child: SelectFormField(
+                              type: SelectFormFieldType
+                                  .dropdown, // or can be dialog
+                              initialValue: "status",
+                              labelText: 'Search By',
+                              items: _policeRoles,
+                              onChanged: (val) => setState(() {
+                                    filter.text = val;
+                                  })),
+                        ),
+                        Container(
+                          width: 150,
+                          margin: EdgeInsets.only(bottom: 3),
                           child: TextField(
+                            onChanged: (val) {
+                              setState(() {
+                                name.text = val;
+                              });
+                            },
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               fillColor: Colors.blueAccent[50],
@@ -112,6 +161,27 @@ class Complaints extends StatelessWidget {
                               child: Text("No Data is here"),
                             );
                           } else if (snp.hasData || snp.data != null) {
+                            var stationdata = snp.data?.docs
+                                .map((val) {
+                                  return {
+                                    "Title": (val.data() as Map)["Title"],
+                                    "Catagory": (val.data() as Map)["Catagory"],
+                                    "status": (val.data() as Map)["status"],
+                                    "PoliceStationName": (val.data()
+                                        as Map)["PoliceStationName"],
+                                    "id": val.id
+                                  };
+                                })
+                                .where((element) => filter.text == ""
+                                    ? element["status"]
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(name.text.toLowerCase())
+                                    : element[filter.text]
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(name.text.toLowerCase()))
+                                .toList();
                             return Card(
                               elevation: 10,
                               child: PaginatedDataTable(
@@ -144,7 +214,7 @@ class Complaints extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                                source: MyData(snp.data?.docs, context),
+                                source: MyData(stationdata, context),
                                 header: Container(
                                   width: double.infinity,
                                   child: Text(
@@ -219,8 +289,8 @@ class MyData extends DataTableSource {
             ? MaterialStateProperty.all(Colors.lightGreen.withOpacity(0.12))
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
-          DataCell(Text(_data[index].data()['status'].toString())),
-          DataCell(Text(_data[index].data()['Title'].toString())),
+          DataCell(Text(_data[index]['status'].toString())),
+          DataCell(Text(_data[index]['Title'].toString())),
           DataCell(Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -244,7 +314,7 @@ class MyData extends DataTableSource {
                                   child: Text('Yes'),
                                   onPressed: () async {
                                     ComplaintsDatabase.ComplaintsDelete(
-                                        mainid: _data[index].id);
+                                        mainid: _data[index]["id"]);
 
                                     Navigator.of(ctx).pop(false);
                                   }),
@@ -260,7 +330,7 @@ class MyData extends DataTableSource {
                   onPressed: () => {
                         Navigator.of(context).pushNamed(
                             ComplaintsView.routeName,
-                            arguments: _data[index].id)
+                            arguments: _data[index]["id"])
                       },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.red)),

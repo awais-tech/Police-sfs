@@ -3,24 +3,14 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:universal_html/html.dart';
 import 'dart:convert';
-
-void main() {
-  runApp(CreatePdfWidget());
-}
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 /// Represents the PDF widget class.
-class CreatePdfWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: CreatePdfStatefulWidget(),
-    );
-  }
-}
 
 /// Represents the PDF stateful widget class.
 class CreatePdfStatefulWidget extends StatefulWidget {
   /// Initalize the instance of the [CreatePdfStatefulWidget] class.
+  static final routename = "reports";
   const CreatePdfStatefulWidget({Key? key}) : super(key: key);
 
   @override
@@ -28,6 +18,23 @@ class CreatePdfStatefulWidget extends StatefulWidget {
 }
 
 class _CreatePdfState extends State<CreatePdfStatefulWidget> {
+  var _isInit = true;
+  var _isLoading = false;
+  var streams;
+  void didChangeDependencies() async {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      var c = await FirebaseFirestore.instance.collection('PoliceStaff').get();
+      setState(() {
+        streams = c;
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -216,18 +223,17 @@ class _CreatePdfState extends State<CreatePdfStatefulWidget> {
     headerRow.cells[3].value = 'Division';
     headerRow.cells[4].value = 'Contact';
     //Add rows
-    addProducts('CA-1098', 'Rana Muhammad Daniyal', 'Police Inspector',
-        'Johar town', '12345678', grid);
-    addProducts('LJ-0192', 'Sameer Nouman', 'Sub-Inspector', 'Johar town',
-        '12345678', grid);
-    addProducts('So-B909-M', 'Awais Shahbaz', 'Assistant Sub-Inspector',
-        'Johar town', '12345678', grid);
-    addProducts('LJ-0192', 'Azmat Ullah Khan', 'Head Constable', 'Johar town',
-        '12345678', grid);
-    addProducts(
-        'FK-5136', 'Faizan Ahsan', 'Constable', 'Johar town', '12345678', grid);
-    addProducts('HL-U509', 'Malik Hamza Liaqat', 'Constable', 'Johar town',
-        '12345678', grid);
+
+    streams.docs
+        .map((val) => addProducts(
+            val.id,
+            val.data()["Name"],
+            val.data()["Role"],
+            val.data()["PoliceStationDivision"],
+            val.data()["PhoneNo"],
+            grid))
+        .toList();
+
     //Apply the table built-in style
     grid.applyBuiltInStyle(PdfGridBuiltInStyle.listTable4Accent5);
     //Set gird columns width

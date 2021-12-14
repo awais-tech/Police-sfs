@@ -10,12 +10,36 @@ import 'package:policesfs/Screen/View.dart';
 import 'package:policesfs/Screen/drawner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/edit.dart';
+import 'package:select_form_field/select_form_field.dart';
 
-class PoliceSaff extends StatelessWidget {
+class PoliceSaff extends StatefulWidget {
   static final routeName = 'PoliceSaff';
+
+  @override
+  State<PoliceSaff> createState() => _PoliceSaffState();
+}
+
+class _PoliceSaffState extends State<PoliceSaff> {
   final streams = FirebaseFirestore.instance
       .collection('PoliceStaff')
       .snapshots(includeMetadataChanges: true);
+  final name = TextEditingController();
+  final filter = TextEditingController();
+  final List<Map<String, dynamic>> _policeRoles = [
+    {
+      'value': 'Name',
+      'label': 'Name',
+    },
+    {
+      'value': 'PoliceStationDivision',
+      'label': 'Police Station Division',
+    },
+    {
+      'value': 'Role',
+      'label': 'Role',
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     var id = ModalRoute.of(context)?.settings.arguments;
@@ -79,7 +103,25 @@ class PoliceSaff extends StatelessWidget {
                         Container(
                           width: 150,
                           margin: EdgeInsets.only(bottom: 3),
+                          child: SelectFormField(
+                              type: SelectFormFieldType
+                                  .dropdown, // or can be dialog
+                              initialValue: "Name",
+                              labelText: 'Search By',
+                              items: _policeRoles,
+                              onChanged: (val) => setState(() {
+                                    filter.text = val;
+                                  })),
+                        ),
+                        Container(
+                          width: 150,
+                          margin: EdgeInsets.only(bottom: 3),
                           child: TextField(
+                            onChanged: (val) {
+                              setState(() {
+                                name.text = val;
+                              });
+                            },
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               fillColor: Colors.blueAccent[50],
@@ -104,6 +146,28 @@ class PoliceSaff extends StatelessWidget {
                               child: Text("No Data is here"),
                             );
                           } else if (snp.hasData || snp.data != null) {
+                            var stationdata = snp.data?.docs
+                                .map((val) {
+                                  return {
+                                    "Name": (val.data() as Map)["Name"],
+                                    "PoliceStationDivision": (val.data()
+                                        as Map)["PoliceStationDivision"],
+                                    "PoliceStaffId":
+                                        (val.data() as Map)["PoliceStaffId"],
+                                    "Role": (val.data() as Map)["Role"],
+                                    "id": val.id
+                                  };
+                                })
+                                .where((element) => filter.text == ""
+                                    ? element["Name"]
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(name.text.toLowerCase())
+                                    : element[filter.text]
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(name.text.toLowerCase()))
+                                .toList();
                             return Card(
                               elevation: 10,
                               child: PaginatedDataTable(
@@ -147,7 +211,7 @@ class PoliceSaff extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                                source: MyData(snp.data?.docs, context),
+                                source: MyData(stationdata, context),
                                 header: Container(
                                   width: double.infinity,
                                   child: Text(
@@ -232,10 +296,9 @@ class MyData extends DataTableSource {
             ? MaterialStateProperty.all(Colors.lightGreen.withOpacity(0.12))
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
-          DataCell(Text(_data[index].data()['Name'].toString())),
-          DataCell(
-              Text(_data[index].data()['PoliceStationDivision'].toString())),
-          DataCell(Text(_data[index].data()['Role'].toString())),
+          DataCell(Text(_data[index]['Name'].toString())),
+          DataCell(Text(_data[index]['PoliceStationDivision'].toString())),
+          DataCell(Text(_data[index]['Role'].toString())),
           DataCell(
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -263,7 +326,7 @@ class MyData extends DataTableSource {
                                           .collection('Complaints')
                                           .where("PoliceOfficerid",
                                               isEqualTo: _data[index]
-                                                  .data()["PoliceStaffId"])
+                                                  ["PoliceStaffId"])
                                           .get()
                                           .then((val) async {
                                         if (val.docs.length <= 0) {
@@ -271,13 +334,14 @@ class MyData extends DataTableSource {
                                               .instance
                                               .collection('Duties')
                                               .where('PoliceStaffid',
-                                                  isEqualTo: _data[index].id)
+                                                  isEqualTo: _data[index]["id"])
                                               .get()
                                               .then((del) {
                                             if (del.docs.length <= 0) {
                                               PoliceStaffDatabase
                                                   .DeletePoliceStaff(
-                                                      mainid: _data[index].id);
+                                                      mainid: _data[index]
+                                                          ["id"]);
 
                                               Navigator.of(ctx).pop(false);
                                             } else {
@@ -342,7 +406,7 @@ class MyData extends DataTableSource {
                     onPressed: () => {
                           Navigator.of(context).pushNamed(
                               PoliceStaffView.routeName,
-                              arguments: _data[index].id)
+                              arguments: _data[index]["id"])
                         },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.red)),
@@ -351,7 +415,7 @@ class MyData extends DataTableSource {
                 ElevatedButton.icon(
                     onPressed: () => {
                           Navigator.of(context).pushNamed(Adddstaff.routeName,
-                              arguments: _data[index].id)
+                              arguments: _data[index]["id"])
                         },
                     icon: Icon(Icons.edit),
                     style: ButtonStyle(

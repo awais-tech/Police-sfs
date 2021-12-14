@@ -9,6 +9,7 @@ import 'package:policesfs/Screen/CriminalRecord.dart';
 import 'package:policesfs/Screen/CriminalView.dart';
 import 'package:policesfs/Screen/EmergencyComplaint.dart';
 import 'package:policesfs/Screen/EmergencyView.dart';
+import 'package:policesfs/Screen/GenerateReport.dart';
 import 'package:policesfs/Screen/Login.dart';
 import 'package:policesfs/Screen/PoliceStaff.dart';
 import 'package:policesfs/Screen/PoliceStation.dart';
@@ -117,6 +118,7 @@ class _AppState extends State<MyApp> {
           UserRegistered.routeName: (ctx) => UserRegistered(),
           Emergency.routeName: (ctx) => Emergency(),
           EmergencyView.routeName: (ctx) => EmergencyView(),
+          CreatePdfStatefulWidget.routename: (ctx) => CreatePdfStatefulWidget()
         });
   }
 }
