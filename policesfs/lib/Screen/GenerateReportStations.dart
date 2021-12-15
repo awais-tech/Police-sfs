@@ -10,7 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 /// Represents the PDF stateful widget class.
 class CreatePdfStationsStatefulWidget extends StatefulWidget {
   /// Initalize the instance of the [CreatePdfStatefulWidget] class.
-  static final routename = "reports";
+  static final routename = "stationsreports";
   const CreatePdfStationsStatefulWidget({Key? key}) : super(key: key);
 
   @override
