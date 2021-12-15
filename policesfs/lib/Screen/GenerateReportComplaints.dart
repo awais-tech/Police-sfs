@@ -8,16 +8,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 /// Represents the PDF widget class.
 
 /// Represents the PDF stateful widget class.
-class CreatePdfStatefulWidget extends StatefulWidget {
+class CreatePdfComplaintsStatefulWidget extends StatefulWidget {
   /// Initalize the instance of the [CreatePdfStatefulWidget] class.
-  static final routename = "reports";
-  const CreatePdfStatefulWidget({Key? key}) : super(key: key);
+  static final routename = "complaintsreports";
+  const CreatePdfComplaintsStatefulWidget({Key? key}) : super(key: key);
 
   @override
-  _CreatePdfState createState() => _CreatePdfState();
+  _CreatePdfComplaintsState createState() => _CreatePdfComplaintsState();
 }
 
-class _CreatePdfState extends State<CreatePdfStatefulWidget> {
+class _CreatePdfComplaintsState
+    extends State<CreatePdfComplaintsStatefulWidget> {
   var _isInit = true;
   var _isLoading = false;
   var streams;
@@ -210,7 +211,7 @@ class _CreatePdfState extends State<CreatePdfStatefulWidget> {
     //Create a PDF grid
     final PdfGrid grid = PdfGrid();
     //Secify the columns count to the grid.
-    grid.columns.add(count: 5);
+    grid.columns.add(count: 7);
     //Create the header row of the grid.
     final PdfGridRow headerRow = grid.headers.add(1)[0];
     //Set style
@@ -222,6 +223,9 @@ class _CreatePdfState extends State<CreatePdfStatefulWidget> {
     headerRow.cells[2].value = 'Role';
     headerRow.cells[3].value = 'Division';
     headerRow.cells[4].value = 'Contact';
+    headerRow.cells[5].value = 'Contact';
+    headerRow.cells[6].value = 'Contact';
+
     //Add rows
 
     streams.docs
@@ -265,6 +269,8 @@ class _CreatePdfState extends State<CreatePdfStatefulWidget> {
     row.cells[2].value = role;
     row.cells[3].value = division;
     row.cells[4].value = contact;
+    row.cells[5].value = contact;
+    row.cells[6].value = contact;
   }
 
   // //Get the total amount.
