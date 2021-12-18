@@ -3,7 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:policesfs/Screen/Complaints.dart';
 import 'package:policesfs/Screen/CriminalRecord.dart';
 import 'package:policesfs/Screen/EmergencyComplaint.dart';
-import 'package:policesfs/Screen/GenerateReport.dart';
+import 'package:policesfs/Screen/GenerateReportComplaints.dart';
+
+import 'package:policesfs/Screen/GenerateReportStaff.dart';
+import 'package:policesfs/Screen/GenerateReportStations.dart';
 import 'package:policesfs/Screen/PoliceStaff.dart';
 import 'package:policesfs/Screen/RegisteredUsersDetails.dart';
 import 'package:policesfs/Screen/UserRegistered.dart';
@@ -21,6 +24,7 @@ class drawerwidget extends StatelessWidget {
     "Emergency Complaint",
     "Chats",
     "Reports",
+    "BarGraph",
     "Logout"
   ];
   static List<IconData> navigatorsIcon = [
@@ -33,6 +37,7 @@ class drawerwidget extends StatelessWidget {
     Icons.warning_amber_outlined,
     Icons.chat_outlined,
     Icons.report,
+    Icons.graphic_eq_outlined,
     Icons.logout_outlined
   ];
   static List click = [
@@ -44,7 +49,8 @@ class drawerwidget extends StatelessWidget {
     UserRegistered.routeName,
     Emergency.routeName,
     Chat.routeName,
-    CreatePdfStatefulWidget.routename,
+    CreatePdfComplaintsStatefulWidget.routename,
+    BarGraph.routeName,
     'Signout',
   ];
 
@@ -73,7 +79,7 @@ class drawerwidget extends StatelessWidget {
                   child: DrawerHeader(child: createDrawerHeader())),
               Container(
                 color: Colors.blue[900],
-                height: constraints.minHeight * 0.9,
+                height: constraints.minHeight,
                 child: ListView.builder(
                     physics: NeverScrollableScrollPhysics(),
                     itemCount: navigators.length,

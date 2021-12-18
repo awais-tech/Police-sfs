@@ -29,6 +29,14 @@ class _PoliceStationsState extends State<PoliceStations> {
       'value': 'Address',
       'label': 'Address',
     },
+    {
+      'value': 'Division',
+      'label': 'Division',
+    },
+    {
+      'value': 'Station Phone No',
+      'label': 'Station Phone No',
+    },
   ];
 
   final name = TextEditingController();
@@ -102,7 +110,7 @@ class _PoliceStationsState extends State<PoliceStations> {
                                   })),
                         ),
                         Container(
-                          width: 150,
+                          width: 210,
                           margin: EdgeInsets.only(bottom: 3),
                           child: TextField(
                             onChanged: (val) {
@@ -114,7 +122,8 @@ class _PoliceStationsState extends State<PoliceStations> {
                             decoration: InputDecoration(
                               fillColor: Colors.blueAccent[50],
                               filled: true,
-                              labelText: 'Search',
+                              labelText:
+                                  'Search by ${filter.text == "" ? "Name" : filter.text}',
                               icon: Icon(Icons.search),
                               border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue)),
@@ -140,6 +149,8 @@ class _PoliceStationsState extends State<PoliceStations> {
                                     "Name": (val.data() as Map)["Name"],
                                     "Address": (val.data() as Map)["Address"],
                                     "Division": (val.data() as Map)["Division"],
+                                    "Station Phone No":
+                                        (val.data() as Map)["Station Phone No"],
                                     "id": val.id
                                   };
                                 })

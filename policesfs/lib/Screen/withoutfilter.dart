@@ -1,6 +1,8 @@
 import 'dart:math';
 import 'package:policesfs/Screen/ComplaintsDatabase.dart';
 import 'package:policesfs/Screen/ComplaintsView.dart';
+import 'package:policesfs/Screen/CriminalRecordDatabase.dart';
+import 'package:policesfs/Screen/CriminalView.dart';
 import 'package:policesfs/Screen/client_database.dart';
 import 'package:flutter/material.dart';
 import 'package:policesfs/Screen/AddProduct.dart';
@@ -9,71 +11,16 @@ import 'package:policesfs/Screen/View.dart';
 import 'package:policesfs/Screen/drawner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/edit.dart';
-import 'package:select_form_field/select_form_field.dart';
 
-class Complaints extends StatefulWidget {
-  static final routeName = 'Complaints';
-
-  @override
-  State<Complaints> createState() => _ComplaintsState();
-}
-
-class _ComplaintsState extends State<Complaints> {
+class CriminalRecord extends StatelessWidget {
+  static final routeName = 'CriminalRecord';
   var streams = FirebaseFirestore.instance
-      .collection('Complaints')
+      .collection('CriminalRecord')
       .snapshots(includeMetadataChanges: true);
-
-  final name = TextEditingController();
-
-  final filter = TextEditingController();
-
-  final List<Map<String, dynamic>> _policeRoles = [
-    {
-      'value': 'status',
-      'label': 'Status',
-    },
-    {
-      'value': 'Title',
-      'label': 'Title',
-    },
-    {
-      'value': 'Catagory',
-      'label': 'Catagory',
-    },
-    {
-      'value': 'PoliceStationName',
-      'label': 'PoliceStationName',
-    },
-    {
-      'value': 'Type',
-      'label': 'Type',
-    },
-    {
-      'value': 'ComplaintNo',
-      'label': 'ComplaintNo',
-    }
-  ];
-
   @override
   Widget build(BuildContext context) {
-    var id = ModalRoute.of(context)?.settings.arguments as Map;
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
-    var stream;
-    if (id["em"] != 2) {
-      if (id["User"] != null) {
-        stream = FirebaseFirestore.instance
-            .collection('Complaints')
-            .where("Userid", isEqualTo: id["User"])
-            .snapshots();
-      }
-      if (id["staffview"] != null) {
-        stream = FirebaseFirestore.instance
-            .collection('Complaints')
-            .where("PoliceOfficerid", isEqualTo: id["staffview"])
-            .snapshots();
-      }
-    }
 
     return Scaffold(
       appBar: width < 700
@@ -106,7 +53,7 @@ class _ComplaintsState extends State<Complaints> {
                         top: 30,
                       ),
                       child: Text(
-                        'Manage Comaplaint Data',
+                        'Manage Criminal Record Data',
                         style: TextStyle(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
@@ -126,31 +73,12 @@ class _ComplaintsState extends State<Complaints> {
                         Container(
                           width: 150,
                           margin: EdgeInsets.only(bottom: 3),
-                          child: SelectFormField(
-                              type: SelectFormFieldType
-                                  .dropdown, // or can be dialog
-                              initialValue: "status",
-                              labelText: 'Search By',
-                              items: _policeRoles,
-                              onChanged: (val) => setState(() {
-                                    filter.text = val;
-                                  })),
-                        ),
-                        Container(
-                          width: 210,
-                          margin: EdgeInsets.only(bottom: 3),
                           child: TextField(
-                            onChanged: (val) {
-                              setState(() {
-                                name.text = val;
-                              });
-                            },
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               fillColor: Colors.blueAccent[50],
                               filled: true,
-                              labelText:
-                                  'Search by ${filter.text == "" ? "status" : filter.text}',
+                              labelText: 'Search',
                               icon: Icon(Icons.search),
                               border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue)),
@@ -162,7 +90,7 @@ class _ComplaintsState extends State<Complaints> {
                       ],
                     ),
                     StreamBuilder<QuerySnapshot>(
-                        stream: id["em"] != 2 ? stream : streams,
+                        stream: streams,
                         builder: (context, snp) {
                           if (snp.hasError) {
                             print(snp);
@@ -170,30 +98,6 @@ class _ComplaintsState extends State<Complaints> {
                               child: Text("No Data is here"),
                             );
                           } else if (snp.hasData || snp.data != null) {
-                            var stationdata = snp.data?.docs
-                                .map((val) {
-                                  return {
-                                    "Title": (val.data() as Map)["Title"],
-                                    "Catagory": (val.data() as Map)["Catagory"],
-                                    "status": (val.data() as Map)["status"],
-                                    "PoliceStationName": (val.data()
-                                        as Map)["PoliceStationName"],
-                                    "id": val.id,
-                                    "Type": (val.data() as Map)["Type"],
-                                    "ComplaintNo":
-                                        (val.data() as Map)["ComplaintNo"]
-                                  };
-                                })
-                                .where((element) => filter.text == ""
-                                    ? element["status"]
-                                        .toString()
-                                        .toLowerCase()
-                                        .contains(name.text.toLowerCase())
-                                    : element[filter.text]
-                                        .toString()
-                                        .toLowerCase()
-                                        .contains(name.text.toLowerCase()))
-                                .toList();
                             return Card(
                               elevation: 10,
                               child: PaginatedDataTable(
@@ -208,7 +112,7 @@ class _ComplaintsState extends State<Complaints> {
                                   DataColumn(
                                     label: Expanded(
                                       child: Text(
-                                        'Title',
+                                        'CrimeType',
                                         style: TextStyle(
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.bold),
@@ -226,7 +130,7 @@ class _ComplaintsState extends State<Complaints> {
                                     ),
                                   ),
                                 ],
-                                source: MyData(stationdata, context),
+                                source: MyData(snp.data?.docs, context),
                                 header: Container(
                                   width: double.infinity,
                                   child: Text(
@@ -301,8 +205,8 @@ class MyData extends DataTableSource {
             ? MaterialStateProperty.all(Colors.lightGreen.withOpacity(0.12))
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
-          DataCell(Text(_data[index]['status'].toString())),
-          DataCell(Text(_data[index]['Title'].toString())),
+          DataCell(Text(_data[index].data()['status'].toString())),
+          DataCell(Text(_data[index].data()['CrimeType'].toString())),
           DataCell(Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -313,7 +217,7 @@ class MyData extends DataTableSource {
                           builder: (ctx) => AlertDialog(
                             title: Text('Are you sure?'),
                             content: Text(
-                              'Do you want to delete Police Station ?',
+                              'Do you want to delete that Criminal Record ?',
                             ),
                             actions: <Widget>[
                               TextButton(
@@ -325,8 +229,8 @@ class MyData extends DataTableSource {
                               TextButton(
                                   child: Text('Yes'),
                                   onPressed: () async {
-                                    ComplaintsDatabase.ComplaintsDelete(
-                                        mainid: _data[index]["id"]);
+                                    CriminalRecords.DelCriminalRecord(
+                                        mainid: _data[index].id);
 
                                     Navigator.of(ctx).pop(false);
                                   }),
@@ -341,8 +245,8 @@ class MyData extends DataTableSource {
               ElevatedButton.icon(
                   onPressed: () => {
                         Navigator.of(context).pushNamed(
-                            ComplaintsView.routeName,
-                            arguments: _data[index]["id"])
+                            CriminalView.routeName,
+                            arguments: _data[index].id)
                       },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.red)),

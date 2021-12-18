@@ -146,7 +146,7 @@ class CriminalView extends StatelessWidget {
 
                                                   Navigator.of(context)
                                                       .pushNamed(
-                                                    PoliceStaffView.routeName,
+                                                    View.routeName,
                                                     arguments: id,
                                                   );
                                                 },
@@ -172,11 +172,11 @@ class CriminalView extends StatelessWidget {
                                                   var id =
                                                       (snp.data!.data() as Map)[
                                                           "PoliceOfficerid"];
-                                                  // Navigator.of(context)
-                                                  //     .pushNamed(
-                                                  //   PoliceStaffView.routeName,
-                                                  //   arguments: id,
-                                                  // );
+                                                  Navigator.of(context)
+                                                      .pushNamed(
+                                                    PoliceStaffView.routeName,
+                                                    arguments: id,
+                                                  );
                                                 },
                                                 style: ButtonStyle(
                                                   backgroundColor:

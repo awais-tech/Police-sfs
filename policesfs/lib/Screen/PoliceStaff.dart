@@ -38,6 +38,10 @@ class _PoliceSaffState extends State<PoliceSaff> {
       'value': 'Role',
       'label': 'Role',
     },
+    {
+      'value': 'Email',
+      'label': 'Email',
+    }
   ];
 
   @override
@@ -114,7 +118,7 @@ class _PoliceSaffState extends State<PoliceSaff> {
                                   })),
                         ),
                         Container(
-                          width: 150,
+                          width: 210,
                           margin: EdgeInsets.only(bottom: 3),
                           child: TextField(
                             onChanged: (val) {
@@ -126,7 +130,8 @@ class _PoliceSaffState extends State<PoliceSaff> {
                             decoration: InputDecoration(
                               fillColor: Colors.blueAccent[50],
                               filled: true,
-                              labelText: 'Search',
+                              labelText:
+                                  'Search by ${filter.text == "" ? "Name" : filter.text}',
                               icon: Icon(Icons.search),
                               border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue)),
@@ -155,7 +160,11 @@ class _PoliceSaffState extends State<PoliceSaff> {
                                     "PoliceStaffId":
                                         (val.data() as Map)["PoliceStaffId"],
                                     "Role": (val.data() as Map)["Role"],
-                                    "id": val.id
+                                    "Email": (val.data() as Map)["Email"],
+                                    "id": val.id,
+                                    "Type": (val.data() as Map)["Type"],
+                                    "ComplaintNo":
+                                        (val.data() as Map)["ComplaintNo"]
                                   };
                                 })
                                 .where((element) => filter.text == ""

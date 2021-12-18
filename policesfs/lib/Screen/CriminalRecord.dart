@@ -11,12 +11,47 @@ import 'package:policesfs/Screen/View.dart';
 import 'package:policesfs/Screen/drawner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/edit.dart';
+import 'package:select_form_field/select_form_field.dart';
 
-class CriminalRecord extends StatelessWidget {
+class CriminalRecord extends StatefulWidget {
   static final routeName = 'CriminalRecord';
+
+  @override
+  State<CriminalRecord> createState() => _CriminalRecordState();
+}
+
+class _CriminalRecordState extends State<CriminalRecord> {
   var streams = FirebaseFirestore.instance
       .collection('CriminalRecord')
       .snapshots(includeMetadataChanges: true);
+
+  final List<Map<String, dynamic>> _policeRoles = [
+    {
+      'value': 'CrimeType',
+      'label': 'CrimeType',
+    },
+    {
+      'value': 'Description',
+      'label': 'Description',
+    },
+    {
+      'value': 'IdentificationMark',
+      'label': 'IdentificationMark',
+    },
+    {
+      'value': 'status',
+      'label': 'status',
+    },
+    {
+      'value': 'Title',
+      'label': 'Title',
+    },
+  ];
+
+  final name = TextEditingController();
+
+  final filter = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -73,12 +108,31 @@ class CriminalRecord extends StatelessWidget {
                         Container(
                           width: 150,
                           margin: EdgeInsets.only(bottom: 3),
+                          child: SelectFormField(
+                              type: SelectFormFieldType
+                                  .dropdown, // or can be dialog
+                              initialValue: "status",
+                              labelText: 'Search By',
+                              items: _policeRoles,
+                              onChanged: (val) => setState(() {
+                                    filter.text = val;
+                                  })),
+                        ),
+                        Container(
+                          width: 210,
+                          margin: EdgeInsets.only(bottom: 3),
                           child: TextField(
+                            onChanged: (val) {
+                              setState(() {
+                                name.text = val;
+                              });
+                            },
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               fillColor: Colors.blueAccent[50],
                               filled: true,
-                              labelText: 'Search',
+                              labelText:
+                                  'Search by ${filter.text == "" ? "status" : filter.text}',
                               icon: Icon(Icons.search),
                               border: OutlineInputBorder(
                                   borderSide: BorderSide(color: Colors.blue)),
@@ -98,6 +152,30 @@ class CriminalRecord extends StatelessWidget {
                               child: Text("No Data is here"),
                             );
                           } else if (snp.hasData || snp.data != null) {
+                            var stationdata = snp.data?.docs
+                                .map((val) {
+                                  return {
+                                    "CrimeType":
+                                        (val.data() as Map)["CrimeType"],
+                                    "Description":
+                                        (val.data() as Map)["Description"],
+                                    "IdentificationMark": (val.data()
+                                        as Map)["IdentificationMark"],
+                                    "status": (val.data() as Map)["status"],
+                                    "Title": (val.data() as Map)["Title"],
+                                    "id": val.id
+                                  };
+                                })
+                                .where((element) => filter.text == ""
+                                    ? element["status"]
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(name.text.toLowerCase())
+                                    : element[filter.text]
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(name.text.toLowerCase()))
+                                .toList();
                             return Card(
                               elevation: 10,
                               child: PaginatedDataTable(
@@ -130,7 +208,7 @@ class CriminalRecord extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                                source: MyData(snp.data?.docs, context),
+                                source: MyData(stationdata, context),
                                 header: Container(
                                   width: double.infinity,
                                   child: Text(
@@ -205,8 +283,8 @@ class MyData extends DataTableSource {
             ? MaterialStateProperty.all(Colors.lightGreen.withOpacity(0.12))
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
-          DataCell(Text(_data[index].data()['status'].toString())),
-          DataCell(Text(_data[index].data()['CrimeType'].toString())),
+          DataCell(Text(_data[index]['status'].toString())),
+          DataCell(Text(_data[index]['CrimeType'].toString())),
           DataCell(Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -230,7 +308,7 @@ class MyData extends DataTableSource {
                                   child: Text('Yes'),
                                   onPressed: () async {
                                     CriminalRecords.DelCriminalRecord(
-                                        mainid: _data[index].id);
+                                        mainid: _data[index]["id"]);
 
                                     Navigator.of(ctx).pop(false);
                                   }),
@@ -244,9 +322,8 @@ class MyData extends DataTableSource {
                   label: Text("Delete")),
               ElevatedButton.icon(
                   onPressed: () => {
-                        Navigator.of(context).pushNamed(
-                            CriminalView.routeName,
-                            arguments: _data[index].id)
+                        Navigator.of(context).pushNamed(CriminalView.routeName,
+                            arguments: _data[index]["id"])
                       },
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all(Colors.red)),
