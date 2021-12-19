@@ -117,6 +117,17 @@ class EmergencyView extends StatelessWidget {
                                               height: 15,
                                             ),
                                             Text(
+                                              ' Catagory: ${(snp.data!.data() as Map)["Catagory"]}',
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.blueGrey[700],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+                                            Text(
                                               'Complain no: ${(snp.data!.data() as Map)["ComplaintNo"]}',
                                               style: TextStyle(
                                                 fontSize: 12,

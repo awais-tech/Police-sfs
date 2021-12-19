@@ -21,10 +21,10 @@ class drawerwidget extends StatelessWidget {
     "Complaints",
     "Crime Record",
     "Registered Users",
-    "Emergency Complaint",
-    "Chats",
     "Reports",
     "BarGraph",
+    "Emergency Complaint",
+    "Chats",
     "Logout"
   ];
   static List<IconData> navigatorsIcon = [
@@ -34,10 +34,10 @@ class drawerwidget extends StatelessWidget {
     Icons.comment_bank,
     Icons.fingerprint,
     Icons.verified_user,
-    Icons.warning_amber_outlined,
-    Icons.chat_outlined,
     Icons.report,
     Icons.graphic_eq_outlined,
+    Icons.warning_amber_outlined,
+    Icons.chat_outlined,
     Icons.logout_outlined
   ];
   static List click = [
@@ -47,10 +47,10 @@ class drawerwidget extends StatelessWidget {
     Complaints.routeName,
     CriminalRecord.routeName,
     UserRegistered.routeName,
-    Emergency.routeName,
-    Chat.routeName,
     CreatePdfComplaintsStatefulWidget.routename,
     BarGraph.routeName,
+    Emergency.routeName,
+    Chat.routeName,
     'Signout',
   ];
 

@@ -11,11 +11,19 @@ import 'package:policesfs/Screen/drawner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/edit.dart';
 
-class Emergency extends StatelessWidget {
+class Emergency extends StatefulWidget {
   static final routeName = 'Emergency';
+
+  @override
+  State<Emergency> createState() => _EmergencyState();
+}
+
+class _EmergencyState extends State<Emergency> {
   var streams = FirebaseFirestore.instance
       .collection('Emergency')
       .snapshots(includeMetadataChanges: true);
+  final name = TextEditingController();
+  final filter = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height;
@@ -71,9 +79,14 @@ class Emergency extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          width: 150,
+                          width: 200,
                           margin: EdgeInsets.only(bottom: 3),
                           child: TextField(
+                            onChanged: (val) {
+                              setState(() {
+                                name.text = val;
+                              });
+                            },
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               fillColor: Colors.blueAccent[50],
@@ -98,6 +111,13 @@ class Emergency extends StatelessWidget {
                               child: Text("No Data is here"),
                             );
                           } else if (snp.hasData || snp.data != null) {
+                            var station = snp.data?.docs.where((element) {
+                              var elements = element.data() as Map;
+                              return elements!.keys.any((elem) => element[elem]
+                                  .toString()
+                                  .toLowerCase()
+                                  .contains(name.text.toLowerCase()));
+                            }).toList();
                             return Card(
                               elevation: 10,
                               child: PaginatedDataTable(
@@ -130,7 +150,7 @@ class Emergency extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                                source: MyData(snp.data?.docs, context),
+                                source: MyData(station, context),
                                 header: Container(
                                   width: double.infinity,
                                   child: Text(
@@ -205,8 +225,8 @@ class MyData extends DataTableSource {
             ? MaterialStateProperty.all(Colors.lightGreen.withOpacity(0.12))
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
-          DataCell(Text(_data[index].data()['status'].toString())),
-          DataCell(Text(_data[index].data()['Title'].toString())),
+          DataCell(Text(_data[index]['status'].toString())),
+          DataCell(Text(_data[index]['Title'].toString())),
           DataCell(Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [

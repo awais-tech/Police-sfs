@@ -4,9 +4,11 @@ import 'package:policesfs/Screen/AddProduct.dart';
 import 'package:policesfs/Screen/Addedit.dart';
 import 'package:policesfs/Screen/Addstaff.dart';
 import 'package:policesfs/Screen/Complaints.dart';
+import 'package:policesfs/Screen/ComplaintsGraph.dart';
 import 'package:policesfs/Screen/ComplaintsView.dart';
 import 'package:policesfs/Screen/CriminalRecord.dart';
 import 'package:policesfs/Screen/CriminalView.dart';
+import 'package:policesfs/Screen/CriminalsRecordGraph.dart';
 import 'package:policesfs/Screen/EmergencyComplaint.dart';
 import 'package:policesfs/Screen/EmergencyView.dart';
 import 'package:policesfs/Screen/GenerateReportComplaints.dart';
@@ -123,7 +125,9 @@ class _AppState extends State<MyApp> {
           EmergencyView.routeName: (ctx) => EmergencyView(),
           CreatePdfComplaintsStatefulWidget.routename: (ctx) =>
               CreatePdfComplaintsStatefulWidget(),
-          BarGraph.routeName: (ctx) => BarGraph()
+          BarGraph.routeName: (ctx) => BarGraph(),
+          CriminalRecordGraph.routeName: (ctx) => CriminalRecordGraph(),
+          ComplaintsGraph.routeName: (ctx) => ComplaintsGraph(),
         });
   }
 }

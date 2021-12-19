@@ -12,11 +12,20 @@ import 'package:policesfs/Screen/drawner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/edit.dart';
 
-class UserRegistered extends StatelessWidget {
+class UserRegistered extends StatefulWidget {
   static final routeName = 'UserRegistered';
+
+  @override
+  State<UserRegistered> createState() => _UserRegisteredState();
+}
+
+class _UserRegisteredState extends State<UserRegistered> {
   final streams = FirebaseFirestore.instance
       .collection('user')
       .snapshots(includeMetadataChanges: true);
+  final name = TextEditingController();
+  final filter = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     var id = ModalRoute.of(context)?.settings.arguments;
@@ -78,9 +87,14 @@ class UserRegistered extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          width: 150,
+                          width: 200,
                           margin: EdgeInsets.only(bottom: 3),
                           child: TextField(
+                            onChanged: (val) {
+                              setState(() {
+                                name.text = val;
+                              });
+                            },
                             keyboardType: TextInputType.text,
                             decoration: InputDecoration(
                               fillColor: Colors.blueAccent[50],
@@ -105,6 +119,28 @@ class UserRegistered extends StatelessWidget {
                               child: Text("No Data is here"),
                             );
                           } else if (snp.hasData || snp.data != null) {
+                            var stationdata = snp.data?.docs
+                                .map((val) {
+                                  return {
+                                    "address": (val.data() as Map)["address"],
+                                    "age": (val.data() as Map)["age"],
+                                    "area": (val.data() as Map)["area"],
+                                    "city": (val.data() as Map)["city"],
+                                    "email": (val.data() as Map)["email"],
+                                    "houseNo": (val.data() as Map)["houseNo"],
+                                    "name": (val.data() as Map)["name"],
+                                    "phoneno": (val.data() as Map)["phoneno"],
+                                    "streetNo": (val.data() as Map)["streetNo"],
+                                    "id": val.id
+                                  };
+                                })
+                                .where((element) => element.keys.any((elem) =>
+                                    element[elem]
+                                        .toString()
+                                        .toLowerCase()
+                                        .contains(name.text.toLowerCase())))
+                                .toList();
+
                             return Card(
                               elevation: 10,
                               child: PaginatedDataTable(
@@ -150,7 +186,7 @@ class UserRegistered extends StatelessWidget {
                                     ),
                                   ),
                                 ],
-                                source: MyData(snp.data?.docs, context),
+                                source: MyData(stationdata, context),
                                 header: Container(
                                   width: double.infinity,
                                   child: Text(
@@ -236,9 +272,9 @@ class MyData extends DataTableSource {
             ? MaterialStateProperty.all(Colors.lightGreen.withOpacity(0.12))
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
-          DataCell(Text(_data[index].data()['name'].toString())),
-          DataCell(Text(_data[index].data()['phoneno'].toString())),
-          DataCell(Text(_data[index].data()['email'].toString())),
+          DataCell(Text(_data[index]['name'].toString())),
+          DataCell(Text(_data[index]['phoneno'].toString())),
+          DataCell(Text(_data[index]['email'].toString())),
           DataCell(
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -246,7 +282,7 @@ class MyData extends DataTableSource {
                 ElevatedButton.icon(
                     onPressed: () => {
                           Navigator.of(context).pushNamed(Userdetails.routename,
-                              arguments: _data[index].id)
+                              arguments: _data[index]["id"])
                         },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.red)),
