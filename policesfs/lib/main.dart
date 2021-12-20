@@ -20,10 +20,13 @@ import 'package:policesfs/Screen/PoliceStaff.dart';
 import 'package:policesfs/Screen/PoliceStation.dart';
 import 'package:policesfs/Screen/Policestaffview.dart';
 import 'package:policesfs/Screen/RegisteredUsersDetails.dart';
+import 'package:policesfs/Screen/Specficstation.dart';
 import 'package:policesfs/Screen/UserRegistered.dart';
+import 'package:policesfs/Screen/UsercomplaintsGraph.dart';
 import 'package:policesfs/Screen/View.dart';
 import 'package:policesfs/Screen/chat.dart';
 import 'package:policesfs/Screen/edit.dart';
+import 'package:policesfs/Screen/stationcomplaintsGraph.dart';
 import 'package:policesfs/widgets/Constants.dart';
 import './Screen/HomeScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -128,6 +131,9 @@ class _AppState extends State<MyApp> {
           BarGraph.routeName: (ctx) => BarGraph(),
           CriminalRecordGraph.routeName: (ctx) => CriminalRecordGraph(),
           ComplaintsGraph.routeName: (ctx) => ComplaintsGraph(),
+          SpecificStaff.routeName: (ctx) => SpecificStaff(),
+          StationComplaintGraph.routeName: (ctx) => StationComplaintGraph(),
+          UserComplaintGraph.routeName: (ctx) => UserComplaintGraph(),
         });
   }
 }

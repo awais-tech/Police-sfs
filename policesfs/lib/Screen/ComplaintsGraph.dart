@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:policesfs/Screen/CriminalRecord.dart';
+import 'package:policesfs/Screen/CriminalsRecordGraph.dart';
+import 'package:policesfs/Screen/GenerateReportStations.dart';
 import 'package:policesfs/Screen/drawner.dart';
 import 'package:select_form_field/select_form_field.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
@@ -105,7 +107,7 @@ class _ComplaintsGraphState extends State<ComplaintsGraph> {
                                     ElevatedButton.icon(
                                         onPressed: () => {
                                               Navigator.of(context).pushNamed(
-                                                ComplaintsGraph.routeName,
+                                                BarGraph.routeName,
                                               )
                                             },
                                         style: ButtonStyle(
@@ -118,7 +120,7 @@ class _ComplaintsGraphState extends State<ComplaintsGraph> {
                                     ElevatedButton.icon(
                                         onPressed: () => {
                                               Navigator.of(context).pushNamed(
-                                                CriminalRecord.routeName,
+                                                CriminalRecordGraph.routeName,
                                               )
                                             },
                                         style: ButtonStyle(

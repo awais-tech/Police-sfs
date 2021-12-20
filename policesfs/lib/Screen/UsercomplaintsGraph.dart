@@ -2,21 +2,23 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:policesfs/Screen/ComplaintsGraph.dart';
+import 'package:policesfs/Screen/CriminalRecord.dart';
+import 'package:policesfs/Screen/CriminalsRecordGraph.dart';
 import 'package:policesfs/Screen/GenerateReportStations.dart';
+import 'package:policesfs/Screen/Specficstation.dart';
 import 'package:policesfs/Screen/drawner.dart';
 import 'package:select_form_field/select_form_field.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class CriminalRecordGraph extends StatefulWidget {
-  static const routeName = '/CriminalsRecord-graph';
+class UserComplaintGraph extends StatefulWidget {
+  static const routeName = '/UserComplaintsRecord-graph';
 
   @override
-  _CriminalRecordGraphState createState() => _CriminalRecordGraphState();
+  _UserComplaintGraphState createState() => _UserComplaintGraphState();
 }
 
-class _CriminalRecordGraphState extends State<CriminalRecordGraph> {
+class _UserComplaintGraphState extends State<UserComplaintGraph> {
   var _isInit = true;
   var _isLoading = false;
   var _charData = [EmployeesPerMonth(DateTime(2021, 1, 1), 5)];
@@ -56,12 +58,17 @@ class _CriminalRecordGraphState extends State<CriminalRecordGraph> {
   ];
 
   final filter = TextEditingController();
-  var streams =
-      FirebaseFirestore.instance.collection("CriminalRecord").snapshots();
+
   @override
   Widget build(BuildContext context) {
+    var id = ModalRoute.of(context)?.settings.arguments as Map;
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
+    var streams = FirebaseFirestore.instance
+        .collection("Complaints")
+        .where("PoliceStationName", isEqualTo: id["id"])
+        .snapshots();
+
     return SafeArea(
         child: Scaffold(
       appBar: width < 700
@@ -100,38 +107,6 @@ class _CriminalRecordGraphState extends State<CriminalRecordGraph> {
                             return Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    ElevatedButton.icon(
-                                        onPressed: () => {
-                                              Navigator.of(context).pushNamed(
-                                                BarGraph.routeName,
-                                              )
-                                            },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.green)),
-                                        icon: Icon(Icons.auto_graph_sharp),
-                                        label: Text(
-                                            "View Police Staff Record Graph")),
-                                    ElevatedButton.icon(
-                                        onPressed: () => {
-                                              Navigator.of(context).pushNamed(
-                                                ComplaintsGraph.routeName,
-                                              )
-                                            },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.green)),
-                                        icon: Icon(Icons.auto_graph_sharp),
-                                        label: Text(
-                                            "View Complaint Record Graph")),
-                                  ],
-                                ),
                                 Container(
                                   width: 150,
                                   margin: EdgeInsets.only(bottom: 3),
@@ -149,12 +124,12 @@ class _CriminalRecordGraphState extends State<CriminalRecordGraph> {
                                   // isTransposed: true,
                                   title: ChartTitle(
                                     text:
-                                        '${filter.text == "" ? "Day" : filter.text} wise Criminal Record',
+                                        '${filter.text == "" ? "Day" : filter.text} wise Complaint Record',
                                   ),
                                   legend: Legend(isVisible: true),
                                   series: <ChartSeries>[
                                     BarSeries(
-                                      name: 'Criminal Record',
+                                      name: '${id["id"]} Complaint Record',
                                       color: Colors.deepPurple,
                                       opacity: 0.9,
                                       dataSource: x,
@@ -178,7 +153,7 @@ class _CriminalRecordGraphState extends State<CriminalRecordGraph> {
                                     edgeLabelPlacement:
                                         EdgeLabelPlacement.shift,
                                     title: AxisTitle(
-                                        text: 'Criminal Records in numbers'),
+                                        text: 'Complaint Records in numbers'),
                                   ),
                                 ),
                               ],
@@ -204,7 +179,7 @@ class _CriminalRecordGraphState extends State<CriminalRecordGraph> {
     datas.docs.forEach((x) {
       // Timestamp dates;
 
-      var c = DateTime.parse(x.data()["Date added"].toDate().toString());
+      var c = DateTime.parse(x.data()["date"].toDate().toString());
       filter.text == "" || filter.text == "Day"
           ? counts[DateTime.parse(DateFormat('yyyy-MM-dd').format(c))] =
               (counts[DateTime.parse(DateFormat('yyyy-MM-dd').format(c))] ??
@@ -235,7 +210,7 @@ class _CriminalRecordGraphState extends State<CriminalRecordGraph> {
   // Timestamp find(x) {
   //   return filter.text == "PoliceStation"
   //       ? x.data()["dateofEstablish"]
-  //       : filter.text == "CriminalRecord"
+  //       : filter.text == "Complaints"
   //           ? x.data()["Date added"]
   //           : filter.text == "Complaints"
   //               ? x.data()["date"]

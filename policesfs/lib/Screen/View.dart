@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:policesfs/Screen/GenerateReportStations.dart';
 import 'package:policesfs/Screen/PoliceStaff.dart';
+import 'package:policesfs/Screen/Specficstation.dart';
 import 'package:policesfs/Screen/drawner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:policesfs/Screen/stationcomplaintsGraph.dart';
 
 class View extends StatefulWidget {
   static final routeName = 'View';
@@ -194,7 +197,76 @@ class _ViewState extends State<View> {
                                                         )),
                                                       ),
                                                       child: Text(
-                                                          "View StaffList of that Police Station"))
+                                                          "View StaffList ")),
+                                                  SizedBox(height: 15),
+                                                  ElevatedButton(
+                                                      onPressed: () {
+                                                        var id = (snp.data!
+                                                                .data()
+                                                            as Map)["Division"];
+                                                        var ids = snp.data!.id;
+
+                                                        Navigator.of(context)
+                                                            .pushNamed(
+                                                          SpecificStaff
+                                                              .routeName,
+                                                          arguments: {
+                                                            "id": id,
+                                                            "ids": ids
+                                                          },
+                                                        );
+                                                      },
+                                                      style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(Colors
+                                                                    .blue[700]),
+                                                        shape: MaterialStateProperty.all<
+                                                                RoundedRectangleBorder>(
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10.0),
+                                                        )),
+                                                      ),
+                                                      child: Text(
+                                                          "View  Registered Police Staff Graph")),
+                                                  SizedBox(
+                                                    height: 15,
+                                                  ),
+                                                  ElevatedButton(
+                                                      onPressed: () {
+                                                        var id = (snp.data!
+                                                                .data()
+                                                            as Map)["Division"];
+                                                        var ids = snp.data!.id;
+                                                        Navigator.of(context)
+                                                            .pushNamed(
+                                                          StationComplaintGraph
+                                                              .routeName,
+                                                          arguments: {
+                                                            "id": id,
+                                                            "ids": ids
+                                                          },
+                                                        );
+                                                      },
+                                                      style: ButtonStyle(
+                                                        backgroundColor:
+                                                            MaterialStateProperty
+                                                                .all(Colors
+                                                                    .blue[700]),
+                                                        shape: MaterialStateProperty.all<
+                                                                RoundedRectangleBorder>(
+                                                            RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(
+                                                                      10.0),
+                                                        )),
+                                                      ),
+                                                      child: Text(
+                                                          "View Complaint Graph ")),
                                                 ],
                                               ),
                                             ),

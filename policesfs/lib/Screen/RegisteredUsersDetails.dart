@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/Complaints.dart';
 import 'package:policesfs/Screen/UserRegistered.dart';
+import 'package:policesfs/Screen/UsercomplaintsGraph.dart';
 import 'package:policesfs/Screen/drawner.dart';
 
 class Userdetails extends StatefulWidget {
@@ -230,7 +231,42 @@ class _UserdetailsState extends State<Userdetails> {
                                                             )),
                                                           ),
                                                           child: Text(
-                                                              "View Complaints Details"))
+                                                              "View Complaints Details")),
+                                                      SizedBox(height: 15),
+                                                      ElevatedButton(
+                                                          onPressed: () {
+                                                            var ids =
+                                                                snap.data!.id;
+                                                            var id =
+                                                                snap.data!.id;
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pushNamed(
+                                                              UserComplaintGraph
+                                                                  .routeName,
+                                                              arguments: {
+                                                                "id": id,
+                                                                "ids": ids
+                                                              },
+                                                            );
+                                                          },
+                                                          style: ButtonStyle(
+                                                            backgroundColor:
+                                                                MaterialStateProperty
+                                                                    .all(Colors
+                                                                            .blue[
+                                                                        700]),
+                                                            shape: MaterialStateProperty.all<
+                                                                    RoundedRectangleBorder>(
+                                                                RoundedRectangleBorder(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          10.0),
+                                                            )),
+                                                          ),
+                                                          child: Text(
+                                                              "View Complaint Graph ")),
                                                     ],
                                                   ),
                                                 ),
