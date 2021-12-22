@@ -1,3 +1,4 @@
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -33,7 +34,7 @@ class _AuthScreenState extends State<AuthScreen> {
         );
 
         await Constants.prefs.setString('userData', authResult.user!.uid);
-         await Constants.prefs.setBool('login', true);
+        await Constants.prefs.setBool('login', true);
         print(authResult);
       } else {
         authResult = await _auth.createUserWithEmailAndPassword(
@@ -82,10 +83,17 @@ class _AuthScreenState extends State<AuthScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).primaryColor,
-      body: AuthForm(
-        _submitAuthForm,
-        _isLoading,
+      body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/images/new.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
+        child: AuthForm(
+          _submitAuthForm,
+          _isLoading,
+        ),
       ),
     );
   }

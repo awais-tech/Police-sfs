@@ -170,6 +170,13 @@ class _PoliceStationsState extends State<PoliceStations> {
                               child: PaginatedDataTable(
                                 columns: const <DataColumn>[
                                   DataColumn(
+                                    label: Text('id',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  DataColumn(
                                     label: Text('Name',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
@@ -206,10 +213,12 @@ class _PoliceStationsState extends State<PoliceStations> {
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
+                                showFirstLastButtons: true,
                                 columnSpacing: 50,
                                 horizontalMargin: 10,
                                 rowsPerPage: 6,
                                 showCheckboxColumn: false,
+                                sortColumnIndex: 1,
 
                                 //     .map(,
                                 // rows: snp.data!.docs,
@@ -280,11 +289,13 @@ class MyData extends DataTableSource {
   int get rowCount => _data.length;
   int get selectedRowCount => 0;
   DataRow getRow(int index) {
-    return DataRow(
+    return DataRow.byIndex(
+        index: index,
         color: index % 2 == 0
             ? MaterialStateProperty.all(Colors.lightGreen.withOpacity(0.12))
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
+          DataCell(Text('P${index.toString()}')),
           DataCell(Text(_data[index]['Name'].toString())),
           DataCell(Text(_data[index]['Address'].toString())),
           DataCell(Row(

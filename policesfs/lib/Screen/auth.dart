@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 
 class AuthForm extends StatefulWidget {
   AuthForm(
@@ -44,42 +45,93 @@ class _AuthFormState extends State<AuthForm> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Card(
-        margin: EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(16),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  TextFormField(
-                    key: ValueKey('email'),
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(
-                      labelText: 'Email address',
+      child: Container(
+        height: MediaQuery.of(context).size.height / 1.5,
+        width: double.infinity,
+        child: Card(
+          color: Colors.grey.withOpacity(0.8),
+          shadowColor: Colors.blueGrey,
+          shape: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20),
+              borderSide: BorderSide(
+                color: Colors.grey.withOpacity(0.2),
+                width: 1,
+              )),
+          margin: EdgeInsets.all(20),
+          elevation: 30,
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.all(16),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Container(
+                      child: ClipPath(
+                        clipper: WaveClipperOne(flip: true, reverse: false),
+                        child: Container(
+                          height: 120,
+                          decoration: BoxDecoration(
+                            color: Colors.blue[900],
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(20.0),
+                              topRight: Radius.circular(20.0),
+                            ),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "POLICE SFS Admin",
+                              style: TextStyle(
+                                fontStyle: FontStyle.italic,
+                                fontSize: 32,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
-                    onSaved: (value) {
-                      _userEmail = value as String;
-                    },
-                  ),
-                  TextFormField(
-                    key: ValueKey('password'),
-                    decoration: InputDecoration(labelText: 'Password'),
-                    obscureText: true,
-                    onSaved: (value) {
-                      _userPassword = value as String;
-                    },
-                  ),
-                  SizedBox(height: 12),
-                  if (widget.isLoading) CircularProgressIndicator(),
-                  if (!widget.isLoading)
-                    RaisedButton(
-                      child: Text('Login'),
-                      onPressed: _trySubmit,
+                    TextFormField(
+                      key: ValueKey('email'),
+                      keyboardType: TextInputType.emailAddress,
+                      decoration: InputDecoration(
+                        labelText: 'Email address',
+                      ),
+                      onSaved: (value) {
+                        _userEmail = value as String;
+                      },
                     ),
-                ],
+                    TextFormField(
+                      key: ValueKey('password'),
+                      decoration: InputDecoration(labelText: 'Password'),
+                      obscureText: true,
+                      onSaved: (value) {
+                        _userPassword = value as String;
+                      },
+                    ),
+                    SizedBox(height: 12),
+                    if (widget.isLoading) CircularProgressIndicator(),
+                    if (!widget.isLoading)
+                      Container(
+                        width: 120,
+                        child: ElevatedButton(
+                            onPressed: _trySubmit,
+                            style: ButtonStyle(
+                              backgroundColor:
+                                  MaterialStateProperty.all(Colors.blue[700]),
+                              shape: MaterialStateProperty.all<
+                                      RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(10.0),
+                              )),
+                            ),
+                            child: Text("Login")),
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
