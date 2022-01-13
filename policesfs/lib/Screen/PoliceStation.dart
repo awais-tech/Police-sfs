@@ -88,15 +88,6 @@ class _PoliceStationsState extends State<PoliceStations> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          child: ElevatedButton(
-                            onPressed: () => {},
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.blueAccent)),
-                            child: Text('Export pdf'),
-                          ),
-                        ),
-                        Container(
                           width: 150,
                           margin: EdgeInsets.only(bottom: 3),
                           child: SelectFormField(
@@ -170,7 +161,7 @@ class _PoliceStationsState extends State<PoliceStations> {
                               child: PaginatedDataTable(
                                 columns: const <DataColumn>[
                                   DataColumn(
-                                    label: Text('id',
+                                    label: Text('ID',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontStyle: FontStyle.italic,

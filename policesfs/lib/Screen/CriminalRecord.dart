@@ -97,15 +97,6 @@ class _CriminalRecordState extends State<CriminalRecord> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          child: ElevatedButton(
-                            onPressed: () => {},
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.blueAccent)),
-                            child: Text('Export pdf'),
-                          ),
-                        ),
-                        Container(
                           width: 150,
                           margin: EdgeInsets.only(bottom: 3),
                           child: SelectFormField(
@@ -180,6 +171,13 @@ class _CriminalRecordState extends State<CriminalRecord> {
                               elevation: 10,
                               child: PaginatedDataTable(
                                 columns: const <DataColumn>[
+                                  DataColumn(
+                                    label: Text('ID',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
                                   DataColumn(
                                     label: Text('Status',
                                         textAlign: TextAlign.center,
@@ -283,6 +281,7 @@ class MyData extends DataTableSource {
             ? MaterialStateProperty.all(Colors.lightGreen.withOpacity(0.12))
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
+          DataCell(Text('CR${index.toString()}')),
           DataCell(Text(_data[index]['status'].toString())),
           DataCell(Text(_data[index]['CrimeType'].toString())),
           DataCell(Row(

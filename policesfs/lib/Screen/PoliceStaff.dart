@@ -182,6 +182,13 @@ class _PoliceSaffState extends State<PoliceSaff> {
                               child: PaginatedDataTable(
                                 columns: const <DataColumn>[
                                   DataColumn(
+                                    label: Text('ID',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
+                                  DataColumn(
                                     label: Text('Name',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
@@ -305,6 +312,7 @@ class MyData extends DataTableSource {
             ? MaterialStateProperty.all(Colors.lightGreen.withOpacity(0.12))
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
+          DataCell(Text('ST${index.toString()}')),
           DataCell(Text(_data[index]['Name'].toString())),
           DataCell(Text(_data[index]['PoliceStationDivision'].toString())),
           DataCell(Text(_data[index]['Role'].toString())),

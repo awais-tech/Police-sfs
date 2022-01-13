@@ -1,20 +1,17 @@
-import 'package:CreativeParkingSolution/GaragePanel/UpdateLocation.dart';
-import 'package:CreativeParkingSolution/Screens/utlits/helper.dart';
-import 'package:CreativeParkingSolution/google_map/Managemap.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:policesfs/Utlits/helpers.dart';
+import 'package:policesfs/provider/gmapprovider.dart';
 import 'package:provider/provider.dart';
-import 'package:CreativeParkingSolution/GaragePanel/GarageAdmin.dart';
 
 class Maps extends StatefulWidget {
-  int id;
-  String name;
+  late int id;
+  late String name;
   Maps(name, id) {
     this.id = id;
     this.name = name;
   }
-
   @override
   _MapsState createState() => _MapsState();
 }
@@ -98,10 +95,12 @@ class _MapsState extends State<Maps> {
                                       backgroundColor: Colors.black,
                                       textColor: Colors.white,
                                       fontSize: 16.0);
-                                  Navigator.pushReplacement(
-                                      context,
-                                      new MaterialPageRoute(
-                                          builder: (context) => GarageAdmin()));
+
+                                  //back after save data
+                                  // Navigator.pushReplacement(
+                                  //     context,
+                                  //     new MaterialPageRoute(
+                                  //         builder: (context) => GarageAdmin()));
                                 },
                                 () {
                                   Navigator.pop(context);
@@ -126,10 +125,10 @@ class _MapsState extends State<Maps> {
               child: IconButton(
                   icon: Icon(Icons.arrow_back),
                   onPressed: () {
-                    Navigator.pushReplacement(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (context) => UpdateLocation("name", 92)));
+                    // Navigator.pushReplacement(
+                    //     context,
+                    //     new MaterialPageRoute(
+                    //         builder: (context) => UpdateLocation("name", 92)));
                   }))
         ],
       ),

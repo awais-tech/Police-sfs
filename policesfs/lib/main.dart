@@ -6,6 +6,10 @@ import 'package:policesfs/Screen/Addstaff.dart';
 import 'package:policesfs/Screen/Complaints.dart';
 import 'package:policesfs/Screen/ComplaintsGraph.dart';
 import 'package:policesfs/Screen/ComplaintsView.dart';
+
+import 'package:policesfs/provider/CurrentLocation.dart';
+import 'package:policesfs/provider/gmapprovider.dart';
+import 'package:provider/provider.dart';
 import 'package:policesfs/Screen/CriminalRecord.dart';
 import 'package:policesfs/Screen/CriminalView.dart';
 import 'package:policesfs/Screen/CriminalsRecordGraph.dart';
@@ -88,52 +92,59 @@ class _AppState extends State<MyApp> {
     //       //   create: (ctx) => Auth(),
     //       // ),
     //     ],
-    return MaterialApp(
-        title: 'Police Sfs',
-        theme: ThemeData(
-          primarySwatch: Colors.purple,
-          accentColor: Colors.deepOrange,
-          fontFamily: 'Lato',
-        ),
-        // home: Constants.prefs.getBool('login') == true
-        //     ? ProductsOverviewScreen()
-        //     : AuthScreen(),
-        home: StreamBuilder(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (ctx, userSnapshot) {
-              if (userSnapshot.data != null) {
-                return HomeScreen();
-              }
 
-              return Constants.prefs.getBool('login') == true
-                  ? HomeScreen()
-                  : AuthScreen();
-            }),
-        routes: {
-          PoliceStations.routeName: (ctx) => PoliceStations(),
-          Edit.routeName: (ctx) => Edit(),
-          View.routeName: (ctx) => View(),
-          Addedit.routeName: (ctx) => Addedit(),
-          PoliceSaff.routeName: (ctx) => PoliceSaff(),
-          PoliceStaffView.routeName: (ctx) => PoliceStaffView(),
-          Complaints.routeName: (ctx) => Complaints(),
-          ComplaintsView.routeName: (ctx) => ComplaintsView(),
-          Chat.routeName: (ctx) => Chat(),
-          Adddstaff.routeName: (ctx) => Adddstaff(),
-          CriminalRecord.routeName: (ctx) => CriminalRecord(),
-          CriminalView.routeName: (ctx) => CriminalView(),
-          Userdetails.routename: (ctx) => Userdetails(),
-          UserRegistered.routeName: (ctx) => UserRegistered(),
-          Emergency.routeName: (ctx) => Emergency(),
-          EmergencyView.routeName: (ctx) => EmergencyView(),
-          CreatePdfComplaintsStatefulWidget.routename: (ctx) =>
-              CreatePdfComplaintsStatefulWidget(),
-          BarGraph.routeName: (ctx) => BarGraph(),
-          CriminalRecordGraph.routeName: (ctx) => CriminalRecordGraph(),
-          ComplaintsGraph.routeName: (ctx) => ComplaintsGraph(),
-          SpecificStaff.routeName: (ctx) => SpecificStaff(),
-          StationComplaintGraph.routeName: (ctx) => StationComplaintGraph(),
-          UserComplaintGraph.routeName: (ctx) => UserComplaintGraph(),
-        });
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: Currentlocation()),
+        ChangeNotifierProvider.value(value: GernateMap())
+      ],
+      child: MaterialApp(
+          title: 'Police Sfs',
+          theme: ThemeData(
+            primarySwatch: Colors.purple,
+            accentColor: Colors.deepOrange,
+            fontFamily: 'Lato',
+          ),
+          // home: Constants.prefs.getBool('login') == true
+          //     ? ProductsOverviewScreen()
+          //     : AuthScreen(),
+          home: StreamBuilder(
+              stream: FirebaseAuth.instance.authStateChanges(),
+              builder: (ctx, userSnapshot) {
+                if (userSnapshot.data != null) {
+                  return HomeScreen();
+                }
+
+                return Constants.prefs.getBool('login') == true
+                    ? HomeScreen()
+                    : AuthScreen();
+              }),
+          routes: {
+            PoliceStations.routeName: (ctx) => PoliceStations(),
+            Edit.routeName: (ctx) => Edit(),
+            View.routeName: (ctx) => View(),
+            Addedit.routeName: (ctx) => Addedit(),
+            PoliceSaff.routeName: (ctx) => PoliceSaff(),
+            PoliceStaffView.routeName: (ctx) => PoliceStaffView(),
+            Complaints.routeName: (ctx) => Complaints(),
+            ComplaintsView.routeName: (ctx) => ComplaintsView(),
+            Chat.routeName: (ctx) => Chat(),
+            Adddstaff.routeName: (ctx) => Adddstaff(),
+            CriminalRecord.routeName: (ctx) => CriminalRecord(),
+            CriminalView.routeName: (ctx) => CriminalView(),
+            Userdetails.routename: (ctx) => Userdetails(),
+            UserRegistered.routeName: (ctx) => UserRegistered(),
+            Emergency.routeName: (ctx) => Emergency(),
+            EmergencyView.routeName: (ctx) => EmergencyView(),
+            CreatePdfComplaintsStatefulWidget.routename: (ctx) =>
+                CreatePdfComplaintsStatefulWidget(),
+            BarGraph.routeName: (ctx) => BarGraph(),
+            CriminalRecordGraph.routeName: (ctx) => CriminalRecordGraph(),
+            ComplaintsGraph.routeName: (ctx) => ComplaintsGraph(),
+            SpecificStaff.routeName: (ctx) => SpecificStaff(),
+            StationComplaintGraph.routeName: (ctx) => StationComplaintGraph(),
+            UserComplaintGraph.routeName: (ctx) => UserComplaintGraph(),
+          }),
+    );
   }
 }

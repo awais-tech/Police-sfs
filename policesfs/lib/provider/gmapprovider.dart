@@ -1,17 +1,19 @@
-import 'dart:convert';
+// import 'dart:convert';
 
-import 'package:CreativeParkingSolution/GaragePanel/UpdateLocation.dart';
-import 'package:CreativeParkingSolution/Model/Garages.dart';
-import 'package:CreativeParkingSolution/Model/Locationupdate.dart';
-import 'package:CreativeParkingSolution/Service/LocationService.dart';
-import 'package:CreativeParkingSolution/google_map/Currentlocation.dart';
+// import 'package:CreativeParkingSolution/GaragePanel/UpdateLocation.dart';
+// import 'package:CreativeParkingSolution/Model/Garages.dart';
+// import 'package:CreativeParkingSolution/Model/Locationupdate.dart';
+// import 'package:CreativeParkingSolution/Service/LocationService.dart';
+// import 'package:CreativeParkingSolution/google_map/Currentlocation.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:geocoder/geocoder.dart';
+// import 'package:geocoder/geocoder.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geocoder/geocoder.dart' as geoc;
+import 'package:policesfs/Model/Policestation.dart';
+import 'package:geocoding/geocoding.dart' as geoc;
+import 'package:policesfs/provider/CurrentLocation.dart';
 import 'package:provider/provider.dart';
 
 class GernateMap extends ChangeNotifier {
@@ -23,25 +25,28 @@ class GernateMap extends ChangeNotifier {
 
   bool get getissaveselectmap => issaveselectmap;
   var reponse;
-  String msg;
-  Garages selectgarage;
-  Position position;
+  late String msg;
+  late Policestation selectgarage;
+  late Position position;
   double lat = 0.00;
   double lng = 0.00;
   double get latitude => lat;
   double get longitude => lng;
-  String finaladdeess, countryname = "Searching......";
+  late String finaladdeess, countryname = "Searching......";
   String get getcountryname => countryname;
   String get getfinaladdess => finalAddress;
-  Garages get selectgarages => selectgarage;
+  Policestation get selectgarages => selectgarage;
   Position get getpostion => position;
-  String finalAddress;
-  GoogleMapController mapController;
+  late String finalAddress;
+  late GoogleMapController mapController;
   Future currentlocation() async {
     var postiondate = await GeolocatorPlatform.instance.getCurrentPosition();
-    final cord = geoc.Coordinates(postiondate.latitude, postiondate.longitude);
-    var address = await geoc.Geocoder.local.findAddressesFromCoordinates(cord);
-    String mianaddrerss = address.first.addressLine;
+    // final cord = geoc.Coordinates(postiondate.latitude, postiondate.longitude);
+    final cord = geoc.placemarkFromCoordinates(
+        postiondate.latitude, postiondate.longitude);
+    // var address = await geoc.Geocoder.local.findAddressesFromCoordinates(cord);
+    String mianaddrerss = cord.asStream().single.toString();
+    // String mianaddrerss = address.first.addressLine;
     lat = postiondate.latitude;
     lng = postiondate.longitude;
     finalAddress = mianaddrerss;
@@ -49,7 +54,7 @@ class GernateMap extends ChangeNotifier {
     notifyListeners();
   }
 
-  selectdata(Garages garage) {
+  selectdata(Policestation garage) {
     selectgarage = garage;
     notifyListeners();
   }
@@ -118,45 +123,46 @@ class GernateMap extends ChangeNotifier {
   }
 
   Future<void> getmovecamera() async {
-    final cord = geoc.Coordinates(this.latitude, this.longitude);
+    final cord = geoc.placemarkFromCoordinates(this.latitude, this.longitude);
 
-    var address = await geoc.Geocoder.local.findAddressesFromCoordinates(cord);
-    finalAddress = address.first.addressLine;
+    // var address = await geoc.Geocoder.local.findAddressesFromCoordinates(cord);
+    finalAddress = cord.asStream().first.toString();
     notifyListeners();
-    countryname = address.first.countryName;
+    countryname = cord.asStream().first.toString();
     notifyListeners();
     print(finalAddress);
   }
 
   void updatelocation(id, name, context) {
-    issaveselectmap = true;
-    notifyListeners();
-    var locationservice = new LocationUpdateService();
-    LocationUpdate locationupdate = new LocationUpdate(
-        id: id,
-        lat: Provider.of<GernateMap>(context, listen: false).latitude,
-        lng: Provider.of<GernateMap>(context, listen: false).longitude);
-    locationservice
-        .currentlocationUpdate(locationupdate, context)
-        .then(((value) {
-      issaveselectmap = false;
-      notifyListeners();
-      reponse = jsonDecode(value.body);
-      issave = reponse["status"];
-      msg = reponse["msg"];
-      // setState(() {
-      //   issave = false;
-      // });
-      final snackBar = SnackBar(
-        content: Text(msg),
-        backgroundColor: Colors.blue[50],
-        duration: Duration(seconds: 5),
-      );
-      Scaffold.of(context).showSnackBar(snackBar);
-    }));
-    issave = reponse["status"];
-    msg = reponse["msg"];
+    //   issaveselectmap = true;
+    //   notifyListeners();
+    //   var locationservice = new LocationUpdateService();
+    //   LocationUpdate locationupdate = new LocationUpdate(
+    //       id: id,
+    //       lat: Provider.of<GernateMap>(context, listen: false).latitude,
+    //       lng: Provider.of<GernateMap>(context, listen: false).longitude);
+    //   locationservice
+    //       .currentlocationUpdate(locationupdate, context)
+    //       .then(((value) {
+    //     issaveselectmap = false;
+    //     notifyListeners();
+    //     reponse = jsonDecode(value.body);
+    //     issave = reponse["status"];
+    //     msg = reponse["msg"];
+    //     // setState(() {
+    //     //   issave = false;
+    //     // });
+    //     final snackBar = SnackBar(
+    //       content: Text(msg),
+    //       backgroundColor: Colors.blue[50],
+    //       duration: Duration(seconds: 5),
+    //     );
+    //     Scaffold.of(context).showSnackBar(snackBar);
+    //   }));
+    //   issave = reponse["status"];
+    //   msg = reponse["msg"];
 
-    // msg = response["msg"];
+    //   // msg = response["msg"];
+    // }
   }
 }

@@ -78,15 +78,6 @@ class _UserRegisteredState extends State<UserRegistered> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          child: ElevatedButton(
-                            onPressed: () => {},
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.blueAccent)),
-                            child: Text('Export pdf'),
-                          ),
-                        ),
-                        Container(
                           width: 200,
                           margin: EdgeInsets.only(bottom: 3),
                           child: TextField(
@@ -147,6 +138,13 @@ class _UserRegisteredState extends State<UserRegistered> {
                                 sortColumnIndex: 0,
                                 sortAscending: true,
                                 columns: const <DataColumn>[
+                                  DataColumn(
+                                    label: Text('ID',
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold)),
+                                  ),
                                   DataColumn(
                                     label: Text('name',
                                         textAlign: TextAlign.center,
@@ -272,6 +270,7 @@ class MyData extends DataTableSource {
             ? MaterialStateProperty.all(Colors.lightGreen.withOpacity(0.12))
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
+          DataCell(Text('U${index.toString()}')),
           DataCell(Text(_data[index]['name'].toString())),
           DataCell(Text(_data[index]['phoneno'].toString())),
           DataCell(Text(_data[index]['email'].toString())),
