@@ -106,7 +106,7 @@ class _ComplaintsState extends State<Complaints> {
                         top: 30,
                       ),
                       child: Text(
-                        'Manage Comaplaint Data',
+                        'Manage Complaints Data',
                         style: TextStyle(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),

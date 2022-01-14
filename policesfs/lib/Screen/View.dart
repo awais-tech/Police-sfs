@@ -197,7 +197,7 @@ class _ViewState extends State<View> {
                                                         )),
                                                       ),
                                                       child: Text(
-                                                          "View StaffList ")),
+                                                          "View Staff List")),
                                                   SizedBox(height: 15),
                                                   ElevatedButton(
                                                       onPressed: () {
@@ -231,7 +231,7 @@ class _ViewState extends State<View> {
                                                         )),
                                                       ),
                                                       child: Text(
-                                                          "View  Registered Police Staff Graph")),
+                                                          "View Registered Police Staff Graph")),
                                                   SizedBox(
                                                     height: 15,
                                                   ),

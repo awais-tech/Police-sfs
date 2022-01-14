@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
           complainta.text != "" ? double.parse(complainta.text) : 0,
       "Pending Complaints":
           complaintP.text != "" ? double.parse(complaintP.text) : 0,
-      "disapprove Complaints":
+      "Disapproved Complaints":
           complaintD.text != "" ? double.parse(complaintD.text) : 0,
     };
     Map<String, double> dataMa = {

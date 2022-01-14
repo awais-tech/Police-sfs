@@ -98,37 +98,40 @@ class _userGraphState extends State<userGraph> {
                             return Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    ElevatedButton.icon(
-                                        onPressed: () => {
-                                              Navigator.of(context).pushNamed(
-                                                userGraph.routeName,
-                                              )
-                                            },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.green)),
-                                        icon: Icon(Icons.auto_graph_sharp),
-                                        label: Text(
-                                            "View Police Staff Record Graph")),
-                                    ElevatedButton.icon(
-                                        onPressed: () => {
-                                              Navigator.of(context).pushNamed(
-                                                ComplaintsGraph.routeName,
-                                              )
-                                            },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.green)),
-                                        icon: Icon(Icons.auto_graph_sharp),
-                                        label: Text(
-                                            "View Complaint Record Graph")),
-                                  ],
+                                Container(
+                                  margin: EdgeInsets.only(left: 20, right: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      ElevatedButton.icon(
+                                          onPressed: () => {
+                                                Navigator.of(context).pushNamed(
+                                                  userGraph.routeName,
+                                                )
+                                              },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.red)),
+                                          icon: Icon(Icons.auto_graph_sharp),
+                                          label: Text(
+                                              "View Police Staff Record Graph")),
+                                      ElevatedButton.icon(
+                                          onPressed: () => {
+                                                Navigator.of(context).pushNamed(
+                                                  ComplaintsGraph.routeName,
+                                                )
+                                              },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.red)),
+                                          icon: Icon(Icons.auto_graph_sharp),
+                                          label: Text(
+                                              "View Complaint Record Graph")),
+                                    ],
+                                  ),
                                 ),
                                 Container(
                                   width: 150,
@@ -137,7 +140,7 @@ class _userGraphState extends State<userGraph> {
                                       type: SelectFormFieldType
                                           .dropdown, // or can be dialog
                                       initialValue: "Day",
-                                      labelText: 'GraphBy',
+                                      labelText: 'Graph By',
                                       items: GraphType,
                                       onChanged: (val) => setState(() {
                                             filter.text = val;
@@ -147,13 +150,13 @@ class _userGraphState extends State<userGraph> {
                                   // isTransposed: true,
                                   title: ChartTitle(
                                     text:
-                                        '${filter.text == "" ? "Day" : filter.text} wise RegisteredUser Record',
+                                        '${filter.text == "" ? "Day" : filter.text} wise Registered Users Record',
                                   ),
                                   legend: Legend(isVisible: true),
                                   series: <ChartSeries>[
                                     BarSeries(
                                       name: 'Criminal Record',
-                                      color: Colors.deepPurple,
+                                      color: Colors.green,
                                       opacity: 0.9,
                                       dataSource: x,
                                       xValueMapper: (dynamic gdp, _) =>
@@ -176,7 +179,7 @@ class _userGraphState extends State<userGraph> {
                                     edgeLabelPlacement:
                                         EdgeLabelPlacement.shift,
                                     title: AxisTitle(
-                                        text: 'RegisteredUser in numbers'),
+                                        text: 'Registered users in numbers'),
                                   ),
                                 ),
                               ],

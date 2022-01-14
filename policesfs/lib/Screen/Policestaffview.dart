@@ -416,6 +416,9 @@ class _PoliceStaffViewState extends State<PoliceStaffView> {
                                                       fontSize: 12,
                                                     ),
                                                   ),
+                                                  SizedBox(
+                                                    height: 10,
+                                                  ),
                                                   ElevatedButton(
                                                       onPressed: () async {
                                                         var id = (snp.data!

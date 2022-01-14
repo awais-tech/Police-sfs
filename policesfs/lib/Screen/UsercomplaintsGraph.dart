@@ -114,7 +114,7 @@ class _UserComplaintGraphState extends State<UserComplaintGraph> {
                                       type: SelectFormFieldType
                                           .dropdown, // or can be dialog
                                       initialValue: "Day",
-                                      labelText: 'GraphBy',
+                                      labelText: 'Graph By',
                                       items: GraphType,
                                       onChanged: (val) => setState(() {
                                             filter.text = val;
@@ -124,13 +124,13 @@ class _UserComplaintGraphState extends State<UserComplaintGraph> {
                                   // isTransposed: true,
                                   title: ChartTitle(
                                     text:
-                                        '${filter.text == "" ? "Day" : filter.text} wise Complaint Record',
+                                        '${filter.text == "" ? "Day" : filter.text} wise Complaints Record',
                                   ),
                                   legend: Legend(isVisible: true),
                                   series: <ChartSeries>[
                                     BarSeries(
                                       name: '${id["id"]} Complaint Record',
-                                      color: Colors.deepPurple,
+                                      color: Colors.green,
                                       opacity: 0.9,
                                       dataSource: x,
                                       xValueMapper: (dynamic gdp, _) =>

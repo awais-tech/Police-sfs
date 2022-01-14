@@ -25,7 +25,7 @@ class drawerwidget extends StatelessWidget {
     "Crime Record",
     "Registered Users",
     "Reports",
-    "BarGraph",
+    "Bar Chart",
     "Emergency Complaint",
     "Chats",
     "Logout"

@@ -49,8 +49,8 @@ class _AuthFormState extends State<AuthForm> {
         height: MediaQuery.of(context).size.height / 1.5,
         width: double.infinity,
         child: Card(
-          color: Colors.grey.withOpacity(0.8),
-          shadowColor: Colors.blueGrey,
+          color: Colors.grey.withOpacity(0.9),
+          shadowColor: Colors.white,
           shape: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
               borderSide: BorderSide(
@@ -81,7 +81,7 @@ class _AuthFormState extends State<AuthForm> {
                           ),
                           child: Center(
                             child: Text(
-                              "POLICE SFS Admin",
+                              "Police SFS Admin Panel",
                               style: TextStyle(
                                 fontStyle: FontStyle.italic,
                                 fontSize: 32,
@@ -94,6 +94,7 @@ class _AuthFormState extends State<AuthForm> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 20),
                     TextFormField(
                       key: ValueKey('email'),
                       keyboardType: TextInputType.emailAddress,
@@ -104,6 +105,7 @@ class _AuthFormState extends State<AuthForm> {
                         _userEmail = value as String;
                       },
                     ),
+                    SizedBox(height: 20),
                     TextFormField(
                       key: ValueKey('password'),
                       decoration: InputDecoration(labelText: 'Password'),
@@ -112,20 +114,20 @@ class _AuthFormState extends State<AuthForm> {
                         _userPassword = value as String;
                       },
                     ),
-                    SizedBox(height: 12),
+                    SizedBox(height: 40),
                     if (widget.isLoading) CircularProgressIndicator(),
                     if (!widget.isLoading)
                       Container(
-                        width: 120,
+                        width: 170,
                         child: ElevatedButton(
                             onPressed: _trySubmit,
                             style: ButtonStyle(
                               backgroundColor:
-                                  MaterialStateProperty.all(Colors.blue[700]),
+                                  MaterialStateProperty.all(Colors.red[900]),
                               shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10.0),
+                                borderRadius: BorderRadius.circular(18.0),
                               )),
                             ),
                             child: Text("Login")),

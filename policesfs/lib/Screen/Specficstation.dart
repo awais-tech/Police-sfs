@@ -109,25 +109,28 @@ class _SpecificStaffState extends State<SpecificStaff> {
                             return Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    ElevatedButton.icon(
-                                        onPressed: () => {
-                                              Navigator.of(context).pushNamed(
-                                                  StationComplaintGraph
-                                                      .routeName,
-                                                  arguments: id)
-                                            },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.green)),
-                                        icon: Icon(Icons.auto_graph_sharp),
-                                        label: Text(
-                                            "View ${id!["id"]} Complaint Record Graph")),
-                                  ],
+                                Container(
+                                  margin: EdgeInsets.only(left: 20, right: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      ElevatedButton.icon(
+                                          onPressed: () => {
+                                                Navigator.of(context).pushNamed(
+                                                    StationComplaintGraph
+                                                        .routeName,
+                                                    arguments: id)
+                                              },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.red)),
+                                          icon: Icon(Icons.auto_graph_sharp),
+                                          label: Text(
+                                              "View ${id!["id"]} Complaint Record Graph")),
+                                    ],
+                                  ),
                                 ),
                                 Container(
                                   width: 150,
@@ -136,7 +139,7 @@ class _SpecificStaffState extends State<SpecificStaff> {
                                       type: SelectFormFieldType
                                           .dropdown, // or can be dialog
                                       initialValue: "Day",
-                                      labelText: 'GraphBy',
+                                      labelText: 'Graph By',
                                       items: GraphType,
                                       onChanged: (val) => setState(() {
                                             filter.text = val;
@@ -153,7 +156,7 @@ class _SpecificStaffState extends State<SpecificStaff> {
                                     BarSeries(
                                       name:
                                           '${id!["id"]} Police Staff Registered',
-                                      color: Colors.deepPurple,
+                                      color: Colors.green,
                                       opacity: 0.9,
                                       dataSource: x,
                                       xValueMapper: (dynamic gdp, _) =>
@@ -176,7 +179,7 @@ class _SpecificStaffState extends State<SpecificStaff> {
                                     edgeLabelPlacement:
                                         EdgeLabelPlacement.shift,
                                     title: AxisTitle(
-                                        text: 'PoliceStaff in numbers'),
+                                        text: 'Police Staff in numbers'),
                                   ),
                                 ),
                               ],

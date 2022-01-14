@@ -107,24 +107,27 @@ class _StationComplaintGraphState extends State<StationComplaintGraph> {
                             return Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    ElevatedButton.icon(
-                                        onPressed: () => {
-                                              Navigator.of(context).pushNamed(
-                                                  SpecificStaff.routeName,
-                                                  arguments: id)
-                                            },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.green)),
-                                        icon: Icon(Icons.auto_graph_sharp),
-                                        label: Text(
-                                            "View ${id["id"]} Registered Staff Graph")),
-                                  ],
+                                Container(
+                                  margin: EdgeInsets.only(left: 20, right: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      ElevatedButton.icon(
+                                          onPressed: () => {
+                                                Navigator.of(context).pushNamed(
+                                                    SpecificStaff.routeName,
+                                                    arguments: id)
+                                              },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.red)),
+                                          icon: Icon(Icons.auto_graph_sharp),
+                                          label: Text(
+                                              "View ${id["id"]} Registered Staff Graph")),
+                                    ],
+                                  ),
                                 ),
                                 Container(
                                   width: 150,
@@ -133,7 +136,7 @@ class _StationComplaintGraphState extends State<StationComplaintGraph> {
                                       type: SelectFormFieldType
                                           .dropdown, // or can be dialog
                                       initialValue: "Day",
-                                      labelText: 'GraphBy',
+                                      labelText: 'Graph By',
                                       items: GraphType,
                                       onChanged: (val) => setState(() {
                                             filter.text = val;
@@ -149,7 +152,7 @@ class _StationComplaintGraphState extends State<StationComplaintGraph> {
                                   series: <ChartSeries>[
                                     BarSeries(
                                       name: '${id["id"]} Complaint Record',
-                                      color: Colors.deepPurple,
+                                      color: Colors.green,
                                       opacity: 0.9,
                                       dataSource: x,
                                       xValueMapper: (dynamic gdp, _) =>

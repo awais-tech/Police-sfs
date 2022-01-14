@@ -176,7 +176,7 @@ class ComplaintsView extends StatelessWidget {
                                                       )),
                                                     ),
                                                     child: Text(
-                                                        "Working Police staff Detail"))
+                                                        "Working Police Staff Detail"))
                                                 : Container(),
                                             SizedBox(
                                               height: 10,
@@ -204,7 +204,7 @@ class ComplaintsView extends StatelessWidget {
                                                   )),
                                                 ),
                                                 child: Text(
-                                                    "Complainer information"))
+                                                    "Complainant Information"))
                                           ],
                                         ),
                                       ),
@@ -402,7 +402,7 @@ class ComplaintsView extends StatelessWidget {
                                               ),
                                             ),
                                             SizedBox(
-                                              height: 5,
+                                              height: 10,
                                             ),
                                             ElevatedButton(
                                                 onPressed: () async {
@@ -440,7 +440,7 @@ class ComplaintsView extends StatelessWidget {
                                                   )),
                                                 ),
                                                 child: Text(
-                                                    "Police station Detail")),
+                                                    "Police Station Details")),
                                           ],
                                         ),
                                       ),

@@ -100,37 +100,40 @@ class _CriminalRecordGraphState extends State<CriminalRecordGraph> {
                             return Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    ElevatedButton.icon(
-                                        onPressed: () => {
-                                              Navigator.of(context).pushNamed(
-                                                BarGraph.routeName,
-                                              )
-                                            },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.green)),
-                                        icon: Icon(Icons.auto_graph_sharp),
-                                        label: Text(
-                                            "View Police Staff Record Graph")),
-                                    ElevatedButton.icon(
-                                        onPressed: () => {
-                                              Navigator.of(context).pushNamed(
-                                                ComplaintsGraph.routeName,
-                                              )
-                                            },
-                                        style: ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStateProperty.all(
-                                                    Colors.green)),
-                                        icon: Icon(Icons.auto_graph_sharp),
-                                        label: Text(
-                                            "View Complaint Record Graph")),
-                                  ],
+                                Container(
+                                  margin: EdgeInsets.only(left: 20, right: 20),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      ElevatedButton.icon(
+                                          onPressed: () => {
+                                                Navigator.of(context).pushNamed(
+                                                  BarGraph.routeName,
+                                                )
+                                              },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.red)),
+                                          icon: Icon(Icons.auto_graph_sharp),
+                                          label: Text(
+                                              "View Police Staff Record Graph")),
+                                      ElevatedButton.icon(
+                                          onPressed: () => {
+                                                Navigator.of(context).pushNamed(
+                                                  ComplaintsGraph.routeName,
+                                                )
+                                              },
+                                          style: ButtonStyle(
+                                              backgroundColor:
+                                                  MaterialStateProperty.all(
+                                                      Colors.red)),
+                                          icon: Icon(Icons.auto_graph_sharp),
+                                          label: Text(
+                                              "View Complaint Record Graph")),
+                                    ],
+                                  ),
                                 ),
                                 Container(
                                   width: 150,
@@ -139,7 +142,7 @@ class _CriminalRecordGraphState extends State<CriminalRecordGraph> {
                                       type: SelectFormFieldType
                                           .dropdown, // or can be dialog
                                       initialValue: "Day",
-                                      labelText: 'GraphBy',
+                                      labelText: 'Graph By',
                                       items: GraphType,
                                       onChanged: (val) => setState(() {
                                             filter.text = val;
@@ -155,7 +158,7 @@ class _CriminalRecordGraphState extends State<CriminalRecordGraph> {
                                   series: <ChartSeries>[
                                     BarSeries(
                                       name: 'Criminal Record',
-                                      color: Colors.deepPurple,
+                                      color: Colors.green,
                                       opacity: 0.9,
                                       dataSource: x,
                                       xValueMapper: (dynamic gdp, _) =>
