@@ -6,6 +6,10 @@ import 'package:policesfs/Screen/Addstaff.dart';
 import 'package:policesfs/Screen/Complaints.dart';
 import 'package:policesfs/Screen/ComplaintsGraph.dart';
 import 'package:policesfs/Screen/ComplaintsView.dart';
+import 'package:policesfs/Screen/JailRecordCell.dart';
+import 'package:policesfs/Screen/PrisonerRecord.dart';
+import 'package:policesfs/Screen/ViewJailDetails.dart';
+import 'package:policesfs/Screen/chat/ChatUser.dart';
 
 import 'package:policesfs/provider/CurrentLocation.dart';
 import 'package:policesfs/provider/gmapprovider.dart';
@@ -78,7 +82,7 @@ class _AppState extends State<MyApp> {
   Widget build(BuildContext context) {
     // Show error message if initialization failed
     if (_error) {
-      return Container();
+      return CircularProgressIndicator();
     }
 
     // Show a loader until FlutterFire is initialized
@@ -143,6 +147,10 @@ class _AppState extends State<MyApp> {
             SpecificStaff.routeName: (ctx) => SpecificStaff(),
             StationComplaintGraph.routeName: (ctx) => StationComplaintGraph(),
             UserComplaintGraph.routeName: (ctx) => UserComplaintGraph(),
+            JailRecordCell.routeName: (ctx) => JailRecordCell(),
+            PrisonerRecord.routeName: (ctx) => PrisonerRecord(),
+            JailView.routeName: (ctx) => JailView(),
+            ChatUser.routeName: (ctx) => ChatUser()
           }),
     );
   }

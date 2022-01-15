@@ -1,35 +1,43 @@
 import 'dart:math';
-import 'package:policesfs/Screen/ComplaintsDatabase.dart';
-import 'package:policesfs/Screen/ComplaintsView.dart';
-import 'package:policesfs/Screen/EmergencyView.dart';
-import 'package:policesfs/Screen/client_database.dart';
 import 'package:flutter/material.dart';
 import 'package:policesfs/Screen/AddProduct.dart';
 import 'package:policesfs/Screen/Addedit.dart';
+import 'package:policesfs/Screen/Addstaff.dart';
+import 'package:policesfs/Screen/PoliceStaff_database.dart';
+import 'package:policesfs/Screen/Policestaffview.dart';
+import 'package:policesfs/Screen/RegisteredUsersDetails.dart';
 import 'package:policesfs/Screen/View.dart';
+import 'package:policesfs/Screen/ViewJailDetails.dart';
 import 'package:policesfs/Screen/drawner.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:policesfs/Screen/edit.dart';
 
-class Emergency extends StatefulWidget {
-  static final routeName = 'Emergency';
+class PrisonerRecord extends StatefulWidget {
+  static final routeName = 'PrisonerRecord';
 
   @override
-  State<Emergency> createState() => _EmergencyState();
+  State<PrisonerRecord> createState() => _UserRegisteredState();
 }
 
-class _EmergencyState extends State<Emergency> {
-  var streams = FirebaseFirestore.instance
-      .collection('Emergency')
+class _UserRegisteredState extends State<PrisonerRecord> {
+  final streams = FirebaseFirestore.instance
+      .collection('JailRecord')
       .snapshots(includeMetadataChanges: true);
   final name = TextEditingController();
   final filter = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
+    var id = ModalRoute.of(context)?.settings.arguments;
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     var stream;
-
+    if (id != null) {
+      stream = FirebaseFirestore.instance
+          .collection('JailRecord')
+          .where("Prisonerdoc", isEqualTo: id)
+          .snapshots();
+    }
     return Scaffold(
       appBar: width < 700
           ? AppBar(
@@ -61,7 +69,7 @@ class _EmergencyState extends State<Emergency> {
                         top: 30,
                       ),
                       child: Text(
-                        'Manage Comaplaint Data',
+                        'Manage Prisoner Record',
                         style: TextStyle(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
@@ -69,15 +77,6 @@ class _EmergencyState extends State<Emergency> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Container(
-                          child: ElevatedButton(
-                            onPressed: () => {},
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.blueAccent)),
-                            child: Text('Export pdf'),
-                          ),
-                        ),
                         Container(
                           width: 200,
                           margin: EdgeInsets.only(bottom: 3),
@@ -103,7 +102,7 @@ class _EmergencyState extends State<Emergency> {
                       ],
                     ),
                     StreamBuilder<QuerySnapshot>(
-                        stream: streams,
+                        stream: id != null ? stream : streams,
                         builder: (context, snp) {
                           if (snp.hasError) {
                             print(snp);
@@ -111,16 +110,19 @@ class _EmergencyState extends State<Emergency> {
                               child: Text("No Data is here"),
                             );
                           } else if (snp.hasData || snp.data != null) {
-                            var station = snp.data?.docs.where((element) {
+                            var stationdata = snp.data?.docs.where((element) {
                               var elements = element.data() as Map;
-                              return elements.keys.any((elem) => element[elem]
+                              return elements!.keys.any((elem) => element[elem]
                                   .toString()
                                   .toLowerCase()
                                   .contains(name.text.toLowerCase()));
                             }).toList();
+
                             return Card(
                               elevation: 10,
                               child: PaginatedDataTable(
+                                sortColumnIndex: 0,
+                                sortAscending: true,
                                 columns: const <DataColumn>[
                                   DataColumn(
                                     label: Text('ID',
@@ -130,7 +132,7 @@ class _EmergencyState extends State<Emergency> {
                                             fontWeight: FontWeight.bold)),
                                   ),
                                   DataColumn(
-                                    label: Text('Status',
+                                    label: Text('PrisonerCNIC',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontStyle: FontStyle.italic,
@@ -139,7 +141,27 @@ class _EmergencyState extends State<Emergency> {
                                   DataColumn(
                                     label: Expanded(
                                       child: Text(
-                                        'Title',
+                                        'PrisonNo',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Expanded(
+                                      child: Text(
+                                        'Name',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
+                                  ),
+                                  DataColumn(
+                                    label: Expanded(
+                                      child: Text(
+                                        'status',
                                         style: TextStyle(
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.bold),
@@ -150,6 +172,7 @@ class _EmergencyState extends State<Emergency> {
                                     label: Expanded(
                                       child: Text(
                                         'Action',
+                                        textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontStyle: FontStyle.italic,
                                             fontWeight: FontWeight.bold),
@@ -157,14 +180,15 @@ class _EmergencyState extends State<Emergency> {
                                     ),
                                   ),
                                 ],
-                                source: MyData(station, context),
+                                source: MyData(stationdata, context),
                                 header: Container(
                                   width: double.infinity,
                                   child: Text(
-                                    'Police Station',
+                                    'Jail Records',
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
+
                                 columnSpacing: 50,
                                 horizontalMargin: 10,
                                 rowsPerPage: 6,
@@ -232,55 +256,27 @@ class MyData extends DataTableSource {
             ? MaterialStateProperty.all(Colors.lightGreen.withOpacity(0.12))
             : MaterialStateProperty.all(Colors.lightBlue.withOpacity(0.14)),
         cells: [
-          DataCell(Text('E${index.toString()}')),
+          DataCell(Text('P${index.toString()}')),
+          DataCell(Text(_data[index]['PrisonerCNIC'].toString())),
+          DataCell(Text(_data[index]['PrisonNo'].toString())),
+          DataCell(Text(_data[index]['Name'].toString())),
           DataCell(Text(_data[index]['status'].toString())),
-          DataCell(Text(_data[index]['Title'].toString())),
-          DataCell(Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              ElevatedButton.icon(
-                  onPressed: () async => {
-                        showDialog(
-                          context: context,
-                          builder: (ctx) => AlertDialog(
-                            title: Text('Are you sure?'),
-                            content: Text(
-                              'Do you want to delete Complaint ?',
-                            ),
-                            actions: <Widget>[
-                              TextButton(
-                                child: Text('No'),
-                                onPressed: () {
-                                  Navigator.of(ctx).pop(false);
-                                },
-                              ),
-                              TextButton(
-                                  child: Text('Yes'),
-                                  onPressed: () async {
-                                    ComplaintsDatabase.EmergencyDelete(
-                                        mainid: _data[index].id);
-
-                                    Navigator.of(ctx).pop(false);
-                                  }),
-                            ],
-                          ),
-                        ),
-                      },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.red)),
-                  icon: Icon(Icons.edit),
-                  label: Text("Delete")),
-              ElevatedButton.icon(
-                  onPressed: () => {
-                        Navigator.of(context).pushNamed(EmergencyView.routeName,
-                            arguments: _data[index].id)
-                      },
-                  style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(Colors.red)),
-                  icon: Icon(Icons.edit),
-                  label: Text("View")),
-            ],
-          )),
+          DataCell(
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton.icon(
+                    onPressed: () => {
+                          Navigator.of(context).pushNamed(JailView.routeName,
+                              arguments: _data[index].id)
+                        },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(Colors.red)),
+                    icon: Icon(Icons.edit),
+                    label: Text("View Detail")),
+              ],
+            ),
+          ),
         ]);
   }
 }

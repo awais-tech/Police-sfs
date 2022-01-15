@@ -128,7 +128,7 @@ class _SpecificStaffState extends State<SpecificStaff> {
                                                       Colors.red)),
                                           icon: Icon(Icons.auto_graph_sharp),
                                           label: Text(
-                                              "View ${id!["id"]} Complaint Record Graph")),
+                                              "View ${id["id"]} Complaint Record Graph")),
                                     ],
                                   ),
                                 ),
@@ -155,7 +155,7 @@ class _SpecificStaffState extends State<SpecificStaff> {
                                   series: <ChartSeries>[
                                     BarSeries(
                                       name:
-                                          '${id!["id"]} Police Staff Registered',
+                                          '${id["id"]} Police Staff Registered',
                                       color: Colors.green,
                                       opacity: 0.9,
                                       dataSource: x,
