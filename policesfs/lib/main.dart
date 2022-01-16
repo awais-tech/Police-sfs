@@ -101,7 +101,7 @@ class _AppState extends State<MyApp> {
       child: MaterialApp(
           title: 'Police Sfs',
           theme: ThemeData(
-            primarySwatch: Colors.blue,
+            primarySwatch: Colors.deepPurple,
             fontFamily: 'Lato',
           ),
           // home: Constants.prefs.getBool('login') == true
