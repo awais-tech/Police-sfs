@@ -73,12 +73,12 @@ class JailView extends StatelessWidget {
                                   child: Row(
                                     children: <Widget>[
                                       Expanded(
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: <Widget>[
+                                          child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.center,
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: <Widget>[
                                             CircleAvatar(
                                               radius: 80.0,
                                               child: ClipRRect(
@@ -93,7 +93,7 @@ class JailView extends StatelessWidget {
                                               height: 10,
                                             ),
                                             Text(
-                                              'TotalPrisoners ${(snp.data!.data() as Map)["TotalPrisoners"]}',
+                                              'Name ${(snp.data!.data() as Map)["Name"]}',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: 26,
@@ -104,7 +104,7 @@ class JailView extends StatelessWidget {
                                               height: 10,
                                             ),
                                             Text(
-                                              'DateTime ${(snp.data!.data() as Map)["DateTime"]}',
+                                              'DateTime ${DateTime.parse((snp.data!.data() as Map)["Date added"].toDate().toString()).toString()}',
                                               textAlign: TextAlign.center,
                                               style: TextStyle(
                                                 fontSize: 26,
@@ -115,18 +115,7 @@ class JailView extends StatelessWidget {
                                               height: 10,
                                             ),
                                             Text(
-                                              'Record Added:  ${DateTime.parse((snp.data!.data() as Map)["Date added"].toDate().toString()).toString()}',
-                                              style: TextStyle(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.blueGrey[700],
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              height: 15,
-                                            ),
-                                            Text(
-                                              'Record Id: ${(snp.data!.data() as Map)["Record Id"]}',
+                                              'status: ${(snp.data!.data() as Map)["status"]}',
                                               style: TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
@@ -161,37 +150,8 @@ class JailView extends StatelessWidget {
                                                   )),
                                                 ),
                                                 child: Text(
-                                                    "Registered Police station")),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                            ElevatedButton(
-                                                onPressed: () {
-                                                  var id =
-                                                      (snp.data!.data() as Map)[
-                                                          "PoliceOfficerid"];
-                                                  Navigator.of(context)
-                                                      .pushNamed(
-                                                    PoliceStaffView.routeName,
-                                                    arguments: id,
-                                                  );
-                                                },
-                                                style: ButtonStyle(
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          Colors.blue[700]),
-                                                  shape: MaterialStateProperty
-                                                      .all<RoundedRectangleBorder>(
-                                                          RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            10.0),
-                                                  )),
-                                                ),
-                                                child: Text("Operator detail"))
-                                          ],
-                                        ),
-                                      ),
+                                                    "View Police Station")),
+                                          ])),
                                       VerticalDivider(thickness: 2),
                                       SizedBox(width: 15),
                                       Expanded(
@@ -253,7 +213,7 @@ class JailView extends StatelessWidget {
                                               height: 5,
                                             ),
                                             Text(
-                                              "Prisoner Name",
+                                              "ContactNo",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
@@ -264,7 +224,7 @@ class JailView extends StatelessWidget {
                                             ),
                                             Text(
                                               (snp.data!.data()
-                                                  as Map)["Prisoner Name"],
+                                                  as Map)["ContactNo"],
                                               style: TextStyle(
                                                 fontSize: 12,
                                               ),
@@ -272,6 +232,27 @@ class JailView extends StatelessWidget {
                                             SizedBox(
                                               height: 15,
                                             ),
+                                            Text(
+                                              "Prisoner CNIC",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              (snp.data!.data()
+                                                  as Map)["PrisonerCNIC"],
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+
                                             Text(
                                               "Useful Information",
                                               style: TextStyle(
@@ -284,7 +265,7 @@ class JailView extends StatelessWidget {
                                               height: 5,
                                             ),
                                             Text(
-                                              "status:",
+                                              "Address:",
                                               style: TextStyle(
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.bold,
@@ -295,7 +276,7 @@ class JailView extends StatelessWidget {
                                             ),
                                             Text(
                                               (snp.data!.data()
-                                                  as Map)["status"],
+                                                  as Map)["Address"],
                                               style: TextStyle(
                                                 fontSize: 12,
                                               ),

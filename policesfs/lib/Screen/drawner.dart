@@ -8,11 +8,13 @@ import 'package:policesfs/Screen/GenerateReportComplaints.dart';
 
 import 'package:policesfs/Screen/GenerateReportStaff.dart';
 import 'package:policesfs/Screen/GenerateReportStations.dart';
+import 'package:policesfs/Screen/JailRecordCell.dart';
 import 'package:policesfs/Screen/PoliceStaff.dart';
 import 'package:policesfs/Screen/RegisteredUsersDetails.dart';
 import 'package:policesfs/Screen/UserRegistered.dart';
 import 'package:policesfs/Screen/brandnew.dart';
-import 'package:policesfs/Screen/chat.dart';
+
+import 'package:policesfs/Screen/chat/ChatUser.dart';
 
 import 'package:policesfs/widgets/Constants.dart';
 
@@ -27,6 +29,7 @@ class drawerwidget extends StatelessWidget {
     "Reports",
     "Bar Chart",
     "Emergency Complaint",
+    "Jail Record",
     "Chats",
     "Logout"
   ];
@@ -40,6 +43,7 @@ class drawerwidget extends StatelessWidget {
     Icons.report,
     Icons.graphic_eq_outlined,
     Icons.warning_amber_outlined,
+    Icons.report,
     Icons.chat_outlined,
     Icons.logout_outlined
   ];
@@ -53,7 +57,8 @@ class drawerwidget extends StatelessWidget {
     CreatePdfComplaintsStatefulWidget.routename,
     BarGraph.routeName,
     Emergency.routeName,
-    Chat.routeName,
+    JailRecordCell.routeName,
+    ChatUser.routeName,
     'Signout',
   ];
 

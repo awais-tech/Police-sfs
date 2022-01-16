@@ -240,16 +240,6 @@ class _UserRegisteredState extends State<UserRegistered> {
           ),
         ],
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.add_circle_outline_sharp,
-        ),
-        onPressed: () {
-          Navigator.of(context).pushNamed(Adddstaff.routeName);
-        },
-        backgroundColor: Colors.red,
-      ),
     );
   }
 }

@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:policesfs/Screen/chat/messages.dart';
+import 'package:policesfs/Screen/chat/new_message.dart';
 import 'package:policesfs/Screen/drawner.dart';
-import 'package:policesfs/Screen/messages.dart';
-import 'package:policesfs/Screen/new_message.dart';
 
 class Chat extends StatelessWidget {
   static final routeName = 'Chat';
   @override
   Widget build(BuildContext context) {
+    var id = ModalRoute.of(context)?.settings.arguments as Map;
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return Scaffold(
@@ -32,9 +33,9 @@ class Chat extends StatelessWidget {
             child: Column(
               children: [
                 Expanded(
-                  child: Messages(),
+                  child: Messages(id),
                 ),
-                NewMessage(),
+                NewMessage(id),
               ],
             ),
 
