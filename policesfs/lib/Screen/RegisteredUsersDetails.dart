@@ -355,6 +355,27 @@ class _UserdetailsState extends State<Userdetails> {
                                                         ),
                                                       ),
                                                       SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      Text(
+                                                        "CNIC",
+                                                        style: TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                      SizedBox(
+                                                        height: 5,
+                                                      ),
+                                                      Text(
+                                                        (snap.data!.data()
+                                                            as Map)["CNIC"],
+                                                        style: TextStyle(
+                                                          fontSize: 12,
+                                                        ),
+                                                      ),
+                                                      SizedBox(
                                                         height: 15,
                                                       ),
                                                       Text(

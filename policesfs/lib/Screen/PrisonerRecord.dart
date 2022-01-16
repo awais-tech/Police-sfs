@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:policesfs/Screen/AddProduct.dart';
 import 'package:policesfs/Screen/Addedit.dart';
 import 'package:policesfs/Screen/Addstaff.dart';
+import 'package:policesfs/Screen/CriminalRecordDatabase.dart';
 import 'package:policesfs/Screen/PoliceStaff_database.dart';
 import 'package:policesfs/Screen/Policestaffview.dart';
 import 'package:policesfs/Screen/RegisteredUsersDetails.dart';
@@ -266,17 +267,50 @@ class MyData extends DataTableSource {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 ElevatedButton.icon(
-                    onPressed: () => {
-                          Navigator.of(context).pushNamed(JailView.routeName,
-                              arguments: _data[index].id)
+                  onPressed: () => {
+                    Navigator.of(context).pushNamed(JailView.routeName,
+                        arguments: _data[index].id)
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: MaterialStateProperty.all(Colors.red)),
+                  icon: Icon(Icons.edit),
+                  label: Text("View Detail"),
+                ),
+                ElevatedButton.icon(
+                    onPressed: () async => {
+                          showDialog(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: Text('Are you sure?'),
+                              content: Text(
+                                'Do you want to delete that Prisoner Record ?',
+                              ),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: Text('No'),
+                                  onPressed: () {
+                                    Navigator.of(ctx).pop(false);
+                                  },
+                                ),
+                                TextButton(
+                                    child: Text('Yes'),
+                                    onPressed: () async {
+                                      CriminalRecords.DelPrisonerRecord(
+                                          mainid: _data[index].id);
+
+                                      Navigator.of(ctx).pop(false);
+                                    }),
+                              ],
+                            ),
+                          ),
                         },
                     style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(Colors.red)),
                     icon: Icon(Icons.edit),
-                    label: Text("View Detail")),
+                    label: Text("Delete")),
               ],
             ),
-          ),
+          )
         ]);
   }
 }

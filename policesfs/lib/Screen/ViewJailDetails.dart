@@ -233,6 +233,27 @@ class JailView extends StatelessWidget {
                                               height: 15,
                                             ),
                                             Text(
+                                              "Prisoner CNIC",
+                                              style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 5,
+                                            ),
+                                            Text(
+                                              (snp.data!.data()
+                                                  as Map)["PrisonerCNIC"],
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: 15,
+                                            ),
+
+                                            Text(
                                               "Useful Information",
                                               style: TextStyle(
                                                 fontSize: 16,

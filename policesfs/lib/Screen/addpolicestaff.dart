@@ -38,6 +38,13 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
     return regExp.hasMatch(em);
   }
 
+  bool isCnic(String em) {
+    String p = r'^[0-9]{5}-[0-9]{7}-[0-9]$';
+    RegExp regExp = new RegExp(p);
+
+    return regExp.hasMatch(em);
+  }
+
   void didChangeDependencies() async {
     if (_isInit) {
       setState(() {
@@ -301,6 +308,8 @@ class _AddpolicestaffState extends State<Addpolicestaff> {
                             validator: (value) {
                               if (value!.isEmpty) {
                                 return 'Please enter valid CNIC.';
+                              } else if (!isCnic(value)) {
+                                return 'Please enter valid Cnic.';
                               }
 
                               return null;
