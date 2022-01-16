@@ -200,7 +200,7 @@ class _PoliceStationsState extends State<PoliceStations> {
                                 header: Container(
                                   width: double.infinity,
                                   child: Text(
-                                    'Police Station',
+                                    'Police Stations',
                                     textAlign: TextAlign.center,
                                   ),
                                 ),

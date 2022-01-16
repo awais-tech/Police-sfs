@@ -210,7 +210,7 @@ class _CriminalRecordState extends State<CriminalRecord> {
                                 header: Container(
                                   width: double.infinity,
                                   child: Text(
-                                    'Police Station',
+                                    'All Registered Criminals',
                                     textAlign: TextAlign.center,
                                   ),
                                 ),

@@ -34,7 +34,7 @@ class _PoliceStaffViewState extends State<PoliceStaffView> {
         FirebaseFirestore.instance
             .collection('Complaints')
             .where("PoliceOfficerid", isEqualTo: id)
-            .where("status", isNotEqualTo: "Complete")
+            .where("status", isEqualTo: "Complete")
             .snapshots()
             .listen((snap) {
           complaintc.text = (snap.size).toString();

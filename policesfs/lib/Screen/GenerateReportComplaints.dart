@@ -154,71 +154,70 @@ class _CreatePdfComplaintsState
               child: _isLoading
                   ? Center(child: CircularProgressIndicator())
                   : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        SelectFormField(
-                            type: SelectFormFieldType
-                                .dropdown, // or can be dialog
-                            initialValue: "Complaint",
-                            labelText: 'Report Type',
-                            items: option,
-                            onChanged: (val) => setState(() {
-                                  fil.text = val;
-                                })),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: <Widget>[
-                            Container(
-                              width: 300,
-                              margin: EdgeInsets.only(bottom: 3),
-                              child: SelectFormField(
-                                  type: SelectFormFieldType
-                                      .dropdown, // or can be dialog
-                                  initialValue: "Complete List",
-                                  labelText: 'Report by',
-                                  items: filterby,
-                                  onChanged: (val) => setState(() {
-                                        filter.text = val;
-                                      })),
-                            ),
-                            filter.text == "Registered After" ||
-                                    filter.text == "Registered Before" ||
-                                    filter.text == "Day Report" ||
-                                    filter.text == "Yearly Report" ||
-                                    filter.text == "Monthly Report"
-                                ? Container(
-                                    padding: EdgeInsets.all(20),
-                                    child: TextButton(
-                                      onPressed: selectdate,
-                                      child: filter.text == "Yearly Report"
+                        Container(
+                          margin: EdgeInsets.only(bottom: 10),
+                          width: 700,
+                          child: SelectFormField(
+                              type: SelectFormFieldType
+                                  .dropdown, // or can be dialog
+                              initialValue: "Complaint",
+                              labelText: 'Report Type',
+                              items: option,
+                              onChanged: (val) => setState(() {
+                                    fil.text = val;
+                                  })),
+                        ),
+                        SizedBox(height: 20),
+                        Container(
+                          width: 700,
+                          margin: EdgeInsets.only(bottom: 10),
+                          child: SelectFormField(
+                              type: SelectFormFieldType
+                                  .dropdown, // or can be dialog
+                              initialValue: "Complete List",
+                              labelText: 'Report by',
+                              items: filterby,
+                              onChanged: (val) => setState(() {
+                                    filter.text = val;
+                                  })),
+                        ),
+                        filter.text == "Registered After" ||
+                                filter.text == "Registered Before" ||
+                                filter.text == "Day Report" ||
+                                filter.text == "Yearly Report" ||
+                                filter.text == "Monthly Report"
+                            ? Container(
+                                padding: EdgeInsets.all(20),
+                                child: TextButton(
+                                  onPressed: selectdate,
+                                  child: filter.text == "Yearly Report"
+                                      ? Text(
+                                          'Select year(Month and Day not matter)')
+                                      : filter.text == "Monthly Report"
                                           ? Text(
-                                              'Select year(Month and Day not matter)')
-                                          : filter.text == "Monthly Report"
-                                              ? Text(
-                                                  'Select Month and year(Day not matter)')
-                                              : Text('Select date'),
-                                      style: ButtonStyle(
-                                          foregroundColor:
-                                              MaterialStateProperty.all<Color>(
-                                                  Theme.of(context)
-                                                      .primaryColor),
-                                          textStyle: MaterialStateProperty.all(
-                                              TextStyle(
-                                                  fontWeight:
-                                                      FontWeight.bold))),
-                                    ),
-                                  )
-                                : Container(),
-                            TextButton(
-                              child: const Text('Generate PDF'),
-                              style: TextButton.styleFrom(
-                                primary: Colors.white,
-                                backgroundColor: Colors.red,
-                                onSurface: Colors.grey,
-                              ),
-                              onPressed: generateReport,
-                            ),
-                          ],
+                                              'Select Month and year(Day not matter)')
+                                          : Text('Select date'),
+                                  style: ButtonStyle(
+                                      foregroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              Theme.of(context).primaryColor),
+                                      textStyle: MaterialStateProperty.all(
+                                          TextStyle(
+                                              fontWeight: FontWeight.bold))),
+                                ),
+                              )
+                            : Container(),
+                        SizedBox(height: 30),
+                        TextButton(
+                          child: const Text('Generate PDF'),
+                          style: TextButton.styleFrom(
+                            primary: Colors.white,
+                            backgroundColor: Colors.red,
+                            onSurface: Colors.grey,
+                          ),
+                          onPressed: generateReport,
                         ),
                       ],
                     )),
@@ -480,7 +479,7 @@ class _CreatePdfComplaintsState
                                                     : Container()
                                                 : Container())
                 .toList()
-            : streams.docs.map((val) =>addProducts(val.id, val.data()["Title"], val.data()["Type"], val.data()["Catagory"], val.data()["status"], val.data()["sub category"], DateTime.parse(val.data()["date"].toDate().toString()).toString(), val.data()["PoliceStationName"], grid)).toList()
+            : streams.docs.map((val) => addProducts(val.id, val.data()["Title"], val.data()["Type"], val.data()["Catagory"], val.data()["status"], val.data()["sub category"], DateTime.parse(val.data()["date"].toDate().toString()).toString(), val.data()["PoliceStationName"], grid)).toList()
         : filter.text != "Complete List" && filter.text != ""
             ? stream.docs
                 .map((val) => filter.text == "Current Year"

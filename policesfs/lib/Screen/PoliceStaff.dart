@@ -96,15 +96,6 @@ class _PoliceSaffState extends State<PoliceSaff> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          child: ElevatedButton(
-                            onPressed: () => {},
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.blueAccent)),
-                            child: Text('Export pdf'),
-                          ),
-                        ),
-                        Container(
                           width: 150,
                           margin: EdgeInsets.only(bottom: 3),
                           child: SelectFormField(

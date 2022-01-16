@@ -187,7 +187,7 @@ class _UserRegisteredState extends State<UserRegistered> {
                                 header: Container(
                                   width: double.infinity,
                                   child: Text(
-                                    'Police Staff',
+                                    'All Registered Users/Complainants',
                                     textAlign: TextAlign.center,
                                   ),
                                 ),

@@ -61,7 +61,7 @@ class _EmergencyState extends State<Emergency> {
                         top: 30,
                       ),
                       child: Text(
-                        'Manage Comaplaint Data',
+                        'Manage Emergency Complaints Data',
                         style: TextStyle(fontWeight: FontWeight.bold),
                         textAlign: TextAlign.center,
                       ),
@@ -70,17 +70,8 @@ class _EmergencyState extends State<Emergency> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          child: ElevatedButton(
-                            onPressed: () => {},
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.blueAccent)),
-                            child: Text('Export pdf'),
-                          ),
-                        ),
-                        Container(
                           width: 200,
-                          margin: EdgeInsets.only(bottom: 3),
+                          margin: EdgeInsets.only(top: 10, bottom: 3),
                           child: TextField(
                             onChanged: (val) {
                               setState(() {
@@ -161,7 +152,7 @@ class _EmergencyState extends State<Emergency> {
                                 header: Container(
                                   width: double.infinity,
                                   child: Text(
-                                    'Police Station',
+                                    'All Registered Emergency Complaints',
                                     textAlign: TextAlign.center,
                                   ),
                                 ),

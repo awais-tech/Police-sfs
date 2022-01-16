@@ -115,15 +115,6 @@ class _ComplaintsState extends State<Complaints> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Container(
-                          child: ElevatedButton(
-                            onPressed: () => {},
-                            style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Colors.blueAccent)),
-                            child: Text('Export pdf'),
-                          ),
-                        ),
-                        Container(
                           width: 150,
                           margin: EdgeInsets.only(bottom: 3),
                           child: SelectFormField(
@@ -237,7 +228,7 @@ class _ComplaintsState extends State<Complaints> {
                                 header: Container(
                                   width: double.infinity,
                                   child: Text(
-                                    'Police Station',
+                                    'All Registered Complaints',
                                     textAlign: TextAlign.center,
                                   ),
                                 ),
